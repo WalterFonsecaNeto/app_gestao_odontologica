@@ -6,3 +6,6 @@ npm install react-router-dom
 
 BAIXAR O AXIOS
 npm install axios
+
+BAIXAR O REACT INPUT MASK
+npm install react-input-mask
