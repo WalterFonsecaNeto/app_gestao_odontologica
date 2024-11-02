@@ -1,0 +1,8 @@
+CRIAR O REACT APP
+npx create-react-app nome-do-projeto
+
+BAIXAR O REACT ROUTER DOM
+npm install react-router-dom
+
+BAIXAR O AXIOS
+npm install axios
