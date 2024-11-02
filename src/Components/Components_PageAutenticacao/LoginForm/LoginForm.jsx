@@ -1,8 +1,41 @@
 // LoginForm.js
 import React from "react";
 import "../../../Pages/PageAutenticacao/PageAutenticacao.css";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-function LoginForm({ onSwitch },{setIsAuth}) {
+function LoginForm({ onSwitch }) {
+  const [usuarioLogin, setUsuarioLogin] = useState({
+    emailLogin: "",
+    senhaLogin: "",
+  });
+  const navigate = useNavigate(); // Inicializa o hook useNavigate
+
+  //? função que atualiza os dados do usuário ao digitar no campo de login
+  function AtualizarUsuarioLogin(event) {
+    const id = event.target.id;
+    const value = event.target.value;
+    setUsuarioLogin({ ...usuarioLogin, [id]: value });
+  }
+
+  //! função que verifica se o usuário existe e senha está correta usar ( API do backend )
+  function VerificarUsuario(event) {
+
+    event.preventDefault();
+
+    setUsuarioLogin({
+      emailLogin: "",
+      senhaLogin: "",
+    })
+
+    localStorage.setItem("isAuth", true);
+
+    console.log("Usuario: ", usuarioLogin);
+
+    
+    navigate("/pagina-protegida");
+  }
+
   return (
     <div className="content second-content">
       <div className="first-column">
@@ -14,14 +47,28 @@ function LoginForm({ onSwitch },{setIsAuth}) {
           Cadastre-se
         </button>
       </div>
+
       <div className="second-column">
         <h2 className="title title-second">Faça Login</h2>
-        <form className="form">
+
+        <form className="form" onSubmit={VerificarUsuario}>
           <label className="label-input">
-            <input type="email" placeholder="Email" />
+            <input
+              type="email"
+              placeholder="Email"
+              id="emailLogin"
+              value={usuarioLogin.emailLogin}
+              onChange={AtualizarUsuarioLogin}
+            />
           </label>
           <label className="label-input">
-            <input type="password" placeholder="Senha" />
+            <input
+              type="password"
+              placeholder="Senha"
+              id="senhaLogin"
+              value={usuarioLogin.senhaLogin}
+              onChange={AtualizarUsuarioLogin}
+            />
           </label>
           <a className="password" href="#">
             esqueceu sua senha?

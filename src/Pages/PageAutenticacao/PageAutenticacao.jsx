@@ -3,7 +3,8 @@ import LoginForm from "../../Components/Components_PageAutenticacao/LoginForm/Lo
 import CadastroForm from "../../Components/Components_PageAutenticacao/CadastroForm/CadastroForm";
 import "./PageAutenticacao.css"; // Certifique-se de importar o CSS correto
 
-function PageAutenticacao({ setIsAuth }) {
+function PageAutenticacao() {
+  
   const [isLogin, setIsLogin] = useState(false);
 
   const handleSwitch = () => {
