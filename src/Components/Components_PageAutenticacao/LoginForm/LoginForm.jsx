@@ -20,20 +20,24 @@ function LoginForm({ onSwitch }) {
 
   //! função que verifica se o usuário existe e senha está correta usar ( API do backend )
   function VerificarUsuario(event) {
-
     event.preventDefault();
 
+    // Lógica de verificação do usuário (substitua com a lógica real)
+    const loginBemSucedido = true; // Exemplo, substituir pela verificação correta
+
+    if (loginBemSucedido) {
+      localStorage.setItem("isAuth", "1"); // Define como autenticado
+      navigate("/pacientes"); // Redireciona para a página de pacientes
+    } else {
+      localStorage.setItem("isAuth", "");
+      alert("Usuário ou senha inválidos!"); // Exibe um alerta caso os dados estejam errados
+    }
+
+    // Reseta o formulário
     setUsuarioLogin({
       emailLogin: "",
       senhaLogin: "",
-    })
-
-    localStorage.setItem("isAuth", true);
-
-    console.log("Usuario: ", usuarioLogin);
-
-    
-    navigate("/pagina-protegida");
+    });
   }
 
   return (
