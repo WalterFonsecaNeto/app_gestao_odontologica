@@ -1,7 +1,7 @@
 import style from "./PacientesFiltro.module.css";
+import { Link } from "react-router-dom";
 
 function PacientesFiltro({ setFiltro }) {
-    
   function AtualizarFiltro(event) {
     setFiltro(event.target.value);
   }
@@ -15,6 +15,10 @@ function PacientesFiltro({ setFiltro }) {
           placeholder="Nome do paciente"
           onChange={AtualizarFiltro}
         />
+
+        <Link to="/paciente/novo" className={style.botao_criar}>
+          + Novo
+        </Link>
       </div>
     </div>
   );

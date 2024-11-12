@@ -2,7 +2,7 @@
 import React from "react";
 import "../../../Pages/PageAutenticacao/PageAutenticacao.css";
 
-function CadastroForm({ onSwitch },{setIsAuth}) {
+function CadastroForm({ onSwitch }) {
 
   return (
     <div className="content first-content">

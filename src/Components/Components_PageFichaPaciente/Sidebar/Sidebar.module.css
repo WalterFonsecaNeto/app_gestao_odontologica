@@ -1,0 +1,60 @@
+.sidebar_conteudo {
+  background-color: #368371;
+
+  position: fixed;
+  top: 0;
+  bottom: 0;
+
+  width: 20%;
+  height: 100%;
+
+}
+
+.pagina_conteudo {
+  margin-left: 20%;
+}
+
+.sidebar_conteudo {
+  justify-content: center;
+  text-align: center;
+  
+
+  /*? Esse "&" serve como se fosse a classe => "sidebar_conteudo"  */
+  & .logo {
+    width: 80%;
+    margin: 10%;
+  }
+  & h2 {
+    color: white;
+    font-weight: 200;
+    margin-bottom: 60px;
+
+  }
+ 
+}
+.sidebar_corpo{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+}
+
+.logo_paciente {
+  width: 40%;
+  height: 40%;
+  color: white;
+  margin-top: 20px;
+}
+
+.ficha_icon {
+  width: 20px;
+  height: 44px;
+}
+.orcamento_icon {
+  width: 32px;
+  height: 44px;
+}
+.agendamento_icon {
+  width: 32px;
+  height: 44px;
+}

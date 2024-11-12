@@ -26,10 +26,10 @@ function LoginForm({ onSwitch }) {
     const loginBemSucedido = true; // Exemplo, substituir pela verificação correta
 
     if (loginBemSucedido) {
-      localStorage.setItem("isAuth", "1"); // Define como autenticado
+      localStorage.setItem("usuarioId", "1"); // Define como autenticado
       navigate("/pacientes"); // Redireciona para a página de pacientes
     } else {
-      localStorage.setItem("isAuth", "");
+      localStorage.setItem("usuarioId", "");
       alert("Usuário ou senha inválidos!"); // Exibe um alerta caso os dados estejam errados
     }
 

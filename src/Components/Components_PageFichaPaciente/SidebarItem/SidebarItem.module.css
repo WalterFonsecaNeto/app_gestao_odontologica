@@ -1,0 +1,22 @@
+.sidbar_item{
+    text-decoration: none;
+
+    display: flex;
+    margin-left: 20px;
+    margin-bottom: 20px;
+
+    color: white;
+
+
+    & .texto_link{
+        
+        margin: 10px;
+
+        font-size: 18px;
+        font-weight:200;
+    }
+
+    &:hover{
+        color: black;
+    }
+}
