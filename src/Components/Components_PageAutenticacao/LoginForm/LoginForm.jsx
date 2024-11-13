@@ -11,6 +11,8 @@ function LoginForm({ onSwitch }) {
   });
   const navigate = useNavigate(); // Inicializa o hook useNavigate
 
+  const [login, setLogin] = useState(false);
+
   //? função que atualiza os dados do usuário ao digitar no campo de login
   function AtualizarUsuarioLogin(event) {
     const id = event.target.id;
@@ -21,18 +23,20 @@ function LoginForm({ onSwitch }) {
   //! função que verifica se o usuário existe e senha está correta usar ( API do backend )
   function VerificarUsuario(event) {
     event.preventDefault();
-
-    // Lógica de verificação do usuário (substitua com a lógica real)
-    const loginBemSucedido = true; // Exemplo, substituir pela verificação correta
-
-    if (loginBemSucedido) {
+    console.log(usuarioLogin.emailLogin, usuarioLogin.senhaLogin);
+  
+    if (
+      usuarioLogin.emailLogin === "walterfonseca1606@gmail.com" &&
+      usuarioLogin.senhaLogin === "1606"
+    ) {
+      // Lógica de verificação do usuário (substitua com a lógica real)
       localStorage.setItem("usuarioId", "1"); // Define como autenticado
       navigate("/pacientes"); // Redireciona para a página de pacientes
     } else {
       localStorage.setItem("usuarioId", "");
       alert("Usuário ou senha inválidos!"); // Exibe um alerta caso os dados estejam errados
     }
-
+  
     // Reseta o formulário
     setUsuarioLogin({
       emailLogin: "",
