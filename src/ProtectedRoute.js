@@ -2,10 +2,9 @@ import React from "react";
 import { Navigate } from "react-router-dom";
 
 function ProtectedRoute({ children }) {
-  const isAuth = localStorage.getItem("isAuth")
-  console.log("Esta aqui",isAuth); 
+  const isAuth = localStorage.getItem("usuarioId")
 
-  if (isAuth === "") {
+  if (isAuth === null || isAuth === undefined) {
     return <Navigate to="/" />; // Redireciona para a página inicial se não estiver autenticado
   }
 
