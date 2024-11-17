@@ -9,7 +9,7 @@ function PagePacientes() {
   const [filtro, setFiltro] = useState("");
 
   const usuarioId = localStorage.getItem("usuarioId");
-  console.log(usuarioId);
+  
   return (
     <div className={style.container_total}>
       <Cabecalho />
