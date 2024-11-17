@@ -1,17 +1,21 @@
 // LoginForm.js
-import React from "react";
+import React, { useEffect } from "react";
 import "../../../Pages/PageAutenticacao/PageAutenticacao.css";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import UsuarioApi from "../../../Services/MinhaApi/Usuario";
 
 function LoginForm({ onSwitch }) {
+
+  useEffect(() => {
+    localStorage.clear();
+  }, []);
+
   const [usuarioLogin, setUsuarioLogin] = useState({
     emailLogin: "",
     senhaLogin: "",
   });
   const navigate = useNavigate(); // Inicializa o hook useNavigate
-
-  const [login, setLogin] = useState(false);
 
   //? função que atualiza os dados do usuário ao digitar no campo de login
   function AtualizarUsuarioLogin(event) {
@@ -20,24 +24,24 @@ function LoginForm({ onSwitch }) {
     setUsuarioLogin({ ...usuarioLogin, [id]: value });
   }
 
-  //! função que verifica se o usuário existe e senha está correta usar ( API do backend )
-  function VerificarUsuario(event) {
+  async function VerificarUsuario(event) {
     event.preventDefault();
-    console.log(usuarioLogin.emailLogin, usuarioLogin.senhaLogin);
-  
-    if (
-      usuarioLogin.emailLogin === "walterfonseca1606@gmail.com" &&
-      usuarioLogin.senhaLogin === "1606"
-    ) {
-      // Lógica de verificação do usuário (substitua com a lógica real)
-      localStorage.setItem("usuarioId", "1"); // Define como autenticado
-      navigate("/pacientes"); // Redireciona para a página de pacientes
-    } else {
-      localStorage.setItem("usuarioId", "");
-      alert("Usuário ou senha inválidos!"); // Exibe um alerta caso os dados estejam errados
+    try {
+      const response = await UsuarioApi.validarUsuarioAsync(
+        usuarioLogin.emailLogin,
+        usuarioLogin.senhaLogin
+      );
+      console.log(response.id);
+      if (response !== null) {
+        localStorage.setItem("usuarioId", response.id);
+        navigate("/pacientes");
+      } else {
+        throw new Error("Usuário ou senha inválidos");
+      }
+    } catch (error) {
+      alert("Usuário ou senha inválidos!");
     }
-  
-    // Reseta o formulário
+
     setUsuarioLogin({
       emailLogin: "",
       senhaLogin: "",

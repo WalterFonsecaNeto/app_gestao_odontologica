@@ -1,6 +1,8 @@
 import style from "./PacientesForm.module.css";
 import { useState } from "react";
 import InputMask from "react-input-mask";
+import PacienteApi from "../../../Services/MinhaApi/Paciente";
+import { Navigate } from "react-router-dom";
 
 function PacientesForm() {
   const [paciente, setPaciente] = useState({
@@ -14,15 +16,37 @@ function PacientesForm() {
     historicoMedico: "",
   });
 
+  const [redirect, setRedirect] = useState(false); // Estado para redirecionamento
+
   const AtualizarPaciente = (event) => {
     const { name, value } = event.target;
     setPaciente({ ...paciente, [name]: value });
   };
 
-  function SalvarPaciente(event) {
+  async function SalvarPaciente(event) {
     event.preventDefault();
 
-    // Resetar o formulário após salvar
+    const usuarioId = localStorage.getItem("usuarioId");
+
+    try {
+      await PacienteApi.criarPacienteAsync(
+        usuarioId,
+        paciente.nome,
+        paciente.dataNascimento,
+        paciente.genero,
+        paciente.cpf,
+        paciente.endereco,
+        paciente.telefone,
+        paciente.email,
+        paciente.historicoMedico
+      );
+      alert("paciente cadastrado com sucesso!");
+      setRedirect(true); // Define o redirecionamento para verdadeiro
+    } catch (error) {
+      console.error(error);
+      alert("Ocorreu um erro ao cadastrar o usuário. Tente novamente.");
+    }
+
     setPaciente({
       nome: "",
       cpf: "",
@@ -33,9 +57,10 @@ function PacientesForm() {
       email: "",
       historicoMedico: "",
     });
+  }
 
-    //! Chamar método na API para salvar no banco de dados aqui.
-    console.log(paciente);
+  if (redirect) {
+    return <Navigate to="/pacientes" />; // Redireciona quando redirect for true
   }
 
   return (
