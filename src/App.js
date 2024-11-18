@@ -6,6 +6,8 @@ import PagePacientes from "./Pages/PagePacientes/PagePacientes";
 import PageAutenticacao from "./Pages/PageAutenticacao/PageAutenticacao";
 import PageFichaClinica from "./Pages/PageFichaClinica/PageFichaClinica";
 import PageNovoPaciente from "./Pages/PageNovoPaciente/PageNovoPaciente";
+import PageEspecialidade from "./Pages/PageEspecialidade/PageEspecialidade";
+import PageNovaEspecialidade from "./Pages/PageNovaEspecialidade/PageNovaEspecialidade";
 
 function App() {
   const [isAuth, setIsAuth] = useState(false);
@@ -39,6 +41,22 @@ function App() {
             element={
               <ProtectedRoute>
                 <PageNovoPaciente/>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/especialidades"
+            element={
+              <ProtectedRoute>
+                <PageEspecialidade />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/especialidade/novo"
+            element={
+              <ProtectedRoute>
+                <PageNovaEspecialidade/>
               </ProtectedRoute>
             }
           />
