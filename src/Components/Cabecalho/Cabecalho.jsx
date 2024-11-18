@@ -24,17 +24,17 @@ function Cabecalho() {
                 </Link>
               </div>
               <div className={style.submenu_item}>
-                <Link className={style.submenu_link} to="/especialidade/novo">
+                <Link className={style.submenu_link} to="/especialidades">
                   Lista de Especialidades
                 </Link>
               </div>
               <div className={style.submenu_item}>
-                <Link className={style.submenu_link} to="/procedimento/novo">
+                <Link className={style.submenu_link} to="/procedimentos">
                   Lista de Procedimento
                 </Link>
               </div>
               <div className={style.submenu_item}>
-                <Link className={style.submenu_link} to="/formaPagamento/novo">
+                <Link className={style.submenu_link} to="/formaPagamentos">
                   Lista de Forma Pagamento
                 </Link>
               </div>

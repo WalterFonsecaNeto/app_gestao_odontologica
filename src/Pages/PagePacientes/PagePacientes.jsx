@@ -7,8 +7,6 @@ import React, { useState } from "react";
 
 function PagePacientes() {
   const [filtro, setFiltro] = useState("");
-
-  const usuarioId = localStorage.getItem("usuarioId");
   
   return (
     <div className={style.container_total}>
