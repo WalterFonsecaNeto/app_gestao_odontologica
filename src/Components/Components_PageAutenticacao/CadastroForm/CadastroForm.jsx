@@ -33,6 +33,10 @@ function CadastroForm({ onSwitch }) {
       alert("Usuário cadastrado com sucesso!");
       
     } catch (error) {
+      if (error.response.data==="Erro ao criar: Email ou senha já existe") {
+        alert("Email ou senha já existe.");
+        return;
+      }
       console.error(error);
       alert("Ocorreu um erro ao cadastrar o usuário. Tente novamente.");
     }

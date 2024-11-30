@@ -1,8 +1,10 @@
+
 .container_form {
     background-color: white; /* Fundo do formulário branco */
     padding: 30px;
     border-radius: 10px;
     box-shadow: 5px 8px 10px rgba(0, 0, 0, 0.400);
+    margin-bottom: 20%;
   }
   
   .container_form h2 {

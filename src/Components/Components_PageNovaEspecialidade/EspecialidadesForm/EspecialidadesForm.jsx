@@ -18,15 +18,18 @@ function EspecialidadesForm() {
     const usuarioId = localStorage.getItem("usuarioId");
 
     try {
-      await EspecialidadeApi.criarEspecialidadeAsync(usuarioId, especialidadeNome);
+      await EspecialidadeApi.criarEspecialidadeAsync(
+        usuarioId,
+        especialidadeNome
+      );
       alert("Especialidade cadastrada com sucesso!");
-     setRedirect(true); // Define o redirecionamento para verdadeiro
+      setRedirect(true); // Define o redirecionamento para verdadeiro
     } catch (error) {
       console.error(error);
       alert("Ocorreu um erro ao cadastrar a especialidade. Tente novamente.");
     }
 
-    setEspecialidadeNome(""); 
+    setEspecialidadeNome("");
   }
 
   if (redirect) {
@@ -34,23 +37,25 @@ function EspecialidadesForm() {
   }
 
   return (
-    <div className={style.container_form}>
-      <form onSubmit={SalvarEspecialidade}>
-        <h2>Cadastro de Especialidade</h2>
+    <div className={style.container_total}>
+      <div className={style.container_form}>
+        <form onSubmit={SalvarEspecialidade}>
+          <h2>Cadastro de Especialidade</h2>
 
-        <label>Nome:</label>
-        <input
-          type="text"
-          placeholder="Digite o nome da especialidade"
-          name="nome"
-          maxLength="100"
-          value={especialidadeNome}
-          onChange={AtualizarEspecialidade}
-          required
-        />
+          <label>Nome:</label>
+          <input
+            type="text"
+            placeholder="Digite o nome da especialidade"
+            name="nome"
+            maxLength="100"
+            value={especialidadeNome}
+            onChange={AtualizarEspecialidade}
+            required
+          />
 
-        <button type="submit">Salvar</button>
-      </form>
+          <button type="submit">Salvar</button>
+        </form>
+      </div>
     </div>
   );
 }
