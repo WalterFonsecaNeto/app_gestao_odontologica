@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./Modal.module.css"; 
+import styles from "./ModalGlobalAdicionar.module.css"; 
 
 function Modal({ titulo, fecharModal, children }) {
   return (

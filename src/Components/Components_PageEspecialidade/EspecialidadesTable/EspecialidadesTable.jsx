@@ -3,12 +3,14 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { MdEdit, MdDelete } from "react-icons/md";
 import EspecialidadeApi from "../../../Services/MinhaApi/Especialidade";
+import ModalGlobalExcluir from "../../ModalGlobalExcluir/ModalGlobalExcluir";
 
 function EspecialidadesTable({ filtro }) {
   const navigate = useNavigate();
   const [especialidades, setEspecialidades] = useState([]);
   const [mostrarModal, setMostrarModal] = useState(false);
-  const [especialidadeSelecionada, setEspecialidadeSelecionada] = useState(null);
+  const [especialidadeSelecionada, setEspecialidadeSelecionada] =
+    useState(null);
 
   function EditarEspecialidade(id) {
     const idCodificado = btoa(id); // Codifica o ID em Base64
@@ -23,16 +25,21 @@ function EspecialidadesTable({ filtro }) {
   const handleDeletar = async () => {
     try {
       const usuarioId = localStorage.getItem("usuarioId");
-      await EspecialidadeApi.deletarEspecialidadeAsync(especialidadeSelecionada.id, usuarioId);
-      setEspecialidades(especialidades.filter((e) => e.id !== especialidadeSelecionada.id));
+      await EspecialidadeApi.deletarEspecialidadeAsync(
+        especialidadeSelecionada.id,
+        usuarioId
+      );
+      setEspecialidades(
+        especialidades.filter((e) => e.id !== especialidadeSelecionada.id)
+      );
     } catch (error) {
       console.error("Erro ao deletar especialidade:", error);
     } finally {
-      handleFecharmodal();
+      setMostrarModal(false);
     }
   };
 
-  const handleFecharmodal = () => {
+  const handleCancelar = () => {
     setMostrarModal(false);
     setEspecialidadeSelecionada(null);
   };
@@ -41,7 +48,11 @@ function EspecialidadesTable({ filtro }) {
     const usuarioId = localStorage.getItem("usuarioId");
 
     try {
-      const response = await EspecialidadeApi.listarEspecialidadesPorUsuarioAsync(usuarioId, true);
+      const response =
+        await EspecialidadeApi.listarEspecialidadesPorUsuarioAsync(
+          usuarioId,
+          true
+        );
       setEspecialidades(response);
     } catch (error) {
       console.error("Erro ao buscar especialidades:", error);
@@ -61,14 +72,14 @@ function EspecialidadesTable({ filtro }) {
       <tr key={especialidade.id}>
         <td>{especialidade.nome}</td>
         <td>
-          <button onClick={() => EditarEspecialidade(especialidade.id)}>
-            <MdEdit />
-          </button>
-        </td>
-        <td>
-          <button onClick={() => handleClickDeletar(especialidade)}>
-            <MdDelete />
-          </button>
+          <div className={style.botao_acao}>
+            <button onClick={() => EditarEspecialidade(especialidade.id)}>
+              <MdEdit />
+            </button>
+            <button onClick={() => handleClickDeletar(especialidade)}>
+              <MdDelete />
+            </button>
+          </div>
         </td>
       </tr>
     ));
@@ -83,24 +94,20 @@ function EspecialidadesTable({ filtro }) {
           <thead>
             <tr>
               <th>Nome</th>
-              <th>Editar</th>
-              <th>Excluir</th>
+              <th>Ações</th>
             </tr>
           </thead>
           <tbody>{MostarEspecialidades()}</tbody>
         </table>
       </div>
 
-      {/* Modal de confirmação de exclusão */}
-      {mostrarModal && (
-        <div className={style.modal}>
-          <div className={style.modalContent}>
-            <p>Você tem certeza que deseja excluir esta especialidade?</p>
-            <button onClick={handleDeletar}>Confirmar</button>
-            <button onClick={handleFecharmodal} className="cancelButton">Cancelar</button>
-          </div>
-        </div>
-      )}
+      <ModalGlobalExcluir
+        titulo="Confirmação de Exclusão"
+        mensagem={`Você tem certeza que deseja excluir a especialidade: "${especialidadeSelecionada?.nome}"`}
+        visivel={mostrarModal}
+        onConfirmar={handleDeletar}
+        onCancelar={handleCancelar}
+      />
     </div>
   );
 }

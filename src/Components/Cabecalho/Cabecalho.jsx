@@ -4,12 +4,14 @@ import { IoIosArrowDown } from "react-icons/io";
 function Cabecalho() {
   return (
     <header className={style.cabecalho}>
-      <button className={style.button} data-text="Awesome">
-        <span className={style.actual_text}>&nbsp;OdontoSync&nbsp;</span>
-        <span aria-hidden="true" className={style.hover_text}>
-          &nbsp;OdontoSync&nbsp;
-        </span>
-      </button>
+      <Link to="/home">
+        <button className={style.button} data-text="Awesome">
+          <span className={style.actual_text}>&nbsp;OdontoSync&nbsp;</span>
+          <span aria-hidden="true" className={style.hover_text}>
+            &nbsp;OdontoSync&nbsp;
+          </span>
+        </button>
+      </Link>
       <div className={style.menu_total}>
         <div className={style.menu}>
           <div className={style.item}>

@@ -76,12 +76,15 @@
     font-size: 1rem;
     transition: background-color 0.3s;
   }
-  
-
+  .botao_acao{
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+  }
   
   .container_table button svg {
     font-size: 1.25rem; /* Ajuste o tamanho do ícone aqui */
-    /* Adiciona espaço entre o ícone e o texto, se necessário */
   }
   .container_table button:hover{
     background-color:  #368371;
@@ -90,6 +93,10 @@
   .container_table td {
     text-align: center;
   }
+
+
+
+  
   
 
   /* Estilo do Modal */

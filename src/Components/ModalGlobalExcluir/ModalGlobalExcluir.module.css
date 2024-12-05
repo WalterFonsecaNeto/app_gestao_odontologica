@@ -1,0 +1,63 @@
+/* Estilo do Modal */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999; /* Para garantir que o modal fique acima dos outros elementos */
+}
+  
+.modalContent {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 5px 8px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    width: 30%; /* Aumenta a largura do modal */
+    max-width: 90%; /* Garante que o modal não ultrapasse a largura da tela em telas pequenas */
+}
+
+.modalContent h3 {
+    font-size: 1.2rem; /* Aumenta o tamanho do texto */
+    margin-bottom: 30px; /* Aumenta o espaço entre o texto e os botões */
+}
+  
+.modalContent p {
+    font-size: 1.2rem; /* Aumenta o tamanho do texto */
+    margin-bottom: 30px; /* Aumenta o espaço entre o texto e os botões */
+}
+  
+/* Botões gerais */
+.modalContent button {
+    padding: 1rem 2rem; /* Aumenta o tamanho dos botões */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.2rem; /* Aumenta o tamanho da fonte */
+    transition: background-color 0.3s;
+    margin: 10px;
+    color: white;
+}
+
+/* Botão Confirmar */
+.modalContent button.confirmButton {
+    background-color: #58af9b; /* Verde */
+}
+
+.modalContent button.confirmButton:hover {
+    background-color: #4da88d; /* Verde mais escuro */
+}
+
+/* Botão Cancelar */
+.modalContent button.cancelButton {
+    background-color: #e74c3c; /* Vermelho */
+}
+
+.modalContent button.cancelButton:hover {
+    background-color: #c0392b; /* Vermelho mais escuro */
+}

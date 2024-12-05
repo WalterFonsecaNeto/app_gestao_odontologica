@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import Modal from "../Modal/Modal"; 
+import ModalGlobalAdicionar from "../ModalGlobalAdicionar/ModalGlobalAdicionar"; 
 import styles from "./FiltroGlobal.module.css";
 
 function FiltroGlobal({ titulo, placeholder, setFiltro, ModalContent }) {
@@ -44,9 +44,9 @@ function FiltroGlobal({ titulo, placeholder, setFiltro, ModalContent }) {
         <button onClick={AbrirModal} className={styles.botao_criar}>+ Novo</button>
       </div>
       {modalAberto && (
-        <Modal  fecharModal={FecharModal}>
+        <ModalGlobalAdicionar  fecharModal={FecharModal}>
           <ModalContent fecharModal={FecharModal} />
-        </Modal>
+        </ModalGlobalAdicionar>
       )}
     </div>
   );
