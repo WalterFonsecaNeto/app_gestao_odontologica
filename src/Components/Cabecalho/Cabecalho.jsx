@@ -34,7 +34,7 @@ function Cabecalho() {
                 </Link>
               </div>
               <div className={style.submenu_item}>
-                <Link className={style.submenu_link} to="/formaPagamentos">
+                <Link className={style.submenu_link} to="/formasPagamento">
                   Formas de Pagamento
                 </Link>
               </div>

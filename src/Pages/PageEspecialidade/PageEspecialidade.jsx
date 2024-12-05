@@ -19,6 +19,7 @@ function PageEspecialidade() {
           placeholder="Nome da especialidade"
           setFiltro={setFiltroEspecialidade}
           ModalContent={ModalAdicionarEspecialidade}
+          
         />
         <EspecialidadesTable filtro={filtroEspecialidade} />
       </div>

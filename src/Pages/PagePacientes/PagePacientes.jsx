@@ -19,7 +19,6 @@ function PagePacientes() {
           placeholder="Nome do paciente"
           setFiltro={setFiltro}
           ModalContent={ModalAdicionarPaciente}
-          tituloModal="Adicionar Paciente"
         />
         <PacientesTable filtro={filtro} />
       </div>

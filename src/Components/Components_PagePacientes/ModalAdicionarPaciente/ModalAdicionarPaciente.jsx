@@ -4,6 +4,7 @@ import styles from "./ModalAdicionarPaciente.module.css";
 import PacienteApi from "../../../Services/MinhaApi/Paciente";
 
 function ModalAdicionarPaciente({ fecharModal }) {
+  //Objeto Paciente
   const [paciente, setPaciente] = useState({
     nome: "",
     cpf: "",
@@ -15,10 +16,7 @@ function ModalAdicionarPaciente({ fecharModal }) {
     historicoMedico: "",
   });
 
-  const AtualizarPaciente = (event) => {
-    const { name, value } = event.target;
-    setPaciente({ ...paciente, [name]: value });
-  };
+ 
 
   async function SalvarPaciente(event) {
     event.preventDefault();
@@ -56,6 +54,12 @@ function ModalAdicionarPaciente({ fecharModal }) {
       historicoMedico: "",
     });
   }
+
+
+  const AtualizarPaciente = (event) => {
+    const { name, value } = event.target;
+    setPaciente({ ...paciente, [name]: value });
+  };
 
   return (
     <div className={styles.modalOverlay}>

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Modal from "../Modal/Modal"; 
 import styles from "./FiltroGlobal.module.css";
 
-function FiltroGlobal({ titulo, placeholder, setFiltro, ModalContent, tituloModal }) {
+function FiltroGlobal({ titulo, placeholder, setFiltro, ModalContent }) {
   const [modalAberto, setModalAberto] = useState(false);
 
   //? Função para desabilitar a rolagem no body quando o modal abrir
@@ -44,7 +44,7 @@ function FiltroGlobal({ titulo, placeholder, setFiltro, ModalContent, tituloModa
         <button onClick={AbrirModal} className={styles.botao_criar}>+ Novo</button>
       </div>
       {modalAberto && (
-        <Modal titulo={tituloModal} fecharModal={FecharModal}>
+        <Modal  fecharModal={FecharModal}>
           <ModalContent fecharModal={FecharModal} />
         </Modal>
       )}
