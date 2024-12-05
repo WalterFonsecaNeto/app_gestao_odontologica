@@ -2,18 +2,25 @@ import Cabecalho from "../../Components/Cabecalho/Cabecalho";
 import Rodape from "../../Components/Rodape/Rodape";
 import style from "./PageEspecialidade.module.css";
 import React, { useState } from "react";
-import EspecialidadesFiltro from "../../Components/Components_PageEspecialidade/EspecialidadesFiltro/EspecialidadesFiltro";
 import EspecialidadesTable from "../../Components/Components_PageEspecialidade/EspecialidadesTable/EspecialidadesTable";
+import FiltroGlobal from "../../Components/FiltroGlobal/FiltroGlobal";
+import ModalAdicionarEspecialidade from "../../Components/Components_PageEspecialidade/ModalAdicionarEspecialidade/ModalAdicionarEspecialidade";
+
 
 function PageEspecialidade() {
-  const [filtro, setFiltro] = useState("");
-  
+  const [filtroEspecialidade, setFiltroEspecialidade] = useState("");
+
   return (
     <div className={style.container_total}>
       <Cabecalho />
       <div className={style.container_info}>
-        <EspecialidadesFiltro setFiltro={setFiltro} />
-        <EspecialidadesTable filtro={filtro} />
+        <FiltroGlobal
+          titulo="Buscar Especialidade"
+          placeholder="Nome da especialidade"
+          setFiltro={setFiltroEspecialidade}
+          ModalContent={ModalAdicionarEspecialidade}
+        />
+        <EspecialidadesTable filtro={filtroEspecialidade} />
       </div>
       <Rodape />
     </div>

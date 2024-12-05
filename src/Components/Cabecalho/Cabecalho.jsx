@@ -20,52 +20,22 @@ function Cabecalho() {
             <div className={style.submenu}>
               <div className={style.submenu_item}>
                 <Link className={style.submenu_link} to="/pacientes">
-                  Lista de Pacientes
+                  Pacientes
                 </Link>
               </div>
               <div className={style.submenu_item}>
                 <Link className={style.submenu_link} to="/especialidades">
-                  Lista de Especialidades
+                  Especialidades
                 </Link>
               </div>
               <div className={style.submenu_item}>
                 <Link className={style.submenu_link} to="/procedimentos">
-                  Lista de Procedimento
+                  Procedimentos
                 </Link>
               </div>
               <div className={style.submenu_item}>
                 <Link className={style.submenu_link} to="/formaPagamentos">
-                  Lista de Forma Pagamento
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className={style.menu}>
-          <div className={style.item}>
-            <a className={style.link} href="#">
-              <p>Cadastro</p>
-              <IoIosArrowDown />
-            </a>
-            <div className={style.submenu}>
-              <div className={style.submenu_item}>
-                <Link className={style.submenu_link} to="/paciente/novo">
-                  Paciente
-                </Link>
-              </div>
-              <div className={style.submenu_item}>
-                <Link className={style.submenu_link} to="/especialidade/novo">
-                  Especialidade
-                </Link>
-              </div>
-              <div className={style.submenu_item}>
-                <Link className={style.submenu_link} to="/procedimento/novo">
-                  Procedimento
-                </Link>
-              </div>
-              <div className={style.submenu_item}>
-                <Link className={style.submenu_link} to="/formaPagamento/novo">
-                  Forma Pagamento
+                  Formas de Pagamento
                 </Link>
               </div>
             </div>

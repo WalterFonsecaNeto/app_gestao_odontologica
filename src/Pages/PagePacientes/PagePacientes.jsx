@@ -1,18 +1,26 @@
 import Cabecalho from "../../Components/Cabecalho/Cabecalho";
 import Rodape from "../../Components/Rodape/Rodape";
-import PacientesFiltro from "../../Components/Components_PagePacientes/PacientesFiltro/PacientesFiltro";
 import PacientesTable from "../../Components/Components_PagePacientes/PacientesTable/PacientesTable";
 import style from "./PagePacientes.module.css";
-import React, { useState } from "react";
+import { React,  useState } from "react";
+import FiltroGlobal from "../../Components/FiltroGlobal/FiltroGlobal";
+
+import ModalAdicionarPaciente from "../../Components/Components_PagePacientes/ModalAdicionarPaciente/ModalAdicionarPaciente";
 
 function PagePacientes() {
   const [filtro, setFiltro] = useState("");
-  
+
   return (
     <div className={style.container_total}>
       <Cabecalho />
       <div className={style.container_info}>
-        <PacientesFiltro setFiltro={setFiltro} />
+        <FiltroGlobal
+          titulo="Buscar Paciente"
+          placeholder="Nome do paciente"
+          setFiltro={setFiltro}
+          ModalContent={ModalAdicionarPaciente}
+          tituloModal="Adicionar Paciente"
+        />
         <PacientesTable filtro={filtro} />
       </div>
       <Rodape />

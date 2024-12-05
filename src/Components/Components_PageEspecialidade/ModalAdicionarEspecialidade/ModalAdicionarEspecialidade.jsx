@@ -1,12 +1,9 @@
-import style from "./EspecialidadesForm.module.css";
+import style from "./ModalAdicionarEspecialidade.module.css"; // Importando o arquivo CSS
 import { useState } from "react";
-import { Navigate } from "react-router-dom";
 import EspecialidadeApi from "../../../Services/MinhaApi/Especialidade";
 
-function EspecialidadesForm() {
+function ModalAdicionarEspecialidade({ fecharModal }) { // Recebendo a função fecharModal como props
   const [especialidadeNome, setEspecialidadeNome] = useState("");
-
-  const [redirect, setRedirect] = useState(false); // Estado para redirecionamento
 
   const AtualizarEspecialidade = (event) => {
     setEspecialidadeNome(event.target.value);
@@ -23,7 +20,8 @@ function EspecialidadesForm() {
         especialidadeNome
       );
       alert("Especialidade cadastrada com sucesso!");
-      setRedirect(true); // Define o redirecionamento para verdadeiro
+      fecharModal(); // Fecha o modal após o cadastro
+      window.location.reload(); // Força o recarregamento da página
     } catch (error) {
       console.error(error);
       alert("Ocorreu um erro ao cadastrar a especialidade. Tente novamente.");
@@ -32,16 +30,16 @@ function EspecialidadesForm() {
     setEspecialidadeNome("");
   }
 
-  if (redirect) {
-    return <Navigate to="/especialidades" />; // Redireciona quando redirect for true
-  }
-
   return (
-    <div className={style.container_total}>
-      <div className={style.container_form}>
-        <form onSubmit={SalvarEspecialidade}>
+    <div className={style.modalOverlay}> {/* Camada de fundo do modal */}
+      <div className={style.modalContent}> {/* Conteúdo do modal */}
+        <div className={style.modalTituloSair}> {/* Título e botão de fechar */}
+          <button className={style.closeButton} onClick={fecharModal}> {/* Função de fechar modal */}
+            ✖
+          </button>
           <h2>Cadastro de Especialidade</h2>
-
+        </div>
+        <form onSubmit={SalvarEspecialidade}>
           <label>Nome:</label>
           <input
             type="text"
@@ -52,7 +50,6 @@ function EspecialidadesForm() {
             onChange={AtualizarEspecialidade}
             required
           />
-
           <button type="submit">Salvar</button>
         </form>
       </div>
@@ -60,4 +57,4 @@ function EspecialidadesForm() {
   );
 }
 
-export default EspecialidadesForm;
+export default ModalAdicionarEspecialidade;

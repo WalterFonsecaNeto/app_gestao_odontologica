@@ -52,7 +52,7 @@ const EspecialidadeApi = {
 
   async deletarEspecialidadeAsync(especialidadeId, usuarioId) {
     try {
-      const response = await HTTPClient.put(`/Especialidade/Deletar/${especialidadeId}/Usuario/${usuarioId}`);
+      const response = await HTTPClient.delete(`/Especialidade/Deletar/${especialidadeId}/Usuario/${usuarioId}`);
       return response.data;
     } catch (error) {
       console.error("Erro ao deletar especialidade:", error);
