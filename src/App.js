@@ -6,6 +6,7 @@ import PageAutenticacao from "./Pages/PageAutenticacao/PageAutenticacao";
 import PageFichaClinica from "./Pages/PageFichaClinica/PageFichaClinica";
 import PageEspecialidade from "./Pages/PageEspecialidade/PageEspecialidade";
 import PageProcedimento from "./Pages/PageProcedimento/PageProcedimento";
+import PageHome from "./Pages/PageHome/PageHome";
 
 function App() {
 
@@ -16,6 +17,14 @@ function App() {
           <Route
             path="/"
             element={<PageAutenticacao/>}
+          />
+          <Route
+            path="/home"
+            element={
+              <ProtectedRoute>
+                <PageHome />
+              </ProtectedRoute>
+            }
           />
           <Route
             path="/pacientes"

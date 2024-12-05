@@ -34,7 +34,7 @@ function LoginForm({ onSwitch }) {
       console.log(response.id);
       if (response !== null) {
         localStorage.setItem("usuarioId", response.id);
-        navigate("/pacientes");
+        navigate("/home");
       } else {
         throw new Error("Usuário ou senha inválidos");
       }

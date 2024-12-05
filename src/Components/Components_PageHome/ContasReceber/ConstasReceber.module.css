@@ -1,0 +1,58 @@
+.container {
+  border: 1px solid #58af9b;
+  border-radius: 10px;
+  padding: 40px;
+  background-color: white;
+  box-shadow: 5px 8px 10px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+  margin-bottom: 1rem;
+}
+
+.title {
+  font-size: 1.15rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #58af9b;
+  color: #fff;
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+  justify-content: center;
+}
+
+.receivablesContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.receivablesContainer::-webkit-scrollbar {
+  width: 6px;
+  border-radius: 10px;
+}
+
+.receivablesContainer::-webkit-scrollbar-thumb {
+  background-color: #c5c5c59a;
+  border-radius: 10px;
+}
+
+.receivablesContainer::-webkit-scrollbar-track {
+  background-color: #f7f7f7;
+}
+
+.receivableItem {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+  border-bottom: 1px solid #58af9b;
+}
+
+.receivableItem:hover {
+  background-color: #e1f3f1;
+}

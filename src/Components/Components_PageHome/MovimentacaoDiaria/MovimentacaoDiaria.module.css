@@ -1,0 +1,45 @@
+.container {
+  border: 1px solid #58af9b;
+  border-radius: 10px;
+  padding: 40px;
+  background-color: white;
+  box-shadow: 5px 8px 10px rgba(0, 0, 0, 0.1);
+  
+}
+
+.header {
+  margin-bottom: 1rem;
+}
+
+.title {
+  font-size: 1.15rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #58af9b;
+  color: #fff;
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+  justify-content: center;
+}
+
+.movementsContainer {
+  display: flex;
+  justify-content: space-around;
+  padding: 1rem;
+  border-bottom: 1px solid #58af9b;
+}
+
+.movement {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.movement:hover {
+  background-color: #e1f3f1;
+}

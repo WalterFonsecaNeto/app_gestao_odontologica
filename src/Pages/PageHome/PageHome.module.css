@@ -1,0 +1,35 @@
+.container {
+    display: flex;
+    flex-direction: column;
+  }
+  .main {
+    flex: 1;
+    margin: auto;
+    padding: 2rem;
+    width: 100%;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+  @media (min-width: 768px) {
+    .grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  .column {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  .smallGrid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  @media (min-width: 640px) {
+    .smallGrid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
