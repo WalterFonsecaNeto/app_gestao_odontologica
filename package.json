@@ -23,8 +23,8 @@
     "react-input-mask": "^2.0.4",
     "react-router-dom": "^6.27.0",
     "react-scripts": "5.0.1",
-    "recharts": "^2.14.1",
-    "sonner": "^1.7.0",
+    "recharts": "^2.15.0",
+    "sonner": "^1.7.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

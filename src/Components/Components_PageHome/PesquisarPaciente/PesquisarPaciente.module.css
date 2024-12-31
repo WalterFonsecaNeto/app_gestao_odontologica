@@ -4,6 +4,8 @@
   padding: 40px;
   background-color: white;
   box-shadow: 5px 8px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  height: 380px;
 }
 
 .header {
@@ -32,6 +34,7 @@
   border: 1px solid #58af9b;
   border-radius: 10px;
   margin-bottom: 1rem;
+  
 }
 
 .input {
@@ -45,7 +48,7 @@
 .patientList {
   display: flex;
   flex-direction: column;
-  max-height: 300px;
+  max-height: 180px;
   overflow-y: auto;
 }
 

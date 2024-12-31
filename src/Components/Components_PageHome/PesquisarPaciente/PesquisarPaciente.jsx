@@ -12,7 +12,7 @@ const PatientSearch = () => {
   ];
 
   const filteredPatients = patients.filter((patient) =>
-    patient.name.toLowerCase().includes(search.toLowerCase())
+    patient.name.toLowerCase().startsWith(search.toLowerCase())
   );
 
   return (

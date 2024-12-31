@@ -7,7 +7,7 @@ import axios from "axios";  // Importando o Axios
 import styles from "./Calendario.module.css";
 
 const Calendario = () => {
-  const [data, setData] = useState(new Date());
+  const [data] = useState(new Date());
   const [agendamentos, setAgendamentos] = useState([]);
 
   // Definindo os horários disponíveis
