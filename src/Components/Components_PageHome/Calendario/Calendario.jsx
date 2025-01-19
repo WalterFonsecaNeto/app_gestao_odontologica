@@ -1,95 +1,153 @@
 import { useState, useEffect } from "react";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import { toast } from "sonner";
-import { Calendar as CalendarIcon } from "lucide-react";
-import axios from "axios";  // Importando o Axios
+import { Calendar as CalendarIcon, ChevronLeft, ChevronRight } from "lucide-react"; // Importando as setas
 import styles from "./Calendario.module.css";
+import AgendamentoApi from "../../../Services/MinhaApi/Agendamento";
+import FormularioCriarAgendamento from "../ModalCriarAgendamento/ModalCriarAgendamento";
+import PacienteApi from "../../../Services/MinhaApi/Paciente";
 
 const Calendario = () => {
-  const [data] = useState(new Date());
+  const [data, setData] = useState(new Date());
   const [agendamentos, setAgendamentos] = useState([]);
+  const [mostrarModal, setMostrarModal] = useState(false);
+  const [horarioSelecionado, setHorarioSelecionado] = useState("");
 
   // Definindo os horários disponíveis
-  const horariosDisponiveis = Array.from({ length: 21 }, (_, index) => {
+  const HorariosDisponiveis = Array.from({ length: 21 }, (_, index) => {
     const hora = Math.floor(index / 2) + 8;
     const minutos = (index % 2) * 30;
     return `${hora.toString().padStart(2, "0")}:${minutos.toString().padStart(2, "0")}`;
   });
 
-  // Função para carregar os agendamentos do banco de dados via API usando Axios
-  const mostrarAgendamentos = async () => {
+  // Função para carregar os agendamentos
+  const ListarAgendamentosApi = async () => {
     try {
-      const resposta = await axios.get("http://localhost:5000/api/appointments");
-      setAgendamentos(resposta.data); // Atualiza o estado com os agendamentos
+      const usuarioId = localStorage.getItem("usuarioId");
+      const resposta = await AgendamentoApi.listarAgendamentoPorUsuarioIdAsync(usuarioId, true);
+
+      // Para cada agendamento, busque o nome do paciente
+      const agendamentosComNomePaciente = await Promise.all(
+        resposta.map(async (agendamento) => {
+          const paciente = await PacienteApi.obterPacienteAsync(agendamento.pacienteId, usuarioId, true);
+          const pacienteNome = paciente.nome;
+          return {
+            ...agendamento,
+            pacienteNome, // Adiciona o nome do paciente no agendamento
+          };
+        })
+      );
+      setAgendamentos(agendamentosComNomePaciente);
     } catch (erro) {
       console.error("Erro ao carregar os agendamentos:", erro);
-      toast.error("Erro ao carregar os agendamentos.");
-    }
-  };
-
-  // Função para criar um novo agendamento
-  const agendarConsulta = async (horario) => {
-    const nomePaciente = prompt("Nome do paciente:");
-    if (nomePaciente) {
-      try {
-        const resposta = await axios.post("http://localhost:5000/api/appointments", {
-          time: horario,
-          patientName: nomePaciente,
-        });
-        
-        setAgendamentos([...agendamentos, resposta.data]); // Atualiza o estado com o novo agendamento
-        toast.success("Consulta agendada com sucesso!");
-      } catch (erro) {
-        console.error("Erro ao agendar consulta:", erro);
-        toast.error("Erro ao agendar consulta.");
-      }
     }
   };
 
   // Buscar agendamentos ao carregar a página
   useEffect(() => {
-    mostrarAgendamentos();
-  }, []);
+    ListarAgendamentosApi();
+  }, [data]);  // A dependência agora é a data, para atualizar os agendamentos quando a data mudar
 
-  // Função para verificar se há agendamento no horário
-  const obterAgendamentoParaHorario = (horario) => {
-    return agendamentos.find((agendamento) => agendamento.time === horario);
+  // Verifica se há agendamento no horário e no dia
+  const ObterAgendamentoParaHorario = (horario) => {
+    return agendamentos.find((agendamento) => {
+      const dataAgendamento = format(new Date(agendamento.dataHora), "yyyy-MM-dd");
+      const horaAgendamento = format(new Date(agendamento.dataHora), "HH:mm");
+      const dataAtual = format(data, "yyyy-MM-dd");
+      return dataAgendamento === dataAtual && horaAgendamento === horario;
+    });
+  };
+
+  // Abre o modal para criar um agendamento
+  const AbrirModal = (horario) => {
+    setHorarioSelecionado(horario);
+    setMostrarModal(true);
+  };
+
+  // Fecha o modal
+  const fecharModal = () => {
+    setMostrarModal(false); // Isso vai fechar o modal
+  };
+
+  // Função para mudar a data ao selecionar no input de data
+  const selecionarData = (e) => {
+    const novaData = new Date(e.target.value);
+    setData(novaData);
+  };
+
+  // Funções para navegação com setas
+  const avancarData = () => {
+    setData(prevData => {
+      const novaData = new Date(prevData);
+      novaData.setDate(prevData.getDate() + 1);  // Avançar 1 dia
+      return novaData;
+    });
+  };
+
+  const retrocederData = () => {
+    setData(prevData => {
+      const novaData = new Date(prevData);
+      novaData.setDate(prevData.getDate() - 1);  // Retroceder 1 dia
+      return novaData;
+    });
   };
 
   return (
-    <div className={styles.container}>
+    <div className={mostrarModal ? styles.modalOpen : styles.container}>
       <div className={styles.header}>
         <h2 className={styles.title}>
           <CalendarIcon />
           Agenda do Dia
         </h2>
       </div>
-      <div>
-        <h3 className={styles.dateTitle}>
-          {format(data, "dd 'de' MMMM 'de' yyyy", { locale: ptBR })}
-        </h3>
-        <div className={styles.timeSlotContainer}>
-          {horariosDisponiveis.map((horario) => {
-            const agendamento = obterAgendamentoParaHorario(horario);
-            return (
-              <div key={horario} className={styles.timeSlot}>
-                <span>{horario}</span>
-                {agendamento ? (
-                  <span>Paciente: {agendamento.patientName}</span>
-                ) : (
-                  <button 
-                    className={styles.button}
-                    onClick={() => agendarConsulta(horario)}
-                  >
-                    Agendar
-                  </button>
-                )}
-              </div>
-            );
-          })}
-        </div>
+
+      {/* Container para o calendário com as setas */}
+      <div className={styles.datePickerContainer}>
+        <button onClick={retrocederData} className={styles.arrowButton}>
+          <ChevronLeft size={24} />
+        </button>
+
+        <input
+          type="date"
+          value={format(data, "yyyy-MM-dd")}  // Formatação da data para o formato compatível com o input type="date"
+          onChange={selecionarData}  // Atualiza a data ao selecionar no calendário
+          className={styles.datePicker}
+        />
+
+        <button onClick={avancarData} className={styles.arrowButton}>
+          <ChevronRight size={24} />
+        </button>
       </div>
+
+      <h3 className={styles.dateTitle}>
+        {format(data, "dd 'de' MMMM 'de' yyyy", { locale: ptBR })}
+      </h3>
+
+      <div className={styles.timeSlotContainer}>
+        {HorariosDisponiveis.map((horario) => {
+          const agendamento = ObterAgendamentoParaHorario(horario);
+          return (
+            <div key={horario} className={styles.timeSlot}>
+              <span>{horario}</span>
+              {agendamento ? (
+                <span>Paciente: {agendamento.pacienteNome}</span>
+              ) : (
+                <button className={styles.button} onClick={() => AbrirModal(horario)}>
+                  Agendar
+                </button>
+              )}
+            </div>
+          );
+        })}
+      </div>
+
+      {mostrarModal && (
+        <FormularioCriarAgendamento
+          fecharModal={fecharModal}
+          horarioSelecionado={horarioSelecionado}
+          data={data}
+        />
+      )}
     </div>
   );
 };
