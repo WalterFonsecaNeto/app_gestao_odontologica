@@ -1,19 +1,40 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Search, Users } from "lucide-react";
 import styles from "./PesquisarPaciente.module.css";
+import PacienteApi from "../../../Services/MinhaApi/Paciente";
+import { useNavigate } from "react-router-dom";  // Importe useNavigate
 
 const PatientSearch = () => {
   const [search, setSearch] = useState("");
+  const [pacientes, setPacientes] = useState([]);
+  const navigate = useNavigate();  // Inicialize o hook useNavigate
 
-  const patients = [
-    { id: 1, name: "João Silva", lastVisit: "15/03/2024" },
-    { id: 2, name: "Maria Santos", lastVisit: "14/03/2024" },
-    { id: 3, name: "Pedro Oliveira", lastVisit: "13/03/2024" },
-  ];
+  // Função para buscar a lista de pacientes na API
+  async function BuscarPacientesApi() {
+    const usuarioId = localStorage.getItem("usuarioId");
 
-  const filteredPatients = patients.filter((patient) =>
-    patient.name.toLowerCase().startsWith(search.toLowerCase())
+    try {
+      const response = await PacienteApi.listarPacientesPorUsuarioAsync(usuarioId, true);
+      setPacientes(response);
+    } catch (error) {
+      console.error("Erro ao buscar pacientes:", error);
+    }
+  }
+
+  // Carregar lista de pacientes ao iniciar a página
+  useEffect(() => {
+    BuscarPacientesApi();
+  }, []);
+
+  const pacientesFiltrados = pacientes.filter((paciente) =>
+    paciente.nome.toLowerCase().startsWith(search.toLowerCase())
   );
+
+  // Função para navegar até a página do paciente
+  const navegarParaPaciente = (idPaciente) => {
+    const idCodificado = btoa(idPaciente); //? Codifica o ID em Base64
+    navigate(`/paciente/ficha-clinica/${idCodificado}`);  // Redireciona para a URL específica do paciente
+  };
 
   return (
     <div className={styles.container}>
@@ -34,10 +55,13 @@ const PatientSearch = () => {
           />
         </div>
         <div className={styles.patientList}>
-          {filteredPatients.map((patient) => (
-            <div key={patient.id} className={styles.patientItem}>
-              <span>{patient.name}</span>
-              <span>Última visita: {patient.lastVisit}</span>
+          {pacientesFiltrados.map((paciente) => (
+            <div
+              key={paciente.id}
+              className={styles.patientItem}
+              onClick={() => navegarParaPaciente(paciente.id)}  // Adiciona a função de clique
+            >
+              <span>{paciente.nome}</span>
             </div>
           ))}
         </div>
