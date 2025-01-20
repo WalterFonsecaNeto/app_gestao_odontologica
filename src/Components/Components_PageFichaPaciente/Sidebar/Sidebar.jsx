@@ -1,6 +1,6 @@
 import style from "./Sidebar.module.css";
 import { SidebarItem } from "../SidebarItem/SidebarItem";
-import { MdGroup, MdAttachMoney } from "react-icons/md";
+import { MdGroup, MdAttachMoney, MdExitToApp } from "react-icons/md";
 import { VscAccount } from "react-icons/vsc";
 import { FaClipboardList } from "react-icons/fa";
 export function Sidebar({ children, paciente }) {
@@ -21,13 +21,18 @@ export function Sidebar({ children, paciente }) {
           />
           <SidebarItem
             texto="Agendamentos"
-            link={`/agendamento/${idCodificado}`}
+            link={`/paciente/agendamentos/${idCodificado}`}
             logo={<MdGroup className={style.agendamento_icon} />}
           />
           <SidebarItem
             texto="Orçamentos"
             link={`/orcamento/${idCodificado}`}
             logo={<MdAttachMoney className={style.orcamento_icon} />}
+          />
+          <SidebarItem
+            texto="Home"
+            link={`/home`}
+            logo={<MdExitToApp className={style.home_icon} />}
           />
         </div>
       </div>

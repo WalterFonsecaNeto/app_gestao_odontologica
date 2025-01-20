@@ -31,7 +31,6 @@ function LoginForm({ onSwitch }) {
         usuarioLogin.emailLogin,
         usuarioLogin.senhaLogin
       );
-      console.log(response.id);
       if (response !== null) {
         localStorage.setItem("usuarioId", response.id);
         navigate("/home");

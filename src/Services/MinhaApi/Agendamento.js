@@ -1,6 +1,7 @@
 import { HTTPClient } from "../Cliente";
 
 const AgendamentoApi = {
+ 
   async criarAgendamentoAsync(usuarioId, pacienteId, dataHora, status, descricao) {
     try {
       console.log(usuarioId, pacienteId, dataHora, status, descricao)
@@ -85,9 +86,11 @@ const AgendamentoApi = {
 
   async listarAgendamentoPorPacienteIdAsync(pacienteId, usuarioId, ativo) {
     try {
+      console.log("AQUIII1", pacienteId, usuarioId, ativo);
       const response = await HTTPClient.get(
         `/Agendamento/ListarPorPacienteId/${pacienteId}/Usuario/${usuarioId}?ativo=${ativo}`
       );
+      console.log("AQUIII2", response);
       return response.data;
     } catch (error) {
       console.error("Erro ao listar agendamentos por paciente:", error);

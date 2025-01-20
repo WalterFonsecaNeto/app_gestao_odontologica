@@ -7,6 +7,7 @@ import PageEspecialidade from "../Pages/PageEspecialidade/PageEspecialidade";
 import PageProcedimento from "../Pages/PageProcedimento/PageProcedimento";
 import PageHome from "../Pages/PageHome/PageHome";
 import PageFormaPagamento from "../Pages/PageFormaPagamento/PageFormaPagamento";
+import PageAgendamentosPaciente from "../Pages/PageAgendamentosPaciente/PageAgendamentosPaciente";
 
 function Rotas() {
 
@@ -39,6 +40,14 @@ function Rotas() {
             element={
               <ProtectedRoute>
                 <PageFichaClinica />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/paciente/agendamentos/:id"
+            element={
+              <ProtectedRoute>
+                <PageAgendamentosPaciente />
               </ProtectedRoute>
             }
           />
