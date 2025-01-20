@@ -130,7 +130,7 @@ const Calendario = () => {
             <div key={horario} className={styles.timeSlot}>
               <span>{horario}</span>
               {agendamento ? (
-                <span>Paciente: {agendamento.pacienteNome}</span>
+                <span>{agendamento.pacienteNome}  -  {agendamento.status}</span>
               ) : (
                 <button className={styles.button} onClick={() => AbrirModal(horario)}>
                   Agendar
