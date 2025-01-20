@@ -61,7 +61,7 @@ function ProcedimentosTable({ filtro }) {
     return procedimentosFiltrados?.map((procedimento) => (
       <tr key={procedimento.id}>
         <td style={{ textAlign: "start" }}>{procedimento.nome}</td>
-        <td>{procedimento.valor.toFixed(2)}</td>
+        <td>R$ {procedimento.valor.toFixed(2)}</td>
         <td>
           <div className={style.botao_acao}>
           <button onClick={() => EditarProcedimento(procedimento.id)}>
