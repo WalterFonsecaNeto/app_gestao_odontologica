@@ -2,6 +2,39 @@
   width: 800px;
 }
 
+.botao_editar {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  gap: 4px;
+  background-color: transparent;
+  color: #58af9b;
+  border: none;
+  width: 100%;
+  font-size: 1rem;
+  font-size: bold;
+
+
+  & svg {
+    font-size: 1.30rem; /* Ajuste o tamanho do ícone aqui */
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* Estilização das div de informação */
 .container_linha {
   display: flex;

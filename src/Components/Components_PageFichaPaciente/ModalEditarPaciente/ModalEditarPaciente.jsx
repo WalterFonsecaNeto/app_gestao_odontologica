@@ -6,7 +6,7 @@ import Alerta from "../../Alerta/Alerta";
 import style from "./ModalEditarPaciente.module.css";
 import { MdEdit } from "react-icons/md";
 
-function ModalEditarPaciente({ pacienteSelecionado , setPacienteSelecionado }) {
+function ModalEditarPaciente({ pacienteSelecionado, setPacienteSelecionado }) {
   const [paciente, setPaciente] = useState({
     nome: "",
     cpf: "",
@@ -67,8 +67,8 @@ function ModalEditarPaciente({ pacienteSelecionado , setPacienteSelecionado }) {
 
       ExibirAlerta("Paciente atualizado com sucesso!", "success");
 
-    
-      
+
+
     } catch (error) {
       const mensagemErro =
         error.response?.data ||
@@ -90,18 +90,17 @@ function ModalEditarPaciente({ pacienteSelecionado , setPacienteSelecionado }) {
   return (
 
     <div>
-      <button onClick={() => setAberto(true)}><MdEdit/></button>
+      <button className={style.botao_editar} onClick={() => setAberto(true)}> <MdEdit />Editar</button>
+
       {aberto && (
         <div
-          className={`${style.container_total_modal} ${
-            desabilitarBotao ? style.container_total_modal_desabilitado : ""
-          }`}
+          className={`${style.container_total_modal} ${desabilitarBotao ? style.container_total_modal_desabilitado : ""
+            }`}
         >
           <ModalGlobal aberto={aberto} setAberto={setAberto} titulo="Editar Paciente">
             <div
-              className={`${style.container_formulario} ${
-                desabilitarBotao ? style.container_formulario_desabilitado : ""
-              }`}
+              className={`${style.container_formulario} ${desabilitarBotao ? style.container_formulario_desabilitado : ""
+                }`}
             >
               <form onSubmit={AtualizarPaciente}>
                 <div className={style.container_linha}>
@@ -125,10 +124,11 @@ function ModalEditarPaciente({ pacienteSelecionado , setPacienteSelecionado }) {
                       type="date"
                       className={style.input}
                       name="dataNascimento"
-                      value={paciente.dataNascimento}
+                      value={paciente.dataNascimento ? paciente.dataNascimento.split("T")[0] : ""}
                       onChange={AtualizaPacientesComValores}
                       required
                     />
+
                   </div>
                 </div>
 
