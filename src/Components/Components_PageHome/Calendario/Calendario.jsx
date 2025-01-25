@@ -4,14 +4,12 @@ import { ptBR } from "date-fns/locale";
 import { Calendar as CalendarIcon, ChevronLeft, ChevronRight } from "lucide-react"; // Importando as setas
 import styles from "./Calendario.module.css";
 import AgendamentoApi from "../../../Services/MinhaApi/Agendamento";
-import FormularioCriarAgendamento from "../ModalCriarAgendamento/ModalCriarAgendamento";
 import PacienteApi from "../../../Services/MinhaApi/Paciente";
 import ModalCriarAgendamento from "../ModalCriarAgendamento/ModalCriarAgendamento";
+import ModalEditarAgendamento from "../ModalEditarAgendamento/ModalEditarAgendamento";
 const Calendario = () => {
   const [data, setData] = useState(new Date());
   const [agendamentos, setAgendamentos] = useState([]);
-  const [mostrarModal, setMostrarModal] = useState(false);
-  const [horarioSelecionado, setHorarioSelecionado] = useState("");
 
   // Definindo os horários disponíveis
   const HorariosDisponiveis = Array.from({ length: 21 }, (_, index) => {
@@ -58,11 +56,7 @@ const Calendario = () => {
     });
   };
 
-  // Abre o modal para criar um agendamento
-  const AbrirModal = (horario) => {
-    setHorarioSelecionado(horario);
-    setMostrarModal(true);
-  };
+
 
 
   // Função para mudar a data ao selecionar no input de data
@@ -70,7 +64,6 @@ const Calendario = () => {
     const novaData = new Date(e.target.value);
     setData(novaData);
   };
-
   // Funções para navegação com setas
   const avancarData = () => {
     setData(prevData => {
@@ -87,8 +80,10 @@ const Calendario = () => {
     });
   };
 
+
+
   return (
-    <div className={mostrarModal ? styles.modalOpen : styles.container}>
+    <div className={styles.container}>
       <div className={styles.header}>
         <h2 className={styles.title}>
           <CalendarIcon />
@@ -118,16 +113,23 @@ const Calendario = () => {
         {format(data, "dd 'de' MMMM 'de' yyyy", { locale: ptBR })}
       </h3>
 
+
+
+
+
+
       <div className={styles.timeSlotContainer}>
+
+
         {HorariosDisponiveis.map((horario) => {
           const agendamento = ObterAgendamentoParaHorario(horario);
           return (
             <div key={horario} className={styles.timeSlot}>
               <span>{horario}</span>
               {agendamento ? (
-                <span>{agendamento.pacienteNome}  -  {agendamento.status}</span>
+                <span className={styles.container_agendamento_marcado}>{agendamento.pacienteNome}  -  {agendamento.status} <ModalEditarAgendamento agendamentoSelecionado={agendamento} /></span>
               ) : (
-                <ModalCriarAgendamento horarioSelecionado={horario} data={data}/>
+                <ModalCriarAgendamento horarioSelecionado={horario} data={data} />
               )}
             </div>
           );

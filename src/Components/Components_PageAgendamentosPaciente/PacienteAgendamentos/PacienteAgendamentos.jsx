@@ -2,7 +2,7 @@ import style from "./PacienteAgendamento.module.css";
 import { useParams } from "react-router-dom";
 import AgendamentoApi from "../../../Services/MinhaApi/Agendamento";
 import { useState, useEffect } from "react";
-import { MdEdit, MdDelete } from "react-icons/md";
+import { MdCheck, MdDelete } from "react-icons/md";
 
 function PacienteAgendamentos() {
   const [pacienteAgendamentos, setPacienteAgendamentos] = useState([]);
@@ -68,15 +68,13 @@ function PacienteAgendamentos() {
                   <td>
                     <div className={style.botao_acao}>
                       <button
-                      // onClick={() => EditarProcedimento(procedimento.id)}
                       >
-                        <MdEdit />
+                        <MdDelete />
                       </button>
 
                       <button
-                      // onClick={() => handleClickDeletar(procedimento)}
                       >
-                        <MdDelete />
+                        <MdCheck />
                       </button>
                     </div>
                   </td>
@@ -104,7 +102,7 @@ function PacienteAgendamentos() {
                 </td>
               </tr>
               <tr>
-                
+
               </tr>
             </tfoot>
           </table>

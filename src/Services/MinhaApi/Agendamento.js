@@ -1,43 +1,37 @@
 import { HTTPClient } from "../Cliente";
 
 const AgendamentoApi = {
- 
+
   async criarAgendamentoAsync(usuarioId, pacienteId, dataHora, status, descricao) {
-    try {
-      console.log(usuarioId, pacienteId, dataHora, status, descricao)
-      
+   
       const agendamentoCriar = {
-        
-        pacienteId : pacienteId,
+
+        pacienteId: pacienteId,
         dataHora: dataHora,
         status: status,
         descricao: descricao,
         usuarioId: usuarioId,
       };
-      console.log("Pq ta assim",agendamentoCriar);
       const response = await HTTPClient.post("/Agendamento/Criar", agendamentoCriar);
       return response.data;
-    } catch (error) {
-      console.error("Erro ao criar agendamento:", error);
-    }
+    
   },
 
   async atualizarAgendamentoAsync(agendamentoId, usuarioId, pacienteId, dataHora, status, descricao) {
-    try {
-      const agendamentoAtualizar = {
-        pacienteId,
-        dataHora,
-        status,
-        descricao,
-      };
-      const response = await HTTPClient.put(
-        `/Agendamento/AtualizarPorAgendamentoId/${agendamentoId}/Usuario/${usuarioId}`,
-        agendamentoAtualizar
-      );
-      return response.data;
-    } catch (error) {
-      console.error("Erro ao atualizar agendamento:", error);
-    }
+
+
+    const agendamentoAtualizar = {
+      pacienteId,
+      dataHora,
+      status,
+      descricao,
+    };
+    const response = await HTTPClient.put(
+      `/Agendamento/AtualizarPorAgendamentoId/${agendamentoId}/Usuario/${usuarioId}`,
+      agendamentoAtualizar
+    );
+    return response.data;
+
   },
 
   async deletarAgendamentoAsync(agendamentoId, usuarioId) {
