@@ -22,7 +22,7 @@
     width: 80%;
     margin: 10%;
   }
-  & h2 {
+  & h3 {
     color: white;
     font-weight: 200;
     margin-bottom: 60px;
@@ -40,21 +40,4 @@
   height: 40%;
   color: white;
   margin-top: 20px;
-}
-
-.ficha_icon {
-  width: 20px;
-  height: 44px;
-}
-.orcamento_icon {
-  width: 32px;
-  height: 44px;
-}
-.agendamento_icon {
-  width: 32px;
-  height: 44px;
-}
-.home_icon {
-  width: 32px;
-  height: 44px;
 }

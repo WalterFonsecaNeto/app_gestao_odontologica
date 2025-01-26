@@ -5,7 +5,7 @@
 .titulo_container_total {
   text-align: center;
 
-  & h1 {
+  & h2 {
     margin-bottom: 40px;
     font-weight: bold;
     color: white;

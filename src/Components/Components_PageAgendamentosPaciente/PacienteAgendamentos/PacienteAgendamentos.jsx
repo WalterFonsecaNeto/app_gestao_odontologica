@@ -32,7 +32,7 @@ function PacienteAgendamentos() {
   return (
     <div className={style.container_total}>
       <div className={style.titulo_container_total}>
-        <h1>Agendamentos do Paciente</h1>
+        <h2>Agendamentos do Paciente</h2>
       </div>
 
       <div className={style.container_table}>

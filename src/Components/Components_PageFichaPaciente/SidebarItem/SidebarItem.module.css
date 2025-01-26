@@ -1,22 +1,26 @@
-.sidbar_item{
-    text-decoration: none;
+.sidbar_item {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  margin-left: 20px;
+  margin-bottom: 20px;
+  color: white;
+}
 
-    display: flex;
-    margin-left: 20px;
-    margin-bottom: 20px;
+.sidbar_item .texto_link {
+  margin: 10px;
+  font-size: 16px;
+  font-weight: 200;
+}
 
-    color: white;
+.sidbar_item svg {
+  font-size: 22px;
+}
 
+.sidbar_item:hover .texto_link {
+  color: black;
+}
 
-    & .texto_link{
-        
-        margin: 10px;
-
-        font-size: 18px;
-        font-weight:200;
-    }
-
-    &:hover{
-        color: black;
-    }
+.sidbar_item:hover svg {
+  color: black;
 }

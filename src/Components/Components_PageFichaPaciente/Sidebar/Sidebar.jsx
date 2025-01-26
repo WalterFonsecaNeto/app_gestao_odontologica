@@ -10,29 +10,29 @@ export function Sidebar({ children, paciente }) {
       <div className={style.sidebar_conteudo}>
         <div className={style.sidebar_header}>
           <VscAccount className={style.logo_paciente} />
-          <h2>{paciente.nome}</h2>
+          <h3>{paciente.nome}</h3>
         </div>
         <div className={style.sidebar_corpo}>
           <SidebarItem
             texto="Ficha"
             link={`/paciente/ficha-clinica/${idCodificado}`}
             usuarioId={idCodificado}
-            logo={<FaClipboardList className={style.ficha_icon} />}
+            logo={<FaClipboardList />}
+          />
+           <SidebarItem
+            texto="Orçamentos"
+            link={`/orcamento/${idCodificado}`}
+            logo={<MdAttachMoney />}
           />
           <SidebarItem
             texto="Agendamentos"
             link={`/paciente/agendamentos/${idCodificado}`}
-            logo={<MdGroup className={style.agendamento_icon} />}
-          />
-          <SidebarItem
-            texto="Orçamentos"
-            link={`/orcamento/${idCodificado}`}
-            logo={<MdAttachMoney className={style.orcamento_icon} />}
+            logo={<MdGroup/>}
           />
           <SidebarItem
             texto="Home"
             link={`/home`}
-            logo={<MdExitToApp className={style.home_icon} />}
+            logo={<MdExitToApp/>}
           />
         </div>
       </div>

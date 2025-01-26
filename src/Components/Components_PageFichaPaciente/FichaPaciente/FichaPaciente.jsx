@@ -3,7 +3,7 @@ function FichaPaciente({ paciente }) {
   return (
     <div className={style.container_total}>
       <div className={style.titulo_container_total}>
-        <h1>Ficha do Paciente</h1>
+        <h2>Ficha do Paciente</h2>
       </div>
 
       <div className={style.container_info_total}>
