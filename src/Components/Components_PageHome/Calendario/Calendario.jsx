@@ -6,7 +6,7 @@ import styles from "./Calendario.module.css";
 import AgendamentoApi from "../../../Services/MinhaApi/Agendamento";
 import FormularioCriarAgendamento from "../ModalCriarAgendamento/ModalCriarAgendamento";
 import PacienteApi from "../../../Services/MinhaApi/Paciente";
-
+import ModalCriarAgendamento from "../ModalCriarAgendamento/ModalCriarAgendamento";
 const Calendario = () => {
   const [data, setData] = useState(new Date());
   const [agendamentos, setAgendamentos] = useState([]);
@@ -64,10 +64,6 @@ const Calendario = () => {
     setMostrarModal(true);
   };
 
-  // Fecha o modal
-  const fecharModal = () => {
-    setMostrarModal(false); // Isso vai fechar o modal
-  };
 
   // Função para mudar a data ao selecionar no input de data
   const selecionarData = (e) => {
@@ -83,7 +79,6 @@ const Calendario = () => {
       return novaData;
     });
   };
-
   const retrocederData = () => {
     setData(prevData => {
       const novaData = new Date(prevData);
@@ -132,22 +127,12 @@ const Calendario = () => {
               {agendamento ? (
                 <span>{agendamento.pacienteNome}  -  {agendamento.status}</span>
               ) : (
-                <button className={styles.button} onClick={() => AbrirModal(horario)}>
-                  Agendar
-                </button>
+                <ModalCriarAgendamento horarioSelecionado={horario} data={data}/>
               )}
             </div>
           );
         })}
       </div>
-
-      {mostrarModal && (
-        <FormularioCriarAgendamento
-          fecharModal={fecharModal}
-          horarioSelecionado={horarioSelecionado}
-          data={data}
-        />
-      )}
     </div>
   );
 };

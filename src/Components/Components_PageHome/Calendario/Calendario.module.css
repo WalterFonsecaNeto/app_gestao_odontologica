@@ -68,20 +68,7 @@
   background-color: #e1f3f1;
 }
 
-.button {
-  background-color: #58af9b;
-  color: white;
-  padding: 0.8rem;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: background-color 0.3s;
-}
 
-.button:hover {
-  background-color: #4da88d;
-}
 
 
 

@@ -9,7 +9,7 @@ function PacientesTable({ filtro }) {
   const [pacientes, setPacientes] = useState([]);
 
   function InformacoesPaciente(id) {
-    const idCodificado = btoa(id); //? Codifica o ID em Base64
+    const idCodificado = btoa(id); //? Codifica o ID em Base64 - exadecimal
     navigate(`/paciente/ficha-clinica/${idCodificado}`);
   }
 
