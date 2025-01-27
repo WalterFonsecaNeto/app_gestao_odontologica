@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ModalGlobal from "../../ModalGlobal/ModalGlobal"; // Importando o ModalGlobal
 import FormaPagamentoApi from "../../../Services/MinhaApi/FormaPagemnto";
 import BotaoNovo from "../../BotaoNovo/BotaoNovo"; // Importando o BotaoNovo
@@ -34,6 +34,13 @@ function ModalAdicionarFormaPagamento() {
     setFormaPagamentoNome("");
     setAberto(false); // Fechar o modal após salvar
   }
+
+  //Verificar com useEffect se o aberto é falso ou seja esta fechado para excluir valore dos imputs
+  useEffect(() => {
+    if (!aberto) {
+      setFormaPagamentoNome("");
+    }
+  }, [aberto]); 
 
   return (
     <div>

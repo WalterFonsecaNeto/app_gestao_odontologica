@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { format, set } from "date-fns";
+import { format } from "date-fns";
 import styles from "./ModalCriarAgendamento.module.css";
 import AgendamentoApi from "../../../Services/MinhaApi/Agendamento";
 import PacienteApi from "../../../Services/MinhaApi/Paciente";

@@ -68,7 +68,7 @@ function ModalAdicionarProcedimento() {
     ListarEspecialidades();
   }, []);
 
-  function mostrarOpcoesEspecialidades() {
+  function MostrarOpcoesEspecialidades() {
     return (
       <>
         <option value="">Selecione uma especialidade</option>
@@ -80,6 +80,18 @@ function ModalAdicionarProcedimento() {
       </>
     );
   }
+
+  //Verificar com useEffect se o aberto é falso ou seja esta fechado para excluir valore dos imputs
+  useEffect(() => {
+    if (!aberto) {
+      setProcedimento({
+        nome: "",
+        descricao: "",
+        valor: "",
+        especialidadeId: "",
+      });
+    }
+  }, [aberto]);
 
   return (
     <div>
@@ -137,7 +149,7 @@ function ModalAdicionarProcedimento() {
                 onChange={AtualizarProcedimento}
                 required
               >
-                {mostrarOpcoesEspecialidades()}
+                {MostrarOpcoesEspecialidades()}
               </select>
 
               <button type="submit" className={styles.botao_salvar}>

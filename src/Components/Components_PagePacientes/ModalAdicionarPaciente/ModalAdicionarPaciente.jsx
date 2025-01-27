@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import InputMask from "react-input-mask";
 import ModalGlobal from "../../ModalGlobal/ModalGlobal"; // Importando o ModalGlobal
 import BotaoNovo from "../../BotaoNovo/BotaoNovo"; // Importando o BotaoNovo
@@ -59,6 +59,22 @@ function ModalAdicionarPaciente() {
     const { name, value } = event.target;
     setPaciente({ ...paciente, [name]: value });
   };
+
+  //Verificar com useEffect se o aberto é falso ou seja esta fechado para excluir valore dos imputs
+  useEffect(() => {
+    if (!aberto) {
+      setPaciente({
+        nome: "",
+        cpf: "",
+        endereco: "",
+        telefone: "",
+        dataNascimento: "",
+        genero: "",
+        email: "",
+        historicoMedico: "",
+      });
+    }
+  }, [aberto]);
 
   return (
     <div>

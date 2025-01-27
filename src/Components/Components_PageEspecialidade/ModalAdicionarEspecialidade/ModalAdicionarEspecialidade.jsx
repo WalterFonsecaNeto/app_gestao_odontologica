@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { React, useState, useEffect } from "react";
 import ModalGlobal from "../../ModalGlobal/ModalGlobal"; // Presumindo que você tenha um componente ModalGlobal
 import EspecialidadeApi from "../../../Services/MinhaApi/Especialidade";
 import styles from "./ModalAdicionarEspecialidade.module.css"; // Importando o arquivo CSS
@@ -32,6 +32,13 @@ function ModalAdicionarEspecialidade() {
     setEspecialidadeNome("");
     setAberto(false); // Fechar o modal após salvar
   }
+
+  //Verificar com useEffect se o aberto é falso ou seja esta fechado para excluir valore dos imputs
+  useEffect(() => {
+    if (!aberto) {
+      setEspecialidadeNome("");
+    }
+  }, [aberto]); // O array vazio [] indica que o useEffect deve ser executado apenas uma vez, quando a aberto é mudada
 
   return (
     <div>
