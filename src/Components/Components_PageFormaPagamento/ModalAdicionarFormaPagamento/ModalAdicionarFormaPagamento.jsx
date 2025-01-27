@@ -1,9 +1,12 @@
-import style from "./ModalAdicionarFormaPagamento.module.css"; // Importando o arquivo CSS
 import { useState } from "react";
+import ModalGlobal from "../../ModalGlobal/ModalGlobal"; // Importando o ModalGlobal
 import FormaPagamentoApi from "../../../Services/MinhaApi/FormaPagemnto";
+import BotaoNovo from "../../BotaoNovo/BotaoNovo"; // Importando o BotaoNovo
+import style from "./ModalAdicionarFormaPagamento.module.css"; // Importando o arquivo CSS
 
-function ModalAdicionarFromaPagamento({ fecharModal }) { // Recebendo a função fecharModal como props
+function ModalAdicionarFormaPagamento() {
   const [formaPagamentoNome, setFormaPagamentoNome] = useState("");
+  const [aberto, setAberto] = useState(false);
 
   const AtualizarFormaPagamento = (event) => {
     setFormaPagamentoNome(event.target.value);
@@ -20,41 +23,50 @@ function ModalAdicionarFromaPagamento({ fecharModal }) { // Recebendo a função
         formaPagamentoNome
       );
       alert("Forma de pagamento cadastrada com sucesso!");
-      fecharModal(); // Fecha o modal após o cadastro
       window.location.reload(); // Força o recarregamento da página
     } catch (error) {
       console.error(error);
-      alert("Ocorreu um erro ao cadastrar a forma de pagamento. Tente novamente.");
+      alert(
+        "Ocorreu um erro ao cadastrar a forma de pagamento. Tente novamente."
+      );
     }
 
     setFormaPagamentoNome("");
+    setAberto(false); // Fechar o modal após salvar
   }
 
   return (
-    <div className={style.modalOverlay}> {/* Camada de fundo do modal */}
-      <div className={style.modalContent}> {/* Conteúdo do modal */}
-        <div className={style.modalTituloSair}> {/* Título e botão de fechar */}
-          <button className={style.closeButton} onClick={fecharModal}> {/* Função de fechar modal */}
-            ✖
-          </button>
-          <h2>Cadastro de Forma de Pagamento</h2>
-        </div>
-        <form onSubmit={SalvarFormaPagamento}>
-          <label>Nome:</label>
-          <input
-            type="text"
-            placeholder="Digite o nome da forma de pagamento"
-            name="nome"
-            maxLength="100"
-            value={formaPagamentoNome}
-            onChange={AtualizarFormaPagamento}
-            required
-          />
-          <button type="submit">Salvar</button>
-        </form>
-      </div>
+    <div>
+      {/* Botão Novo, que agora é o BotaoNovo */}
+      <BotaoNovo AbrirModal={() => setAberto(true)} />
+
+      {aberto && (
+        <ModalGlobal
+          aberto={aberto}
+          setAberto={setAberto}
+          titulo="Cadastro de Forma de Pagamento"
+        >
+          <div className={style.container_formulario}>
+            <form onSubmit={SalvarFormaPagamento}>
+              <label className={style.label}>Nome</label>
+              <input
+                type="text"
+                className={style.input}
+                placeholder="Digite o nome da forma de pagamento"
+                value={formaPagamentoNome}
+                onChange={AtualizarFormaPagamento}
+                required
+              />
+
+              <button type="submit" className={style.botao_salvar}>
+                Salvar
+              </button>
+            </form>
+          </div>
+        </ModalGlobal>
+      )}
     </div>
   );
 }
 
-export default ModalAdicionarFromaPagamento;
+export default ModalAdicionarFormaPagamento;

@@ -1,0 +1,60 @@
+.container_total {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 50;
+}
+
+.container_modal {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  /* Moldura ao redor do modal */
+  border: 6px solid #58af9b; /* Cor e largura da moldura */
+}
+
+
+.container_cabecalho {
+  display: flex;
+  justify-content: space-between;
+  padding: 16px;
+  gap: 40px;
+}
+
+.titulo {
+  background-color: #58af9b;
+  width: 100%;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  border-radius: 10px;
+}
+
+/* Botão de fechar */
+.botao_fechar {
+  background-color: #58af9b;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+}
+.botao_fechar:hover {
+  background-color: #4da88d;
+}
+
+/* Conteúdo do modal */
+.conteudo {
+  padding: 20px;
+  flex: 1;
+  overflow: auto; /* Caso o conteúdo exceda o tamanho desejado */
+}

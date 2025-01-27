@@ -1,4 +1,5 @@
 import style from "./FichaPaciente.module.css";
+import FormularioModalTeste from "../FormularioModalTeste/FormularioModalTeste";
 function FichaPaciente({ paciente }) {
   return (
     <div className={style.container_total}>
@@ -47,6 +48,8 @@ function FichaPaciente({ paciente }) {
           <p>{paciente.historicoMedico}</p>
         </div>
       </div>
+
+      <FormularioModalTeste/>
     </div>
   );
 }

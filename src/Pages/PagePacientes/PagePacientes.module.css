@@ -1,4 +1,3 @@
-
 .container_info {
   display: flex;
   flex-direction: row;
@@ -12,4 +11,11 @@
   justify-content: center;
   margin: auto;
 }
+
+.container_filtro_modal{
+  display: flex;
+  flex-direction: row;
+  gap: 40px;
+}
+
 

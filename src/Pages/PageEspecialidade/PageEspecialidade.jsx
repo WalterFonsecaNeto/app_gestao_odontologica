@@ -6,7 +6,6 @@ import EspecialidadesTable from "../../Components/Components_PageEspecialidade/E
 import FiltroGlobal from "../../Components/FiltroGlobal/FiltroGlobal";
 import ModalAdicionarEspecialidade from "../../Components/Components_PageEspecialidade/ModalAdicionarEspecialidade/ModalAdicionarEspecialidade";
 
-
 function PageEspecialidade() {
   const [filtroEspecialidade, setFiltroEspecialidade] = useState("");
 
@@ -14,13 +13,14 @@ function PageEspecialidade() {
     <div className={style.container_total}>
       <Cabecalho />
       <div className={style.container_info}>
-        <FiltroGlobal
-          titulo="Buscar Especialidade"
-          placeholder="Nome da especialidade"
-          setFiltro={setFiltroEspecialidade}
-          ModalContent={ModalAdicionarEspecialidade}
-          
-        />
+        <div className={style.container_filtro_modal}>
+          <FiltroGlobal
+            placeholder="Nome da especialidade"
+            setFiltro={setFiltroEspecialidade}
+            ModalContent={ModalAdicionarEspecialidade}
+          />
+          <ModalAdicionarEspecialidade />
+        </div>
         <EspecialidadesTable filtro={filtroEspecialidade} />
       </div>
       <Rodape />

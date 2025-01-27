@@ -1,16 +1,19 @@
-
 .container_info {
-    display: flex;
-    flex-direction: row;
-    gap: 5%;
-    padding: 20px;
-    width: 80%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    justify-content: center;
-    margin: auto;
-  }
-  
-  
+  display: flex;
+  flex-direction: row;
+  gap: 5%;
+  padding: 20px;
+  width: 80%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  justify-content: center;
+  margin: auto;
+}
+
+.container_filtro_modal {
+  display: flex;
+  flex-direction: row;
+  gap: 40px;
+}

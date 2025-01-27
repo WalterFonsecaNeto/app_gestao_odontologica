@@ -1,85 +1,36 @@
-.modalOverlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
+/* Container do formulário */
+.container_formulario {
+  width: 600px; /* Largura específica para o modal pequeno */
+}
 
-  }
-  
-  .modalTituloSair {
-    display: flex;
-    flex-direction: row-reverse;
-    margin-bottom: 40px;
-  }
-  
-  .modalContent {
-    background: white;
-    padding: 40px;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    width: 70%;
-    height: 90%;
-    position: relative;
-    overflow-y: auto; /* Permite o scroll se o conteúdo exceder o limite */
-  }
-  
-  .modalContent h2 {
-    background-color: #58af9b;
-    width: 100%;
-    color: white;
-    padding: 10px;
-    text-align: center;
-    border-radius: 10px;
-  }
-  
-  .modalContent label {
-    font-weight: bold;
-    color: #333;
-    display: block;
-    margin-top: 15px;
-  }
-  
-  .modalContent input,
-  .modalContent textarea,
-  .modalContent select {
-    outline: none;
-    width: 100%;
-    padding: 10px;
-    margin-top: 5px;
-    margin-bottom: 20px;
-    border: 1px solid #58af9b;
-    border-radius: 5px;
-    font-size: 16px;
-  }
+.container_formulario label {
+  font-weight: bold;
+  color: #333;
+  display: block;
+  margin-top: 15px;
+}
 
-  
-  
-  .modalContent button {
-    background-color: #58af9b;
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 16px;
-  }
-  
-  .modalContent button:hover {
-    background-color: #4da88d;
-  }
-  
-  .closeButton {
-    background: transparent;
-    border: none;
-    font-size: 1.5rem;
-    cursor: pointer;
-    color: white;
-    margin-left: 20px;
-  }
-  
+.container_formulario input {
+  outline: none;
+  width: 100%;
+  padding: 10px;
+  margin-top: 4px;
+  border: 1px solid #58af9b;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.botao_salvar {
+  margin-top: 40px;
+  background-color: #58af9b;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.container_formulario .botao_salvar:hover {
+  background-color: #4da88d;
+}

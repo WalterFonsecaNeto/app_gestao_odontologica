@@ -6,7 +6,6 @@ import FormaPagamentoTable from "../../Components/Components_PageFormaPagamento/
 import FiltroGlobal from "../../Components/FiltroGlobal/FiltroGlobal";
 import ModalAdicionarFormaPagamento from "../../Components/Components_PageFormaPagamento/ModalAdicionarFormaPagamento/ModalAdicionarFormaPagamento";
 
-
 function PageFormaPagamento() {
   const [filtroFormaPagamento, setFiltroFormaPagamento] = useState("");
 
@@ -14,13 +13,14 @@ function PageFormaPagamento() {
     <div className={style.container_total}>
       <Cabecalho />
       <div className={style.container_info}>
-        <FiltroGlobal
-          titulo="Buscar Forma de Pagamento"
-          placeholder="Nome da forma de pagamento"
-          setFiltro={setFiltroFormaPagamento}
-          ModalContent={ModalAdicionarFormaPagamento}
-          
-        />
+        <div className={style.container_filtro_modal}>
+          <FiltroGlobal
+            placeholder="Nome da forma de pagamento"
+            setFiltro={setFiltroFormaPagamento}
+            ModalContent={ModalAdicionarFormaPagamento}
+          />
+          <ModalAdicionarFormaPagamento />
+        </div>
         <FormaPagamentoTable filtro={filtroFormaPagamento} />
       </div>
       <Rodape />

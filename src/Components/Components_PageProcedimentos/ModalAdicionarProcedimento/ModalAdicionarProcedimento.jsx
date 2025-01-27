@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
-import styles from "./ModalAdicionarProcedimento.module.css";
+import ModalGlobal from "../../ModalGlobal/ModalGlobal"; // Importando o ModalGlobal
+import BotaoNovo from "../../BotaoNovo/BotaoNovo"; // Importando o BotaoNovo
 import ProcedimentoApi from "../../../Services/MinhaApi/Procedimento";
 import EspecialidadeApi from "../../../Services/MinhaApi/Especialidade";
+import styles from "./ModalAdicionarProcedimento.module.css"; // Importando o arquivo CSS
 
-function ModalAdicionarProcedimento({ fecharModal }) {
-  //Objeto Paciente
+function ModalAdicionarProcedimento() {
   const [procedimento, setProcedimento] = useState({
     nome: "",
     descricao: "",
@@ -12,6 +13,7 @@ function ModalAdicionarProcedimento({ fecharModal }) {
     especialidadeId: "",
   });
   const [especialidades, setEspecialidades] = useState([]);
+  const [aberto, setAberto] = useState(false);
 
   async function SalvarProcedimento(event) {
     event.preventDefault();
@@ -27,7 +29,6 @@ function ModalAdicionarProcedimento({ fecharModal }) {
         procedimento.especialidadeId
       );
       alert("Procedimento cadastrado com sucesso!");
-      fecharModal(); // Fecha o modal após o cadastro
       window.location.reload(); // Força o recarregamento da página
     } catch (error) {
       console.error(error);
@@ -40,6 +41,7 @@ function ModalAdicionarProcedimento({ fecharModal }) {
       valor: "",
       especialidadeId: "",
     });
+    setAberto(false); // Fechar o modal após salvar
   }
 
   const AtualizarProcedimento = (event) => {
@@ -70,71 +72,81 @@ function ModalAdicionarProcedimento({ fecharModal }) {
     return (
       <>
         <option value="">Selecione uma especialidade</option>
-        {especialidades.map((especialidade) => (
+        {especialidades?.map((especialidade) => (
           <option key={especialidade.id} value={especialidade.id}>
             {especialidade.nome}
           </option>
-        ))};
+        ))}
       </>
     );
   }
 
   return (
-    <div className={styles.modalOverlay}>
-      <div className={styles.modalContent}>
-        <div className={styles.modalTituloSair}>
-          <button className={styles.closeButton} onClick={fecharModal}>
-            ✖
-          </button>
-          <h2>Cadastro de Procedimento</h2>
-        </div>
-        <form onSubmit={SalvarProcedimento}>
-          <label>Nome:</label>
-          <input
-            type="text"
-            placeholder="Digite o nome do procedimento"
-            name="nome"
-            maxLength="100"
-            value={procedimento.nome}
-            onChange={AtualizarProcedimento}
-            required
-          />
+    <div>
+      {/* Botão Novo, que agora é o BotaoNovo */}
+      <BotaoNovo AbrirModal={() => setAberto(true)} />
 
-          <label>Descrição:</label>
-          <input
-            type="text"
-            placeholder="Digite a descrição do procedimento"
-            name="descricao"
-            maxLength="255"
-            value={procedimento.descricao}
-            onChange={AtualizarProcedimento}
-            required
-          />
+      {aberto && (
+        <ModalGlobal
+          aberto={aberto}
+          setAberto={setAberto}
+          titulo="Cadastro de Procedimento"
+        >
+          <div className={styles.container_formulario}>
+            <form onSubmit={SalvarProcedimento}>
+              <label className={styles.label}>Nome</label>
+              <input
+                type="text"
+                className={styles.input}
+                placeholder="Digite o nome do procedimento"
+                name="nome"
+                maxLength="100"
+                value={procedimento.nome}
+                onChange={AtualizarProcedimento}
+                required
+              />
 
-          <label>Valor:</label>
-          <input
-            type="number"
-            placeholder="Digite o valor do procedimento"
-            name="valor"
-            value={procedimento.valor}
-            onChange={AtualizarProcedimento}
-            required
-          />
+              <label className={styles.label}>Descrição</label>
+              <input
+                type="text"
+                className={styles.input}
+                placeholder="Digite a descrição do procedimento"
+                name="descricao"
+                maxLength="255"
+                value={procedimento.descricao}
+                onChange={AtualizarProcedimento}
+                required
+              />
 
-          <label>Especialidade:</label>
-          <select
-            name="especialidadeId"
-            placeholder="Especialidade"
-            value={procedimento.especialidadeId}
-            onChange={AtualizarProcedimento}
-            required
-          >
-            {mostrarOpcoesEspecialidades()}
-          </select>
+              <label className={styles.label}>Valor</label>
+              <input
+                type="number"
+                className={styles.input}
+                placeholder="Digite o valor do procedimento"
+                name="valor"
+                value={procedimento.valor}
+                onChange={AtualizarProcedimento}
+                required
+              />
 
-          <button type="submit">Salvar</button>
-        </form>
-      </div>
+              <label className={styles.label}>Especialidade</label>
+              <select
+                name="especialidadeId"
+                className={styles.input}
+                value={procedimento.especialidadeId}
+                onChange={AtualizarProcedimento}
+                required
+              >
+                {mostrarOpcoesEspecialidades()}
+              </select>
+
+              <button type="submit" className={styles.botao_salvar}>
+                Salvar
+              </button>
+            </form>
+          </div>
+        </ModalGlobal>
+      )}
     </div>
   );
 }
