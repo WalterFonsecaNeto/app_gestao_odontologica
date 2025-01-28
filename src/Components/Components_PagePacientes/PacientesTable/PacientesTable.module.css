@@ -63,7 +63,7 @@
   background-color: #e1f3f1;
 }
 
-.container_table button {
+.botao_info {
   background-color: #58af9b;
   color: white;
   padding: 0.8rem; /* Ajuste conforme necessário */
@@ -74,7 +74,7 @@
   transition: background-color 0.3s;
 }
 
-.container_table button:hover {
+.botao_info:hover {
   background-color: #4da88d;
 }
 

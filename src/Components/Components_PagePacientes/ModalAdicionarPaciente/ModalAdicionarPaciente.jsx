@@ -6,7 +6,8 @@ import PacienteApi from "../../../Services/MinhaApi/Paciente";
 import Alerta from "../../Alerta/Alerta"; // Importando o componente de alerta
 import styles from "./ModalAdicionarPaciente.module.css"; // Importando o arquivo CSS
 
-function ModalAdicionarPaciente() {
+function ModalAdicionarPaciente({setPacientes, pacientes}) {
+
   const [paciente, setPaciente] = useState({
     nome: "",
     cpf: "",
@@ -24,7 +25,7 @@ function ModalAdicionarPaciente() {
   const [tipoAlerta, setTipoAlerta] = useState("");
 
   // Função para exibir o alerta
-  const exibirAlerta = (mensagem, tipo) => {
+  function ExibirAlerta (mensagem, tipo){
     setMensagemAlerta(mensagem);
     setTipoAlerta(tipo);
     setMostrarAlerta(true);
@@ -52,11 +53,16 @@ function ModalAdicionarPaciente() {
         paciente.historicoMedico
       );
 
-      exibirAlerta("Paciente cadastrado com sucesso!", "success");
-      window.location.reload(); // Força o recarregamento da página
+      ExibirAlerta("Paciente cadastrado com sucesso!", "success");
+
+      //atualizar o array de pacientes com esse paciente cadstrado para evitar muitas buscas no banco
+      setPacientes([...pacientes, paciente]);
+
     } catch (error) {
-      const mensagemErro = error.response?.data || "Ocorreu um erro ao cadastrar o paciente. Tente novamente.";
-      exibirAlerta(mensagemErro, "danger");
+      const mensagemErro =
+        error.response?.data ||
+        "Ocorreu um erro ao cadastrar o paciente. Tente novamente.";
+      ExibirAlerta(mensagemErro, "danger");
     }
 
     setPaciente({
@@ -70,10 +76,14 @@ function ModalAdicionarPaciente() {
       historicoMedico: "",
     });
 
-    setAberto(false); // Fecha o modal após salvar
+    //fecha o modal apos 5 segundos para dar tempo de ver o alert
+    setTimeout(() => {
+      setAberto(false);
+    }, 5000);
   }
 
-  const AtualizarPaciente = (event) => {
+  //Função para atualizar a variavel do paciente com os valore digitados no inputs
+  const AtualizaPacientesComValores = (event) => {
     const { name, value } = event.target;
     setPaciente({ ...paciente, [name]: value });
   };
@@ -125,7 +135,7 @@ function ModalAdicionarPaciente() {
                     name="nome"
                     maxLength="100"
                     value={paciente.nome}
-                    onChange={AtualizarPaciente}
+                    onChange={AtualizaPacientesComValores}
                     required
                   />
                 </div>
@@ -137,7 +147,7 @@ function ModalAdicionarPaciente() {
                     className={styles.input}
                     name="dataNascimento"
                     value={paciente.dataNascimento}
-                    onChange={AtualizarPaciente}
+                    onChange={AtualizaPacientesComValores}
                     required
                   />
                 </div>
@@ -151,7 +161,7 @@ function ModalAdicionarPaciente() {
                     placeholder="CPF do paciente"
                     name="cpf"
                     value={paciente.cpf}
-                    onChange={AtualizarPaciente}
+                    onChange={AtualizaPacientesComValores}
                     required
                   >
                     {(inputProps) => (
@@ -171,7 +181,7 @@ function ModalAdicionarPaciente() {
                     placeholder="Telefone do paciente"
                     name="telefone"
                     value={paciente.telefone}
-                    onChange={AtualizarPaciente}
+                    onChange={AtualizaPacientesComValores}
                   >
                     {(inputProps) => (
                       <input
@@ -189,7 +199,7 @@ function ModalAdicionarPaciente() {
                     name="genero"
                     className={styles.input}
                     value={paciente.genero}
-                    onChange={AtualizarPaciente}
+                    onChange={AtualizaPacientesComValores}
                     required
                   >
                     <option value="">Selecione o gênero</option>
@@ -208,7 +218,7 @@ function ModalAdicionarPaciente() {
                 name="email"
                 maxLength="255"
                 value={paciente.email}
-                onChange={AtualizarPaciente}
+                onChange={AtualizaPacientesComValores}
               />
 
               <label className={styles.label}>Endereço:</label>
@@ -219,7 +229,7 @@ function ModalAdicionarPaciente() {
                 name="endereco"
                 maxLength="255"
                 value={paciente.endereco}
-                onChange={AtualizarPaciente}
+                onChange={AtualizaPacientesComValores}
                 required
               />
 
@@ -229,7 +239,7 @@ function ModalAdicionarPaciente() {
                 placeholder="Digite o histórico médico do paciente"
                 name="historicoMedico"
                 value={paciente.historicoMedico}
-                onChange={AtualizarPaciente}
+                onChange={AtualizaPacientesComValores}
               ></textarea>
 
               <button type="submit" className={styles.botao_salvar}>

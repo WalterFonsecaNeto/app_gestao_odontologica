@@ -9,6 +9,7 @@ import ModalAdicionarPaciente from "../../Components/Components_PagePacientes/Mo
 
 function PagePacientes() {
   const [filtro, setFiltro] = useState("");
+  const [pacientes, setPacientes] = useState([]);
 
   return (
     <div className={style.container_total}>
@@ -20,9 +21,9 @@ function PagePacientes() {
             setFiltro={setFiltro}
             ModalContent={ModalAdicionarPaciente}
           />
-          <ModalAdicionarPaciente  />
+          <ModalAdicionarPaciente pacientes={pacientes} setPacientes={setPacientes} />
         </div>
-        <PacientesTable filtro={filtro} />
+        <PacientesTable filtro={filtro} pacientes={pacientes} setPacientes={setPacientes}/>
       </div>
       <Rodape />
     </div>

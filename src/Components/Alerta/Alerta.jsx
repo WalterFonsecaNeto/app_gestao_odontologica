@@ -7,27 +7,33 @@ function Alerta({ tipo, mensagem, visivel, aoFechar }) {
   // Definindo as cores para cada tipo de alerta com transparência
   let corFundo;
   let corTexto;
+  let corBotao;
 
   switch (tipo) {
     case "success":
       corFundo = "rgba(40, 167, 69, 0.8)";
       corTexto = "#ffffff";
+      corBotao = "#ffffff";
       break;
     case "danger":
       corFundo = "rgba(255, 0, 25, 0.68)";
       corTexto = "#ffffff";
+      corBotao = "#ffffff";
       break;
     case "warning":
-      corFundo = "rgba(255, 193, 7, 0.8)";
-      corTexto = "#000000";
+      corFundo = "rgba(255, 208, 69, 0.54)";
+      corTexto = "#ffffff";
+      corBotao = "#ffffff";
       break;
     case "info":
-      corFundo = "rgba(23, 162, 184, 0.8)";
+      corFundo = "rgba(23, 163, 184, 0.64)";
       corTexto = "#ffffff";
+      corBotao = "#ffffff";
       break;
     default:
       corFundo = "rgba(248, 249, 250, 0.8)";
       corTexto = "#000000";
+      corBotao = "#000000";
       break;
   }
 
@@ -37,7 +43,11 @@ function Alerta({ tipo, mensagem, visivel, aoFechar }) {
       style={{ backgroundColor: corFundo, color: corTexto }}
     >
       <span>{mensagem}</span>
-      <button className={styles.fechar} onClick={aoFechar}>
+      <button
+        className={styles.fechar}
+        onClick={aoFechar}
+        style={{ color: corBotao }}
+      >
         ✖
       </button>
     </div>

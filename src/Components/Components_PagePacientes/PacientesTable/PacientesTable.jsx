@@ -3,10 +3,24 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { MdPersonOutline } from "react-icons/md";
 import PacienteApi from "../../../Services/MinhaApi/Paciente";
+import Alerta from "../../Alerta/Alerta";
 
-function PacientesTable({ filtro }) {
+function PacientesTable({ filtro, pacientes, setPacientes }) {
   const navigate = useNavigate();
-  const [pacientes, setPacientes] = useState([]);
+  const [mostrarAlerta, setMostrarAlerta] = useState(false);
+  const [mensagemAlerta, setMensagemAlerta] = useState("");
+  const [tipoAlerta, setTipoAlerta] = useState("");
+
+  // Função para exibir o alerta
+  function ExibirAlerta(mensagem, tipo) {
+    setMensagemAlerta(mensagem);
+    setTipoAlerta(tipo);
+    setMostrarAlerta(true);
+
+    setTimeout(() => {
+      setMostrarAlerta(false);
+    }, 5000); // Alerta desaparece após 5 segundos
+  }
 
   function InformacoesPaciente(id) {
     const idCodificado = btoa(id); //? Codifica o ID em Base64 - exadecimal
@@ -23,7 +37,10 @@ function PacientesTable({ filtro }) {
       );
       setPacientes(response);
     } catch (error) {
-      console.error("Erro ao buscar pacientes:", error);
+      const mensagemErro =
+        error.response?.data ||
+        "Ocorreu um erro ao cadastrar o paciente. Tente novamente.";
+      ExibirAlerta(mensagemErro, "danger");
     }
   }
 
@@ -38,18 +55,29 @@ function PacientesTable({ filtro }) {
     );
 
     return pacientesFiltrados?.map((paciente) => (
-      <tr key={paciente.id}>
-        <td style={{ textAlign: "start" }}>{paciente.nome}</td>
-        <td>{paciente.cpf}</td>
-        <td>{new Date(paciente.dataNascimento).toLocaleDateString("pt-BR")}</td>
-        <td>{paciente.telefone}</td>
-        <td>{paciente.genero}</td>
-        <td>
-          <button onClick={() => InformacoesPaciente(paciente.id)}>
-            <MdPersonOutline />
-          </button>
-        </td>
-      </tr>
+      <>
+        <tr key={paciente.id}>
+          <td style={{ textAlign: "start" }}>{paciente.nome}</td>
+          <td>{paciente.cpf}</td>
+          <td>
+            {new Date(paciente.dataNascimento).toLocaleDateString("pt-BR")}
+          </td>
+          <td>{paciente.telefone}</td>
+          <td>{paciente.genero}</td>
+          <td>
+            <button className={style.botao_info} onClick={() => InformacoesPaciente(paciente.id)}>
+              <MdPersonOutline />
+            </button>
+          </td>
+        </tr>
+        {/* Exibição do Alerta */}
+        <Alerta
+          tipo={tipoAlerta}
+          mensagem={mensagemAlerta}
+          visivel={mostrarAlerta}
+          aoFechar={() => setMostrarAlerta(false)}
+        />
+      </>
     ));
   }
 
