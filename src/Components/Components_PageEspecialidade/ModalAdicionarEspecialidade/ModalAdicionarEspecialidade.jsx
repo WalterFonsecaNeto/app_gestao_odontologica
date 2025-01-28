@@ -1,16 +1,29 @@
 import { React, useState, useEffect } from "react";
-import ModalGlobal from "../../ModalGlobal/ModalGlobal"; // Presumindo que você tenha um componente ModalGlobal
+import ModalGlobal from "../../ModalGlobal/ModalGlobal";
 import EspecialidadeApi from "../../../Services/MinhaApi/Especialidade";
-import styles from "./ModalAdicionarEspecialidade.module.css"; // Importando o arquivo CSS
-import BotaoNovo from "../../BotaoNovo/BotaoNovo"; // Importando o componente BotaoNovo
+import styles from "./ModalAdicionarEspecialidade.module.css";
+import BotaoNovo from "../../BotaoNovo/BotaoNovo";
+import Alerta from "../../Alerta/Alerta";
 
-function ModalAdicionarEspecialidade() {
-  const [especialidadeNome, setEspecialidadeNome] = useState("");
+function ModalAdicionarEspecialidade({ especialidades, setEspecialidades }) {
+  const [especialidade, setEspecialidade] = useState({
+    nome: "",
+  });
   const [aberto, setAberto] = useState(false);
+  const [mostrarAlerta, setMostrarAlerta] = useState(false);
+  const [mensagemAlerta, setMensagemAlerta] = useState("");
+  const [tipoAlerta, setTipoAlerta] = useState("");
 
-  const AtualizarEspecialidade = (event) => {
-    setEspecialidadeNome(event.target.value);
-  };
+  // Função para exibir o alerta
+  function ExibirAlerta(mensagem, tipo) {
+    setMensagemAlerta(mensagem);
+    setTipoAlerta(tipo);
+    setMostrarAlerta(true);
+
+    setTimeout(() => {
+      setMostrarAlerta(false);
+    }, 5000); // Alerta desaparece após 5 segundos
+  }
 
   async function SalvarEspecialidade(event) {
     event.preventDefault();
@@ -20,25 +33,43 @@ function ModalAdicionarEspecialidade() {
     try {
       await EspecialidadeApi.criarEspecialidadeAsync(
         usuarioId,
-        especialidadeNome
+        especialidade.nome
       );
-      alert("Especialidade cadastrada com sucesso!");
-      window.location.reload(); // Força o recarregamento da página
-    } catch (error) {
-      console.error(error);
-      alert("Ocorreu um erro ao cadastrar a especialidade. Tente novamente.");
-    }
+      ExibirAlerta("Especialidade cadastrada com sucesso!", "success");
 
-    setEspecialidadeNome("");
-    setAberto(false); // Fechar o modal após salvar
+      //Atualizar o array de especialidades para evitar muitas buscas no banco
+      setEspecialidades([...especialidades, especialidade]);
+    } catch (error) {
+      const mensagemErro =
+        error.response?.data ||
+        "Ocorreu um erro ao cadastrar o paciente. Tente novamente.";
+      ExibirAlerta(mensagemErro, "danger");
+    }
+    // Limpar os valores do formulário após salvar
+    setEspecialidade({
+      nome: "",
+    });
+
+    //fecha o modal apos 5 segundos para dar tempo de ver o alert
+    setTimeout(() => {
+      setAberto(false);
+    }, 5000);
   }
 
-  //Verificar com useEffect se o aberto é falso ou seja esta fechado para excluir valore dos imputs
+  //Função para atualizar a variavel do paciente com os valore digitados no inputs
+  const AtualizarEspecialidadeComValores = (event) => {
+    const { name, value } = event.target;
+    setEspecialidade({ ...especialidade, [name]: value });
+  };
+
+  // Verificar com useEffect se o modal está fechado para limpar os valores dos campos
   useEffect(() => {
     if (!aberto) {
-      setEspecialidadeNome("");
+      setEspecialidade({
+        nome: "",
+      });
     }
-  }, [aberto]); // O array vazio [] indica que o useEffect deve ser executado apenas uma vez, quando a aberto é mudada
+  }, [aberto]);
 
   return (
     <div>
@@ -51,6 +82,14 @@ function ModalAdicionarEspecialidade() {
           setAberto={setAberto}
           titulo="Cadastro de Especialidade"
         >
+          {/* Exibição do Alerta */}
+          <Alerta
+            tipo={tipoAlerta}
+            mensagem={mensagemAlerta}
+            visivel={mostrarAlerta}
+            aoFechar={() => setMostrarAlerta(false)}
+          />
+
           <div className={styles.container_formulario}>
             <form onSubmit={SalvarEspecialidade}>
               <label className={styles.label}>Nome</label>
@@ -58,8 +97,9 @@ function ModalAdicionarEspecialidade() {
                 type="text"
                 className={styles.input}
                 placeholder="Nome da especialidade"
-                value={especialidadeNome}
-                onChange={AtualizarEspecialidade}
+                name="nome" 
+                value={especialidade.nome}
+                onChange={AtualizarEspecialidadeComValores}
               />
 
               <button type="submit" className={styles.botao_salvar}>

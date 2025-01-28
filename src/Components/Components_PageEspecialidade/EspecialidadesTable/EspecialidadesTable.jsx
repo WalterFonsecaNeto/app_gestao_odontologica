@@ -5,9 +5,9 @@ import { MdEdit, MdDelete } from "react-icons/md";
 import EspecialidadeApi from "../../../Services/MinhaApi/Especialidade";
 import ModalGlobalExcluir from "../../ModalGlobalExcluir/ModalGlobalExcluir";
 
-function EspecialidadesTable({ filtro }) {
+function EspecialidadesTable({ filtro, especialidades, setEspecialidades}) {
   const navigate = useNavigate();
-  const [especialidades, setEspecialidades] = useState([]);
+  
   const [mostrarModal, setMostrarModal] = useState(false);
   const [especialidadeSelecionada, setEspecialidadeSelecionada] =
     useState(null);

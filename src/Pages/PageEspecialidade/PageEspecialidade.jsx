@@ -8,6 +8,7 @@ import ModalAdicionarEspecialidade from "../../Components/Components_PageEspecia
 
 function PageEspecialidade() {
   const [filtroEspecialidade, setFiltroEspecialidade] = useState("");
+  const [especialidades, setEspecialidades] = useState([]);
 
   return (
     <div className={style.container_total}>
@@ -19,9 +20,9 @@ function PageEspecialidade() {
             setFiltro={setFiltroEspecialidade}
             ModalContent={ModalAdicionarEspecialidade}
           />
-          <ModalAdicionarEspecialidade />
+          <ModalAdicionarEspecialidade especialidades={especialidades} setEspecialidades={setEspecialidades}/>
         </div>
-        <EspecialidadesTable filtro={filtroEspecialidade} />
+        <EspecialidadesTable filtro={filtroEspecialidade} especialidades={especialidades} setEspecialidades={setEspecialidades}/>
       </div>
       <Rodape />
     </div>

@@ -55,7 +55,7 @@ function ModalAdicionarPaciente({setPacientes, pacientes}) {
 
       ExibirAlerta("Paciente cadastrado com sucesso!", "success");
 
-      //atualizar o array de pacientes com esse paciente cadstrado para evitar muitas buscas no banco
+      //Atualizar o array de pacientes com esse paciente cadstrado para evitar muitas buscas no banco
       setPacientes([...pacientes, paciente]);
 
     } catch (error) {
@@ -83,7 +83,7 @@ function ModalAdicionarPaciente({setPacientes, pacientes}) {
   }
 
   //Função para atualizar a variavel do paciente com os valore digitados no inputs
-  const AtualizaPacientesComValores = (event) => {
+  function AtualizaPacientesComValores (event){
     const { name, value } = event.target;
     setPaciente({ ...paciente, [name]: value });
   };
