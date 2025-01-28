@@ -10,8 +10,7 @@ function EspecialidadesTable({ filtro, especialidades, setEspecialidades }) {
   const navigate = useNavigate();
 
   const [mostrarModal, setMostrarModal] = useState(false);
-  const [especialidadeSelecionada, setEspecialidadeSelecionada] =
-    useState(null);
+  const [especialidadeSelecionada, setEspecialidadeSelecionada] = useState(null);
   const [mostrarAlerta, setMostrarAlerta] = useState(false);
   const [mensagemAlerta, setMensagemAlerta] = useState("");
   const [tipoAlerta, setTipoAlerta] = useState("");

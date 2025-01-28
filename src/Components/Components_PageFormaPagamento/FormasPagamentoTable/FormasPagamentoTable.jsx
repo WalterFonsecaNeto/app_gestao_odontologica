@@ -4,24 +4,37 @@ import { useState, useEffect } from "react";
 import { MdEdit, MdDelete } from "react-icons/md";
 import FormaPagamentoApi from "../../../Services/MinhaApi/FormaPagemnto";
 import ModalGlobalExcluir from "../../ModalGlobalExcluir/ModalGlobalExcluir";
+import Alerta from "../../Alerta/Alerta";
 
-function FormasPagamentoTable({ filtro }) {
+function FormasPagamentoTable({ filtro, formasPagamento, setFormasPagamento }) {
   const navigate = useNavigate();
-  const [formasPagamento, setFormasPagamento] = useState([]);
+
   const [mostrarModal, setMostrarModal] = useState(false);
   const [formaPagamentoSelecionada, setFormaPagamentoSelecionada] =
     useState(null);
+  const [mostrarAlerta, setMostrarAlerta] = useState(false);
+  const [mensagemAlerta, setMensagemAlerta] = useState("");
+  const [tipoAlerta, setTipoAlerta] = useState("");
+
+  // Função para exibir o alerta
+  function ExibirAlerta(mensagem, tipo) {
+    setMensagemAlerta(mensagem);
+    setTipoAlerta(tipo);
+    setMostrarAlerta(true);
+
+    setTimeout(() => {
+      setMostrarAlerta(false);
+    }, 5000); // Alerta desaparece após 5 segundos
+  }
 
   function EditarFormaPagamento(id) {
     const idCodificado = btoa(id); // Codifica o ID em Base64
     navigate(`/formapagamento/editar/${idCodificado}`);
   }
-
   const handleClickDeletar = (formaPagamento) => {
     setFormaPagamentoSelecionada(formaPagamento);
     setMostrarModal(true);
   };
-
   const handleDeletar = async () => {
     try {
       const usuarioId = localStorage.getItem("usuarioId");
@@ -38,7 +51,6 @@ function FormasPagamentoTable({ filtro }) {
       setMostrarModal(false);
     }
   };
-
   const handleCancelar = () => {
     setMostrarModal(false);
     setFormaPagamentoSelecionada(null);
@@ -55,7 +67,10 @@ function FormasPagamentoTable({ filtro }) {
         );
       setFormasPagamento(response);
     } catch (error) {
-      console.error("Erro ao buscar formas de pagamento:", error);
+      const mensagemErro =
+        error.response?.data ||
+        "Ocorreu um erro ao listar as formas de pagamento. Tente novamente.";
+      ExibirAlerta(mensagemErro, "danger");
     }
   }
 
@@ -69,19 +84,27 @@ function FormasPagamentoTable({ filtro }) {
     );
 
     return formaPagamentoFiltradas?.map((formaPagamento) => (
-      <tr key={formaPagamento.id}>
-        <td>{formaPagamento.nome}</td>
-        <td>
-          <div className={style.botao_acao}>
-            <button onClick={() => EditarFormaPagamento(formaPagamento.id)}>
-              <MdEdit />
-            </button>
-            <button onClick={() => handleClickDeletar(formaPagamento)}>
-              <MdDelete />
-            </button>
-          </div>
-        </td>
-      </tr>
+      <>
+        <tr key={formaPagamento.id}>
+          <td>{formaPagamento.nome}</td>
+          <td>
+            <div className={style.botao_acao}>
+              <button onClick={() => EditarFormaPagamento(formaPagamento.id)}>
+                <MdEdit />
+              </button>
+              <button onClick={() => handleClickDeletar(formaPagamento)}>
+                <MdDelete />
+              </button>
+            </div>
+          </td>
+        </tr>
+        <Alerta
+          tipo={tipoAlerta}
+          mensagem={mensagemAlerta}
+          visivel={mostrarAlerta}
+          aoFechar={() => setMostrarAlerta(false)}
+        />
+      </>
     ));
   }
 

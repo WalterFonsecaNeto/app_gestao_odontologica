@@ -3,14 +3,29 @@ import ModalGlobal from "../../ModalGlobal/ModalGlobal"; // Importando o ModalGl
 import FormaPagamentoApi from "../../../Services/MinhaApi/FormaPagemnto";
 import BotaoNovo from "../../BotaoNovo/BotaoNovo"; // Importando o BotaoNovo
 import style from "./ModalAdicionarFormaPagamento.module.css"; // Importando o arquivo CSS
+import Alerta from "../../Alerta/Alerta";
 
-function ModalAdicionarFormaPagamento() {
-  const [formaPagamentoNome, setFormaPagamentoNome] = useState("");
+function ModalAdicionarFormaPagamento({ formasPagamento, setFormasPagamento }) {
+  const [formaPagamento, setFormaPagamento] = useState([
+    {
+      nome: ""
+    },
+  ]);
   const [aberto, setAberto] = useState(false);
+  const [mostrarAlerta, setMostrarAlerta] = useState(false);
+  const [mensagemAlerta, setMensagemAlerta] = useState("");
+  const [tipoAlerta, setTipoAlerta] = useState("");
 
-  const AtualizarFormaPagamento = (event) => {
-    setFormaPagamentoNome(event.target.value);
-  };
+  // Função para exibir o alerta
+  function ExibirAlerta(mensagem, tipo) {
+    setMensagemAlerta(mensagem);
+    setTipoAlerta(tipo);
+    setMostrarAlerta(true);
+
+    setTimeout(() => {
+      setMostrarAlerta(false);
+    }, 5000); // Alerta desaparece após 5 segundos
+  }
 
   async function SalvarFormaPagamento(event) {
     event.preventDefault();
@@ -20,27 +35,39 @@ function ModalAdicionarFormaPagamento() {
     try {
       await FormaPagamentoApi.criarFormaPagamentoAsync(
         usuarioId,
-        formaPagamentoNome
+        formaPagamento.nome
       );
-      alert("Forma de pagamento cadastrada com sucesso!");
-      window.location.reload(); // Força o recarregamento da página
+      ExibirAlerta("Forma de pagamento cadastrada com sucesso!", "success");
+
+      setFormasPagamento([...formasPagamento, formaPagamento]);
     } catch (error) {
-      console.error(error);
-      alert(
-        "Ocorreu um erro ao cadastrar a forma de pagamento. Tente novamente."
-      );
+      const mensagemErro =
+        error.response?.data ||
+        "Ocorreu um erro ao cadastrar a forma de pagamento. Tente novamente.";
+      ExibirAlerta(mensagemErro, "danger");
     }
 
-    setFormaPagamentoNome("");
-    setAberto(false); // Fechar o modal após salvar
+    setFormaPagamento({
+      nome: "",
+    });
+
+    //fecha o modal apos 5 segundos para dar tempo de ver o alert
+    setTimeout(() => {
+      setAberto(false);
+    }, 5000);
+  }
+
+  function AtualizarFormaPagamentoComValores(event) {
+    const { name, value } = event.target;
+    setFormaPagamento({ ...formaPagamento, [name]: value });
   }
 
   //Verificar com useEffect se o aberto é falso ou seja esta fechado para excluir valore dos imputs
   useEffect(() => {
     if (!aberto) {
-      setFormaPagamentoNome("");
+      setFormaPagamento({ nome: "" });
     }
-  }, [aberto]); 
+  }, [aberto]);
 
   return (
     <div>
@@ -53,6 +80,13 @@ function ModalAdicionarFormaPagamento() {
           setAberto={setAberto}
           titulo="Cadastro de Forma de Pagamento"
         >
+          {/* Exibição do Alerta */}
+          <Alerta
+            tipo={tipoAlerta}
+            mensagem={mensagemAlerta}
+            visivel={mostrarAlerta}
+            aoFechar={() => setMostrarAlerta(false)}
+          />
           <div className={style.container_formulario}>
             <form onSubmit={SalvarFormaPagamento}>
               <label className={style.label}>Nome</label>
@@ -60,8 +94,9 @@ function ModalAdicionarFormaPagamento() {
                 type="text"
                 className={style.input}
                 placeholder="Digite o nome da forma de pagamento"
-                value={formaPagamentoNome}
-                onChange={AtualizarFormaPagamento}
+                name="nome"
+                value={formaPagamento.nome}
+                onChange={AtualizarFormaPagamentoComValores}
                 required
               />
 

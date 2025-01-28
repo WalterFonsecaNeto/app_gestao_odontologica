@@ -8,6 +8,7 @@ import ModalAdicionarFormaPagamento from "../../Components/Components_PageFormaP
 
 function PageFormaPagamento() {
   const [filtroFormaPagamento, setFiltroFormaPagamento] = useState("");
+  const [formasPagamento, setFormasPagamento] = useState([]);
 
   return (
     <div className={style.container_total}>
@@ -19,9 +20,16 @@ function PageFormaPagamento() {
             setFiltro={setFiltroFormaPagamento}
             ModalContent={ModalAdicionarFormaPagamento}
           />
-          <ModalAdicionarFormaPagamento />
+          <ModalAdicionarFormaPagamento
+            formasPagamento={formasPagamento}
+            setFormasPagamento={setFormasPagamento}
+          />
         </div>
-        <FormaPagamentoTable filtro={filtroFormaPagamento} />
+        <FormaPagamentoTable
+          filtro={filtroFormaPagamento}
+          formasPagamento={formasPagamento}
+          setFormasPagamento={setFormasPagamento}
+        />
       </div>
       <Rodape />
     </div>
