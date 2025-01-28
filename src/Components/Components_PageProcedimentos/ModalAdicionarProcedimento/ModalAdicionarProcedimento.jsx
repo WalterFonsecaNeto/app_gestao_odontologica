@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
-import ModalGlobal from "../../ModalGlobal/ModalGlobal"; // Importando o ModalGlobal
-import BotaoNovo from "../../BotaoNovo/BotaoNovo"; // Importando o BotaoNovo
+import ModalGlobal from "../../ModalGlobal/ModalGlobal"; 
+import BotaoNovo from "../../BotaoNovo/BotaoNovo"; 
 import ProcedimentoApi from "../../../Services/MinhaApi/Procedimento";
 import EspecialidadeApi from "../../../Services/MinhaApi/Especialidade";
-import styles from "./ModalAdicionarProcedimento.module.css"; // Importando o arquivo CSS
+import styles from "./ModalAdicionarProcedimento.module.css"; 
+import Alerta from "../../Alerta/Alerta";
 
-function ModalAdicionarProcedimento() {
+function ModalAdicionarProcedimento({ procedimentos, setProcedimentos }) {
   const [procedimento, setProcedimento] = useState({
     nome: "",
     descricao: "",
@@ -14,6 +15,20 @@ function ModalAdicionarProcedimento() {
   });
   const [especialidades, setEspecialidades] = useState([]);
   const [aberto, setAberto] = useState(false);
+  const [mostrarAlerta, setMostrarAlerta] = useState(false);
+  const [mensagemAlerta, setMensagemAlerta] = useState("");
+  const [tipoAlerta, setTipoAlerta] = useState("");
+
+  // Função para exibir o alerta
+  function ExibirAlerta(mensagem, tipo) {
+    setMensagemAlerta(mensagem);
+    setTipoAlerta(tipo);
+    setMostrarAlerta(true);
+
+    setTimeout(() => {
+      setMostrarAlerta(false);
+    }, 5000); // Alerta desaparece após 5 segundos
+  }
 
   async function SalvarProcedimento(event) {
     event.preventDefault();
@@ -28,11 +43,14 @@ function ModalAdicionarProcedimento() {
         procedimento.valor,
         procedimento.especialidadeId
       );
-      alert("Procedimento cadastrado com sucesso!");
-      window.location.reload(); // Força o recarregamento da página
+      ExibirAlerta("Procedimento cadastrado com sucesso!", "success");
+
+      setProcedimentos([...procedimentos, procedimento]);
     } catch (error) {
-      console.error(error);
-      alert("Ocorreu um erro ao cadastrar o procedimento. Tente novamente.");
+      const mensagemErro =
+        error.response?.data ||
+        "Ocorreu um erro ao cadastrar o procedimento. Tente novamente.";
+      ExibirAlerta(mensagemErro, "danger");
     }
 
     setProcedimento({
@@ -41,13 +59,12 @@ function ModalAdicionarProcedimento() {
       valor: "",
       especialidadeId: "",
     });
-    setAberto(false); // Fechar o modal após salvar
-  }
 
-  const AtualizarProcedimento = (event) => {
-    const { name, value } = event.target;
-    setProcedimento({ ...procedimento, [name]: value });
-  };
+    //fecha o modal apos 5 segundos para dar tempo de ver o alert
+    setTimeout(() => {
+      setAberto(false);
+    }, 5000);
+  }
 
   async function ListarEspecialidades() {
     try {
@@ -57,16 +74,21 @@ function ModalAdicionarProcedimento() {
           usuarioId,
           true
         );
+
       setEspecialidades(response);
+      
     } catch (error) {
-      console.error(error);
-      alert("Ocorreu um erro ao listar as especialidades. Tente novamente.");
+      const mensagemErro =
+        error.response?.data ||
+        "Ocorreu um erro ao listar as especialidades. Tente novamente.";
+      ExibirAlerta(mensagemErro, "danger");
     }
   }
 
-  useEffect(() => {
-    ListarEspecialidades();
-  }, []);
+  function AtualizarProcedimentoComValores(event) {
+    const { name, value } = event.target;
+    setProcedimento({ ...procedimento, [name]: value });
+  }
 
   function MostrarOpcoesEspecialidades() {
     return (
@@ -81,7 +103,11 @@ function ModalAdicionarProcedimento() {
     );
   }
 
-  //Verificar com useEffect se o aberto é falso ou seja esta fechado para excluir valore dos imputs
+  useEffect(() => {
+    ListarEspecialidades();
+  }, []);
+
+  // Verificar com useEffect se o modal está fechado para limpar os valores dos campos
   useEffect(() => {
     if (!aberto) {
       setProcedimento({
@@ -104,6 +130,13 @@ function ModalAdicionarProcedimento() {
           setAberto={setAberto}
           titulo="Cadastro de Procedimento"
         >
+          <Alerta
+            tipo={tipoAlerta}
+            mensagem={mensagemAlerta}
+            visivel={mostrarAlerta}
+            aoFechar={() => setMostrarAlerta(false)}
+          />
+
           <div className={styles.container_formulario}>
             <form onSubmit={SalvarProcedimento}>
               <label className={styles.label}>Nome</label>
@@ -114,8 +147,7 @@ function ModalAdicionarProcedimento() {
                 name="nome"
                 maxLength="100"
                 value={procedimento.nome}
-                onChange={AtualizarProcedimento}
-                required
+                onChange={AtualizarProcedimentoComValores}
               />
 
               <label className={styles.label}>Descrição</label>
@@ -126,8 +158,7 @@ function ModalAdicionarProcedimento() {
                 name="descricao"
                 maxLength="255"
                 value={procedimento.descricao}
-                onChange={AtualizarProcedimento}
-                required
+                onChange={AtualizarProcedimentoComValores}
               />
 
               <label className={styles.label}>Valor</label>
@@ -137,7 +168,7 @@ function ModalAdicionarProcedimento() {
                 placeholder="Digite o valor do procedimento"
                 name="valor"
                 value={procedimento.valor}
-                onChange={AtualizarProcedimento}
+                onChange={AtualizarProcedimentoComValores}
                 required
               />
 
@@ -146,7 +177,7 @@ function ModalAdicionarProcedimento() {
                 name="especialidadeId"
                 className={styles.input}
                 value={procedimento.especialidadeId}
-                onChange={AtualizarProcedimento}
+                onChange={AtualizarProcedimentoComValores}
                 required
               >
                 {MostrarOpcoesEspecialidades()}

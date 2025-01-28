@@ -39,7 +39,7 @@ function PacientesTable({ filtro, pacientes, setPacientes }) {
     } catch (error) {
       const mensagemErro =
         error.response?.data ||
-        "Ocorreu um erro ao cadastrar o paciente. Tente novamente.";
+        "Ocorreu um erro ao listar os pacientes. Tente novamente.";
       ExibirAlerta(mensagemErro, "danger");
     }
   }

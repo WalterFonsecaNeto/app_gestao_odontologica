@@ -9,7 +9,7 @@ import ModalAdicionarProcedimento from "../../Components/Components_PageProcedim
 
 function PageEspecialidade() {
   const [filtroProcedimento, setFiltroProcedimento] = useState("");
-
+  const [procedimentos, setProcedimentos] = useState([]);
   return (
     <div className={style.container_total}>
       <Cabecalho />
@@ -20,9 +20,9 @@ function PageEspecialidade() {
             setFiltro={setFiltroProcedimento}
             ModalContent={ModalAdicionarProcedimento}
           />
-          <ModalAdicionarProcedimento />
+          <ModalAdicionarProcedimento  procedimentos={procedimentos} setProcedimentos={setProcedimentos}/>
         </div>
-        <ProcedimentosTable filtro={filtroProcedimento} />
+        <ProcedimentosTable filtro={filtroProcedimento} procedimentos={procedimentos} setProcedimentos={setProcedimentos} />
       </div>
       <Rodape />
     </div>

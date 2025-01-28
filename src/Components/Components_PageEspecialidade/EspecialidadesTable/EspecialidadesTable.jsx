@@ -4,24 +4,37 @@ import { useState, useEffect } from "react";
 import { MdEdit, MdDelete } from "react-icons/md";
 import EspecialidadeApi from "../../../Services/MinhaApi/Especialidade";
 import ModalGlobalExcluir from "../../ModalGlobalExcluir/ModalGlobalExcluir";
+import Alerta from "../../Alerta/Alerta";
 
-function EspecialidadesTable({ filtro, especialidades, setEspecialidades}) {
+function EspecialidadesTable({ filtro, especialidades, setEspecialidades }) {
   const navigate = useNavigate();
-  
+
   const [mostrarModal, setMostrarModal] = useState(false);
   const [especialidadeSelecionada, setEspecialidadeSelecionada] =
     useState(null);
+  const [mostrarAlerta, setMostrarAlerta] = useState(false);
+  const [mensagemAlerta, setMensagemAlerta] = useState("");
+  const [tipoAlerta, setTipoAlerta] = useState("");
+
+  // Função para exibir o alerta
+  function ExibirAlerta(mensagem, tipo) {
+    setMensagemAlerta(mensagem);
+    setTipoAlerta(tipo);
+    setMostrarAlerta(true);
+
+    setTimeout(() => {
+      setMostrarAlerta(false);
+    }, 5000); // Alerta desaparece após 5 segundos
+  }
 
   function EditarEspecialidade(id) {
     const idCodificado = btoa(id); // Codifica o ID em Base64
     navigate(`/especialidade/editar/${idCodificado}`);
   }
-
   const handleClickDeletar = (especialidade) => {
     setEspecialidadeSelecionada(especialidade);
     setMostrarModal(true);
   };
-
   const handleDeletar = async () => {
     try {
       const usuarioId = localStorage.getItem("usuarioId");
@@ -38,7 +51,6 @@ function EspecialidadesTable({ filtro, especialidades, setEspecialidades}) {
       setMostrarModal(false);
     }
   };
-
   const handleCancelar = () => {
     setMostrarModal(false);
     setEspecialidadeSelecionada(null);
@@ -55,7 +67,10 @@ function EspecialidadesTable({ filtro, especialidades, setEspecialidades}) {
         );
       setEspecialidades(response);
     } catch (error) {
-      console.error("Erro ao buscar especialidades:", error);
+      const mensagemErro =
+        error.response?.data ||
+        "Ocorreu um erro ao listar as especialidades. Tente novamente.";
+      ExibirAlerta(mensagemErro, "danger");
     }
   }
 
@@ -69,19 +84,27 @@ function EspecialidadesTable({ filtro, especialidades, setEspecialidades}) {
     );
 
     return especialidadesFiltradas?.map((especialidade) => (
-      <tr key={especialidade.id}>
-        <td>{especialidade.nome}</td>
-        <td>
-          <div className={style.botao_acao}>
-            <button onClick={() => EditarEspecialidade(especialidade.id)}>
-              <MdEdit />
-            </button>
-            <button onClick={() => handleClickDeletar(especialidade)}>
-              <MdDelete />
-            </button>
-          </div>
-        </td>
-      </tr>
+      <>
+        <tr key={especialidade.id}>
+          <td>{especialidade.nome}</td>
+          <td>
+            <div className={style.botao_acao}>
+              <button onClick={() => EditarEspecialidade(especialidade.id)}>
+                <MdEdit />
+              </button>
+              <button onClick={() => handleClickDeletar(especialidade)}>
+                <MdDelete />
+              </button>
+            </div>
+          </td>
+        </tr>
+        <Alerta
+          tipo={tipoAlerta}
+          mensagem={mensagemAlerta}
+          visivel={mostrarAlerta}
+          aoFechar={() => setMostrarAlerta(false)}
+        />
+      </>
     ));
   }
 

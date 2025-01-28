@@ -42,7 +42,7 @@ function ModalAdicionarEspecialidade({ especialidades, setEspecialidades }) {
     } catch (error) {
       const mensagemErro =
         error.response?.data ||
-        "Ocorreu um erro ao cadastrar o paciente. Tente novamente.";
+        "Ocorreu um erro ao cadastrar a especialidade. Tente novamente.";
       ExibirAlerta(mensagemErro, "danger");
     }
     // Limpar os valores do formulário após salvar

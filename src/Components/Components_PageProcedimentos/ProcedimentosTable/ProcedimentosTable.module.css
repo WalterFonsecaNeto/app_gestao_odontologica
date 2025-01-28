@@ -63,7 +63,7 @@
   background-color: #e1f3f1;
 }
 
-.container_table button {
+.botao_acao button {
   background-color: #58af9b;
   color: white;
   padding: 0.8rem; /* Ajuste conforme necessário */
@@ -80,11 +80,11 @@
   flex-wrap: wrap;
 }
 
-.container_table button:hover {
+.botao_acao button:hover {
   background-color: #4da88d;
 }
 
-.container_table button svg {
+.botao_acao button svg {
   font-size: 1.25rem; /* Ajuste o tamanho do ícone aqui */
   /* Adiciona espaço entre o ícone e o texto, se necessário */
 }
