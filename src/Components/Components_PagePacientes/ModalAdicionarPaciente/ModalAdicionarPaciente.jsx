@@ -3,6 +3,7 @@ import InputMask from "react-input-mask";
 import ModalGlobal from "../../ModalGlobal/ModalGlobal"; // Importando o ModalGlobal
 import BotaoNovo from "../../BotaoNovo/BotaoNovo"; // Importando o BotaoNovo
 import PacienteApi from "../../../Services/MinhaApi/Paciente";
+import Alerta from "../../Alerta/Alerta"; // Importando o componente de alerta
 import styles from "./ModalAdicionarPaciente.module.css"; // Importando o arquivo CSS
 
 function ModalAdicionarPaciente() {
@@ -16,7 +17,22 @@ function ModalAdicionarPaciente() {
     email: "",
     historicoMedico: "",
   });
+
   const [aberto, setAberto] = useState(false);
+  const [mostrarAlerta, setMostrarAlerta] = useState(false);
+  const [mensagemAlerta, setMensagemAlerta] = useState("");
+  const [tipoAlerta, setTipoAlerta] = useState("");
+
+  // Função para exibir o alerta
+  const exibirAlerta = (mensagem, tipo) => {
+    setMensagemAlerta(mensagem);
+    setTipoAlerta(tipo);
+    setMostrarAlerta(true);
+
+    setTimeout(() => {
+      setMostrarAlerta(false);
+    }, 5000); // Alerta desaparece após 5 segundos
+  };
 
   async function SalvarPaciente(event) {
     event.preventDefault();
@@ -35,11 +51,12 @@ function ModalAdicionarPaciente() {
         paciente.email,
         paciente.historicoMedico
       );
-      alert("Paciente cadastrado com sucesso!");
+
+      exibirAlerta("Paciente cadastrado com sucesso!", "success");
       window.location.reload(); // Força o recarregamento da página
     } catch (error) {
-      console.error(error);
-      alert("Ocorreu um erro ao cadastrar o paciente. Tente novamente.");
+      const mensagemErro = error.response?.data || "Ocorreu um erro ao cadastrar o paciente. Tente novamente.";
+      exibirAlerta(mensagemErro, "danger");
     }
 
     setPaciente({
@@ -52,6 +69,7 @@ function ModalAdicionarPaciente() {
       email: "",
       historicoMedico: "",
     });
+
     setAberto(false); // Fecha o modal após salvar
   }
 
@@ -60,7 +78,7 @@ function ModalAdicionarPaciente() {
     setPaciente({ ...paciente, [name]: value });
   };
 
-  //Verificar com useEffect se o aberto é falso ou seja esta fechado para excluir valore dos imputs
+  // Verificar com useEffect se o modal está fechado para limpar os valores dos campos
   useEffect(() => {
     if (!aberto) {
       setPaciente({
@@ -87,6 +105,14 @@ function ModalAdicionarPaciente() {
           setAberto={setAberto}
           titulo="Cadastro de Paciente"
         >
+          {/* Exibição do Alerta */}
+          <Alerta
+            tipo={tipoAlerta}
+            mensagem={mensagemAlerta}
+            visivel={mostrarAlerta}
+            aoFechar={() => setMostrarAlerta(false)}
+          />
+
           <div className={styles.container_formulario}>
             <form onSubmit={SalvarPaciente}>
               <div className={styles.container_linha}>
