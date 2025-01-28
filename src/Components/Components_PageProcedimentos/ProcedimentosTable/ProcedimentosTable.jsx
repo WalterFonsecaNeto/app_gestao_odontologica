@@ -2,7 +2,6 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { MdEdit, MdDelete } from "react-icons/md";
 import ProcedimentoApi from "../../../Services/MinhaApi/Procedimento";
-import ModalGlobalExcluir from "../../ModalGlobalExcluir/ModalGlobalExcluir";
 import style from "./ProcedimentosTable.module.css";
 import Alerta from "../../Alerta/Alerta";
 
@@ -127,13 +126,7 @@ function ProcedimentosTable({ filtro, setProcedimentos, procedimentos }) {
         </table>
       </div>
 
-      <ModalGlobalExcluir
-        titulo="Confirmação de Exclusão"
-        mensagem={`Você tem certeza que deseja excluir o procedimento: "${procedimentoSelecionado?.nome}"`}
-        visivel={mostrarModal}
-        onConfirmar={handleDeletar}
-        onCancelar={handleCancelar}
-      />
+    
     </div>
   );
 }

@@ -29,7 +29,7 @@ const ModalGlobal = ({ aberto, setAberto, titulo, children }) => {
         {/* Cabeçalho do Modal */}
         <div className={styles.container_cabecalho}>
           <h2 className={styles.titulo}>{titulo}</h2>
-          <button onClick={fecharModal} className={styles.botao_fechar}>
+          <button onClick={fecharModal} className={styles.botao_fechar_modal}>
             ✖
           </button>
         </div>

@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { MdEdit, MdDelete } from "react-icons/md";
 import EspecialidadeApi from "../../../Services/MinhaApi/Especialidade";
-import ModalGlobalExcluir from "../../ModalGlobalExcluir/ModalGlobalExcluir";
 import Alerta from "../../Alerta/Alerta";
 
 function EspecialidadesTable({ filtro, especialidades, setEspecialidades }) {
@@ -30,30 +29,7 @@ function EspecialidadesTable({ filtro, especialidades, setEspecialidades }) {
     const idCodificado = btoa(id); // Codifica o ID em Base64
     navigate(`/especialidade/editar/${idCodificado}`);
   }
-  const handleClickDeletar = (especialidade) => {
-    setEspecialidadeSelecionada(especialidade);
-    setMostrarModal(true);
-  };
-  const handleDeletar = async () => {
-    try {
-      const usuarioId = localStorage.getItem("usuarioId");
-      await EspecialidadeApi.deletarEspecialidadeAsync(
-        especialidadeSelecionada.id,
-        usuarioId
-      );
-      setEspecialidades(
-        especialidades.filter((e) => e.id !== especialidadeSelecionada.id)
-      );
-    } catch (error) {
-      console.error("Erro ao deletar especialidade:", error);
-    } finally {
-      setMostrarModal(false);
-    }
-  };
-  const handleCancelar = () => {
-    setMostrarModal(false);
-    setEspecialidadeSelecionada(null);
-  };
+
 
   async function BuscarEspecialidadesApi() {
     const usuarioId = localStorage.getItem("usuarioId");
@@ -91,7 +67,7 @@ function EspecialidadesTable({ filtro, especialidades, setEspecialidades }) {
               <button onClick={() => EditarEspecialidade(especialidade.id)}>
                 <MdEdit />
               </button>
-              <button onClick={() => handleClickDeletar(especialidade)}>
+              <button >
                 <MdDelete />
               </button>
             </div>
@@ -123,13 +99,7 @@ function EspecialidadesTable({ filtro, especialidades, setEspecialidades }) {
         </table>
       </div>
 
-      <ModalGlobalExcluir
-        titulo="Confirmação de Exclusão"
-        mensagem={`Você tem certeza que deseja excluir a especialidade: "${especialidadeSelecionada?.nome}"`}
-        visivel={mostrarModal}
-        onConfirmar={handleDeletar}
-        onCancelar={handleCancelar}
-      />
+     
     </div>
   );
 }
