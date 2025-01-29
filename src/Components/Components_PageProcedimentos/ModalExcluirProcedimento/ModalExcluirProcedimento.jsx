@@ -58,48 +58,49 @@ function ModalExcluirProcedimento({
       </button>
 
       {aberto && (
-        <div
-          className={`${style.container_total_modal} ${
-            desabilitarBotao ? style.container_total_modal_desabilitado : ""
-          }`}
-        >
-          <ModalGlobal
-            aberto={aberto}
-            setAberto={setAberto}
-            titulo="Excluir Procedimento"
+        <>
+          <div
+            className={`${style.container_total_modal} ${
+              desabilitarBotao ? style.container_total_modal_desabilitado : ""
+            }`}
           >
-            {/* Exibição do Alerta */}
-            <Alerta
-              tipo={tipoAlerta}
-              mensagem={mensagemAlerta}
-              visivel={mostrarAlerta}
-              aoFechar={() => setMostrarAlerta(false)}
-            />
+            <ModalGlobal
+              aberto={aberto}
+              setAberto={setAberto}
+              titulo="Excluir Procedimento"
+            >
+              <div className={style.container_total}>
+                <div className={style.container_info}>
+                  <p>Você tem certeza que deseja excluir o procedimento:</p>
+                  <h4>{procedimentoSelecionado.nome}</h4>
+                </div>
 
-            <div className={style.container_total}>
-              <div className={style.container_info}>
-                <p>Você tem certeza que deseja excluir o procedimento:</p>
-                <h4>{procedimentoSelecionado.nome}</h4>
+                <div className={style.container_botoes}>
+                  <button
+                    onClick={ExcluirProcedimento}
+                    className={style.botao_excluir} // Adiciona classe desabilitada
+                    disabled={desabilitarBotao} // Desabilita o botão
+                  >
+                    Excluir
+                  </button>
+
+                  <button
+                    className={style.botao_cancelar}
+                    onClick={() => setAberto(false)}
+                  >
+                    Voltar
+                  </button>
+                </div>
               </div>
-
-              <div className={style.container_botoes}>
-                <button
-                  onClick={ExcluirProcedimento}
-                  className={style.botao_excluir} // Adiciona classe desabilitada
-                >
-                  Excluir
-                </button>
-
-                <button
-                  className={style.botao_cancelar}
-                  onClick={() => setAberto(false)}
-                >
-                  Voltar
-                </button>
-              </div>
-            </div>
-          </ModalGlobal>
-        </div>
+            </ModalGlobal>
+          </div>
+          <Alerta
+            tipo={tipoAlerta}
+            mensagem={mensagemAlerta}
+            visivel={mostrarAlerta}
+            aoFechar={() => setMostrarAlerta(false)}
+          />
+        </>
       )}
     </div>
   );

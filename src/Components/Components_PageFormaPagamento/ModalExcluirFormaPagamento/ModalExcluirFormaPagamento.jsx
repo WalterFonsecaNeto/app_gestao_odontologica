@@ -15,7 +15,7 @@ function ModalExcluirFormaPagamento({
   const [mensagemAlerta, setMensagemAlerta] = useState("");
   const [tipoAlerta, setTipoAlerta] = useState("");
   const [desabilitarBotao, setDesabilitarBotao] = useState(false);
-  
+
   // Função para exibir o alerta
   function ExibirAlerta(mensagem, tipo) {
     setMensagemAlerta(mensagem);
@@ -60,48 +60,52 @@ function ModalExcluirFormaPagamento({
       </button>
 
       {aberto && (
-        <div
-          className={`${style.container_total_modal} ${
-            desabilitarBotao ? style.container_total_modal_desabilitado : ""
-          }`}
-        >
-          <ModalGlobal
-            aberto={aberto}
-            setAberto={setAberto}
-            titulo="Excluir Forma de Pagamento"
+        <>
+          <div
+            className={`${style.container_total_modal} ${
+              desabilitarBotao ? style.container_total_modal_desabilitado : ""
+            }`}
           >
-            {/* Exibição do Alerta */}
-            <Alerta
-              tipo={tipoAlerta}
-              mensagem={mensagemAlerta}
-              visivel={mostrarAlerta}
-              aoFechar={() => setMostrarAlerta(false)}
-            />
+            <ModalGlobal
+              aberto={aberto}
+              setAberto={setAberto}
+              titulo="Excluir Forma de Pagamento"
+            >
+              <div className={style.container_total}>
+                <div className={style.container_info}>
+                  <p>
+                    Você tem certeza que deseja excluir a forma de pagamento:
+                  </p>
+                  <h4>{formaPagamentoSelecionada.nome}</h4>
+                </div>
 
-            <div className={style.container_total}>
-              <div className={style.container_info}>
-                <p>Você tem certeza que deseja excluir a forma de pagamento:</p>
-                <h4>{formaPagamentoSelecionada.nome}</h4>
+                <div className={style.container_botoes}>
+                  <button
+                    onClick={ExcluirFormaPagamento}
+                    className={style.botao_excluir}
+                  >
+                    Excluir
+                  </button>
+
+                  <button
+                    className={style.botao_cancelar}
+                    onClick={() => setAberto(false)}
+                  >
+                    Voltar
+                  </button>
+                </div>
               </div>
+            </ModalGlobal>
+          </div>
 
-              <div className={style.container_botoes}>
-                <button
-                  onClick={ExcluirFormaPagamento}
-                  className={style.botao_excluir}
-                >
-                  Excluir
-                </button>
-
-                <button
-                  className={style.botao_cancelar}
-                  onClick={() => setAberto(false)}
-                >
-                  Voltar
-                </button>
-              </div>
-            </div>
-          </ModalGlobal>
-        </div>
+          {/* Exibição do Alerta */}
+          <Alerta
+            tipo={tipoAlerta}
+            mensagem={mensagemAlerta}
+            visivel={mostrarAlerta}
+            aoFechar={() => setMostrarAlerta(false)}
+          />
+        </>
       )}
     </div>
   );

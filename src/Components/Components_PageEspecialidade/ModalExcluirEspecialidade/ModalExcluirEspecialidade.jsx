@@ -60,48 +60,49 @@ function ModalExcluirEspecialidade({
       </button>
 
       {aberto && (
-        <div
-          className={`${style.container_total_modal} ${
-            desabilitarBotao ? style.container_total_modal_desabilitado : ""
-          }`}
-        >
-          <ModalGlobal
-            aberto={aberto}
-            setAberto={setAberto}
-            titulo="Excluir Especialidade"
+        <>
+          <div
+            className={`${style.container_total_modal} ${
+              desabilitarBotao ? style.container_total_modal_desabilitado : ""
+            }`}
           >
-            {/* Exibição do Alerta */}
-            <Alerta
-              tipo={tipoAlerta}
-              mensagem={mensagemAlerta}
-              visivel={mostrarAlerta}
-              aoFechar={() => setMostrarAlerta(false)}
-            />
+            <ModalGlobal
+              aberto={aberto}
+              setAberto={setAberto}
+              titulo="Excluir Especialidade"
+            >
+              <div className={style.container_total}>
+                <div className={style.container_info}>
+                  <p>Você tem certeza que deseja excluir a especialidade:</p>
+                  <h4>{especialidadeSelecionada.nome}</h4>
+                </div>
 
-            <div className={style.container_total}>
-              <div className={style.container_info}>
-                <p>Você tem certeza que deseja excluir a especialidade:</p>
-                <h4>{especialidadeSelecionada.nome}</h4>
+                <div className={style.container_botoes}>
+                  <button
+                    onClick={ExcluirEspecialidade}
+                    className={style.botao_excluir}
+                  >
+                    Excluir
+                  </button>
+
+                  <button
+                    className={style.botao_cancelar}
+                    onClick={() => setAberto(false)}
+                  >
+                    Voltar
+                  </button>
+                </div>
               </div>
-
-              <div className={style.container_botoes}>
-                <button
-                  onClick={ExcluirEspecialidade}
-                  className={style.botao_excluir}
-                >
-                  Excluir
-                </button>
-
-                <button
-                  className={style.botao_cancelar}
-                  onClick={() => setAberto(false)}
-                >
-                  Voltar
-                </button>
-              </div>
-            </div>
-          </ModalGlobal>
-        </div>
+            </ModalGlobal>
+          </div>
+          {/* Exibição do Alerta */}
+          <Alerta
+            tipo={tipoAlerta}
+            mensagem={mensagemAlerta}
+            visivel={mostrarAlerta}
+            aoFechar={() => setMostrarAlerta(false)}
+          />
+        </>
       )}
     </div>
   );
