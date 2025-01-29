@@ -4,12 +4,11 @@ import { useState, useEffect } from "react";
 import { MdEdit, MdDelete } from "react-icons/md";
 import EspecialidadeApi from "../../../Services/MinhaApi/Especialidade";
 import Alerta from "../../Alerta/Alerta";
+import ModalExcluirEspecialidade from "../ModalExcluirEspecialidade/ModalExcluirEspecialidade";
 
 function EspecialidadesTable({ filtro, especialidades, setEspecialidades }) {
   const navigate = useNavigate();
 
-  const [mostrarModal, setMostrarModal] = useState(false);
-  const [especialidadeSelecionada, setEspecialidadeSelecionada] = useState(null);
   const [mostrarAlerta, setMostrarAlerta] = useState(false);
   const [mensagemAlerta, setMensagemAlerta] = useState("");
   const [tipoAlerta, setTipoAlerta] = useState("");
@@ -24,12 +23,6 @@ function EspecialidadesTable({ filtro, especialidades, setEspecialidades }) {
       setMostrarAlerta(false);
     }, 5000); // Alerta desaparece após 5 segundos
   }
-
-  function EditarEspecialidade(id) {
-    const idCodificado = btoa(id); // Codifica o ID em Base64
-    navigate(`/especialidade/editar/${idCodificado}`);
-  }
-
 
   async function BuscarEspecialidadesApi() {
     const usuarioId = localStorage.getItem("usuarioId");
@@ -64,12 +57,14 @@ function EspecialidadesTable({ filtro, especialidades, setEspecialidades }) {
           <td>{especialidade.nome}</td>
           <td>
             <div className={style.botao_acao}>
-              <button onClick={() => EditarEspecialidade(especialidade.id)}>
+              <button>
                 <MdEdit />
               </button>
-              <button >
-                <MdDelete />
-              </button>
+                <ModalExcluirEspecialidade
+                  especialidadeSelecionada={especialidade}
+                  especialidades={especialidades}
+                  setEspecialidades={setEspecialidades}
+                />
             </div>
           </td>
         </tr>
@@ -85,7 +80,7 @@ function EspecialidadesTable({ filtro, especialidades, setEspecialidades }) {
 
   return (
     <div className={style.container_total}>
-      <h2>Lista de Especialidades</h2>
+      <h2 className={style.titulo}>Lista de Especialidades</h2>
 
       <div className={style.container_table}>
         <table>
@@ -98,8 +93,6 @@ function EspecialidadesTable({ filtro, especialidades, setEspecialidades }) {
           <tbody>{MostarEspecialidades()}</tbody>
         </table>
       </div>
-
-     
     </div>
   );
 }

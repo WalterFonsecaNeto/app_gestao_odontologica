@@ -1,53 +1,51 @@
 import { useState } from "react";
 import { MdDelete } from "react-icons/md";
-import style from "./ModalExcluirFormaPagamento.module.css";
+import style from "./ModalExcluirProcedimento.module.css";
 import ModalGlobal from "../../ModalGlobal/ModalGlobal";
-import FormaPagamentoApi from "../../../Services/MinhaApi/FormaPagemnto";
+import ProcedimentoApi from "../../../Services/MinhaApi/Procedimento";
 import Alerta from "../../Alerta/Alerta";
 
-function ModalExcluirFormaPagamento({
-  formaPagamentoSelecionada,
-  setFormasPagamento,
-  formasPagamento,
+function ModalExcluirProcedimento({
+  procedimentoSelecionado,
+  setProcedimentos,
+  procedimentos,
 }) {
   const [aberto, setAberto] = useState(false);
   const [mostrarAlerta, setMostrarAlerta] = useState(false);
   const [mensagemAlerta, setMensagemAlerta] = useState("");
   const [tipoAlerta, setTipoAlerta] = useState("");
   const [desabilitarBotao, setDesabilitarBotao] = useState(false);
-  
-  // Função para exibir o alerta
+
   function ExibirAlerta(mensagem, tipo) {
     setMensagemAlerta(mensagem);
     setTipoAlerta(tipo);
     setMostrarAlerta(true);
 
     setTimeout(() => {
-      setMostrarAlerta(false);
-    }, 5000); // Alerta desaparece após 5 segundos
+      setMostrarAlerta(false); // Fecha o alerta após 5 segundos
+    }, 5000);
   }
 
-  async function ExcluirFormaPagamento() {
+  async function ExcluirProcedimento() {
     setDesabilitarBotao(true); // Desabilita o botão após o clique
     try {
       const usuarioId = localStorage.getItem("usuarioId");
-
-      await FormaPagamentoApi.deletarFormaPagamentoAsync(
-        formaPagamentoSelecionada.id,
+      await ProcedimentoApi.deletarProcedimentoAsync(
+        procedimentoSelecionado.id,
         usuarioId
       );
-
-      ExibirAlerta("Forma de pagamento excluída com sucesso!", "success");
+      ExibirAlerta("Procedimento excluído com sucesso!", "success");
     } catch (error) {
       const mensagemErro =
         error.response?.data ||
-        "Ocorreu um erro ao listar as formas de pagamento. Tente novamente.";
+        "Ocorreu um erro ao excluir o procedimento. Tente novamente.";
       ExibirAlerta(mensagemErro, "danger");
     }
 
+    // Fecha o modal após 5 segundos para dar tempo de ver o alert
     setTimeout(() => {
-      setFormasPagamento(
-        formasPagamento.filter((e) => e.id !== formaPagamentoSelecionada.id)
+      setProcedimentos(
+        procedimentos.filter((p) => p.id !== procedimentoSelecionado.id)
       );
       setAberto(false);
     }, 5000);
@@ -68,7 +66,7 @@ function ModalExcluirFormaPagamento({
           <ModalGlobal
             aberto={aberto}
             setAberto={setAberto}
-            titulo="Excluir Forma de Pagamento"
+            titulo="Excluir Procedimento"
           >
             {/* Exibição do Alerta */}
             <Alerta
@@ -80,14 +78,14 @@ function ModalExcluirFormaPagamento({
 
             <div className={style.container_total}>
               <div className={style.container_info}>
-                <p>Você tem certeza que deseja excluir a forma de pagamento:</p>
-                <h4>{formaPagamentoSelecionada.nome}</h4>
+                <p>Você tem certeza que deseja excluir o procedimento:</p>
+                <h4>{procedimentoSelecionado.nome}</h4>
               </div>
 
               <div className={style.container_botoes}>
                 <button
-                  onClick={ExcluirFormaPagamento}
-                  className={style.botao_excluir}
+                  onClick={ExcluirProcedimento}
+                  className={style.botao_excluir} // Adiciona classe desabilitada
                 >
                   Excluir
                 </button>
@@ -107,4 +105,4 @@ function ModalExcluirFormaPagamento({
   );
 }
 
-export default ModalExcluirFormaPagamento;
+export default ModalExcluirProcedimento;

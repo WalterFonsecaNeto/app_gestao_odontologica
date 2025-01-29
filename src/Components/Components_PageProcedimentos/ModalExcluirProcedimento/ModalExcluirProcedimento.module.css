@@ -17,8 +17,6 @@
   width: 70%;
   margin: auto;
   font-size: 18px;
-
-
 }
 
 .container_botoes {
@@ -72,8 +70,6 @@
 .botao_excluir:hover {
   background-color: #bf1313;
 }
-
-
 
 
 /* Bloqueia a interação com o botão ao excluir */

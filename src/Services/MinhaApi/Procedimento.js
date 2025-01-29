@@ -1,7 +1,6 @@
 import { HTTPClient } from "../Cliente";
 
 const ProcedimentoApi = {
-
   async obterProcedimentoAsync(procedimentoId, usuarioId) {
     const response = await HTTPClient.get(
       `/Procedimento/Obter/${procedimentoId}/Usuario/${usuarioId}`
@@ -70,7 +69,6 @@ const ProcedimentoApi = {
     );
     return response.data;
   },
-  
 };
 
 export default ProcedimentoApi;

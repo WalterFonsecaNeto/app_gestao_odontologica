@@ -7,10 +7,6 @@ import ModalExcluirFormaPagamento from "../ModalExcluirFormaPagamento/ModalExclu
 
 function FormasPagamentoTable({ filtro, formasPagamento, setFormasPagamento }) {
 
-
-  const [mostrarModal, setMostrarModal] = useState(false);
-  const [formaPagamentoSelecionada, setFormaPagamentoSelecionada] =
-    useState(null);
   const [mostrarAlerta, setMostrarAlerta] = useState(false);
   const [mensagemAlerta, setMensagemAlerta] = useState("");
   const [tipoAlerta, setTipoAlerta] = useState("");
@@ -25,8 +21,6 @@ function FormasPagamentoTable({ filtro, formasPagamento, setFormasPagamento }) {
       setMostrarAlerta(false);
     }, 5000); // Alerta desaparece após 5 segundos
   }
-
- 
 
   async function BuscarFormasPagamentoApi() {
     const usuarioId = localStorage.getItem("usuarioId");
