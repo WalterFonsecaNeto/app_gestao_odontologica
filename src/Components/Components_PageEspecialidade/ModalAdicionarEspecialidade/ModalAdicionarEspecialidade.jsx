@@ -7,7 +7,8 @@ import Alerta from "../../Alerta/Alerta";
 
 function ModalAdicionarEspecialidade({ especialidades, setEspecialidades }) {
   const [especialidade, setEspecialidade] = useState({
-    nome: "",
+    id: "",
+    nome: ""
   });
   const [aberto, setAberto] = useState(false);
   const [mostrarAlerta, setMostrarAlerta] = useState(false);
@@ -31,11 +32,14 @@ function ModalAdicionarEspecialidade({ especialidades, setEspecialidades }) {
     const usuarioId = localStorage.getItem("usuarioId");
 
     try {
-      await EspecialidadeApi.criarEspecialidadeAsync(
+      const especialidadeId = await EspecialidadeApi.criarEspecialidadeAsync(
         usuarioId,
         especialidade.nome
       );
       ExibirAlerta("Especialidade cadastrada com sucesso!", "success");
+
+      //especialidade recebe especialidadeId em id
+      especialidade.id = especialidadeId;
 
       //Atualizar o array de especialidades para evitar muitas buscas no banco
       setEspecialidades([...especialidades, especialidade]);
@@ -47,6 +51,7 @@ function ModalAdicionarEspecialidade({ especialidades, setEspecialidades }) {
     }
     // Limpar os valores do formulário após salvar
     setEspecialidade({
+      id: "",
       nome: "",
     });
 
@@ -85,7 +90,7 @@ function ModalAdicionarEspecialidade({ especialidades, setEspecialidades }) {
           {/* Exibição do Alerta */}
           <Alerta
             tipo={tipoAlerta}
-            mensagem={mensagemAlerta}
+            mensagem={String(mensagemAlerta)}
             visivel={mostrarAlerta}
             aoFechar={() => setMostrarAlerta(false)}
           />

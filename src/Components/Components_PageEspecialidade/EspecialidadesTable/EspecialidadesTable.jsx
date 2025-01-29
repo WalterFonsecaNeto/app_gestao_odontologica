@@ -7,7 +7,6 @@ import Alerta from "../../Alerta/Alerta";
 import ModalExcluirEspecialidade from "../ModalExcluirEspecialidade/ModalExcluirEspecialidade";
 
 function EspecialidadesTable({ filtro, especialidades, setEspecialidades }) {
-  const navigate = useNavigate();
 
   const [mostrarAlerta, setMostrarAlerta] = useState(false);
   const [mensagemAlerta, setMensagemAlerta] = useState("");

@@ -1,6 +1,6 @@
 import style from "./FichaPaciente.module.css";
-import FormularioModalTeste from "../FormularioModalTeste/FormularioModalTeste";
-function FichaPaciente({ paciente }) {
+import ModalEditarPacinete from "../ModalEditarPaciente/ModalEditarPaciente";
+function FichaPaciente({ paciente, setPaciente }) {
   return (
     <div className={style.container_total}>
       <div className={style.titulo_container_total}>
@@ -49,7 +49,7 @@ function FichaPaciente({ paciente }) {
         </div>
       </div>
 
-      <FormularioModalTeste/>
+      <ModalEditarPacinete pacienteSelecionado={paciente} setPacienteSelecionado={setPaciente}/>
     </div>
   );
 }

@@ -1,0 +1,76 @@
+.container_formulario {
+  width: 800px;
+}
+
+/* Estilização das div de informação */
+.container_linha {
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+  width: 100%;
+}
+.container_info {
+  width: 33.3%;
+}
+.container_info_nome {
+  width: 70%;
+}
+.container_info_data {
+  width: 30%;
+}
+.container_info_genero {
+  width: 30%;
+}
+
+.container_formulario label {
+  font-weight: bold;
+  color: #333;
+  display: block;
+  margin-top: 10px;
+}
+
+.container_formulario input,
+textarea {
+  outline: none;
+  width: 100%;
+  padding: 10px;
+  margin-top: 4px;
+  border: 1px solid #58af9b;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.botao_salvar {
+  margin-top: 40px;
+  background-color: #58af9b;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+}
+.container_formulario .botao_salvar:hover {
+  background-color: #4da88d;
+}
+
+/* Bloqueia a interação com o botão ao excluir */
+.container_total_modal_desabilitado {
+  & input {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+  & textarea {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+  & select {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+  & button{
+    pointer-events: none;
+    opacity: 0.5;
+  }
+}
+

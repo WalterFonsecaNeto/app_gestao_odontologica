@@ -32,10 +32,11 @@ function ModalExcluirEspecialidade({
     try {
       const usuarioId = localStorage.getItem("usuarioId");
 
-      await EspecialidadeApi.deletarEspecialidadeAsync(
+      const teste = await EspecialidadeApi.deletarEspecialidadeAsync(
         especialidadeSelecionada.id,
         usuarioId
       );
+      
 
       ExibirAlerta("Especialidade excluída com sucesso!", "success");
     } catch (error) {
@@ -47,9 +48,10 @@ function ModalExcluirEspecialidade({
 
     setTimeout(() => {
       setEspecialidades(
-        especialidades.filter((e) => e.id !== especialidadeSelecionada.id)
+        especialidades?.filter((e) => e.id !== especialidadeSelecionada.id)
       );
       setAberto(false);
+      setDesabilitarBotao(false)
     }, 5000);
   }
 
@@ -98,7 +100,7 @@ function ModalExcluirEspecialidade({
           {/* Exibição do Alerta */}
           <Alerta
             tipo={tipoAlerta}
-            mensagem={mensagemAlerta}
+            mensagem={String(mensagemAlerta)}
             visivel={mostrarAlerta}
             aoFechar={() => setMostrarAlerta(false)}
           />

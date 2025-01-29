@@ -28,7 +28,7 @@ function PageFichaClinica() {
   return (
     <div>
       <Sidebar paciente={paciente}>
-        <FichaPaciente paciente={paciente} />
+        <FichaPaciente paciente={paciente} setPaciente={setPaciente} />
       </Sidebar>
     </div>
   );
