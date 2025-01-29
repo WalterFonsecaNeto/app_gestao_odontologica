@@ -8,13 +8,15 @@ import Alerta from "../../Alerta/Alerta";
 function ModalAdicionarFormaPagamento({ formasPagamento, setFormasPagamento }) {
   const [formaPagamento, setFormaPagamento] = useState([
     {
-      nome: ""
+      id: "",
+      nome: "",
     },
   ]);
   const [aberto, setAberto] = useState(false);
   const [mostrarAlerta, setMostrarAlerta] = useState(false);
   const [mensagemAlerta, setMensagemAlerta] = useState("");
   const [tipoAlerta, setTipoAlerta] = useState("");
+  const [desabilitarBotao, setDesabilitarBotao] = useState(false);
 
   // Função para exibir o alerta
   function ExibirAlerta(mensagem, tipo) {
@@ -24,19 +26,24 @@ function ModalAdicionarFormaPagamento({ formasPagamento, setFormasPagamento }) {
 
     setTimeout(() => {
       setMostrarAlerta(false);
-    }, 5000); // Alerta desaparece após 5 segundos
+      setDesabilitarBotao(false);
+      setAberto(false);
+    }, 5000);
   }
 
   async function SalvarFormaPagamento(event) {
     event.preventDefault();
 
     const usuarioId = localStorage.getItem("usuarioId");
+    setDesabilitarBotao(true);
 
     try {
-      await FormaPagamentoApi.criarFormaPagamentoAsync(
+      const formaPagamentoId = await FormaPagamentoApi.criarFormaPagamentoAsync(
         usuarioId,
         formaPagamento.nome
       );
+      formaPagamento.id = formaPagamentoId;
+
       ExibirAlerta("Forma de pagamento cadastrada com sucesso!", "success");
 
       setFormasPagamento([...formasPagamento, formaPagamento]);
@@ -46,15 +53,6 @@ function ModalAdicionarFormaPagamento({ formasPagamento, setFormasPagamento }) {
         "Ocorreu um erro ao cadastrar a forma de pagamento. Tente novamente.";
       ExibirAlerta(mensagemErro, "danger");
     }
-
-    setFormaPagamento({
-      nome: "",
-    });
-
-    //fecha o modal apos 5 segundos para dar tempo de ver o alert
-    setTimeout(() => {
-      setAberto(false);
-    }, 5000);
   }
 
   function AtualizarFormaPagamentoComValores(event) {
@@ -75,11 +73,38 @@ function ModalAdicionarFormaPagamento({ formasPagamento, setFormasPagamento }) {
       <BotaoNovo AbrirModal={() => setAberto(true)} />
 
       {aberto && (
-        <ModalGlobal
-          aberto={aberto}
-          setAberto={setAberto}
-          titulo="Cadastro de Forma de Pagamento"
-        >
+        <>
+          <div
+            className={`${style.container_total_modal} ${
+              desabilitarBotao ? style.container_total_modal_desabilitado : ""
+            }`}
+          >
+            <ModalGlobal
+              aberto={aberto}
+              setAberto={setAberto}
+              titulo="Cadastro de Forma de Pagamento"
+            >
+              <div className={style.container_formulario}>
+                <form onSubmit={SalvarFormaPagamento}>
+                  <label className={style.label}>Nome</label>
+                  <input
+                    type="text"
+                    className={style.input}
+                    placeholder="Digite o nome da forma de pagamento"
+                    name="nome"
+                    value={formaPagamento.nome}
+                    onChange={AtualizarFormaPagamentoComValores}
+                    required
+                  />
+
+                  <button type="submit" className={style.botao_salvar}>
+                    Salvar
+                  </button>
+                </form>
+              </div>
+            </ModalGlobal>
+          </div>
+
           {/* Exibição do Alerta */}
           <Alerta
             tipo={tipoAlerta}
@@ -87,25 +112,7 @@ function ModalAdicionarFormaPagamento({ formasPagamento, setFormasPagamento }) {
             visivel={mostrarAlerta}
             aoFechar={() => setMostrarAlerta(false)}
           />
-          <div className={style.container_formulario}>
-            <form onSubmit={SalvarFormaPagamento}>
-              <label className={style.label}>Nome</label>
-              <input
-                type="text"
-                className={style.input}
-                placeholder="Digite o nome da forma de pagamento"
-                name="nome"
-                value={formaPagamento.nome}
-                onChange={AtualizarFormaPagamentoComValores}
-                required
-              />
-
-              <button type="submit" className={style.botao_salvar}>
-                Salvar
-              </button>
-            </form>
-          </div>
-        </ModalGlobal>
+        </>
       )}
     </div>
   );

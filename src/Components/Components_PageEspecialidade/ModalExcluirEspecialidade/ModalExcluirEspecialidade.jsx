@@ -32,7 +32,7 @@ function ModalExcluirEspecialidade({
     try {
       const usuarioId = localStorage.getItem("usuarioId");
 
-      const teste = await EspecialidadeApi.deletarEspecialidadeAsync(
+      await EspecialidadeApi.deletarEspecialidadeAsync(
         especialidadeSelecionada.id,
         usuarioId
       );

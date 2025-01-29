@@ -1,19 +1,20 @@
 import { React, useState, useEffect } from "react";
 import ModalGlobal from "../../ModalGlobal/ModalGlobal";
 import EspecialidadeApi from "../../../Services/MinhaApi/Especialidade";
-import styles from "./ModalAdicionarEspecialidade.module.css";
+import style from "./ModalAdicionarEspecialidade.module.css";
 import BotaoNovo from "../../BotaoNovo/BotaoNovo";
 import Alerta from "../../Alerta/Alerta";
 
 function ModalAdicionarEspecialidade({ especialidades, setEspecialidades }) {
   const [especialidade, setEspecialidade] = useState({
     id: "",
-    nome: ""
+    nome: "",
   });
   const [aberto, setAberto] = useState(false);
   const [mostrarAlerta, setMostrarAlerta] = useState(false);
   const [mensagemAlerta, setMensagemAlerta] = useState("");
   const [tipoAlerta, setTipoAlerta] = useState("");
+  const [desabilitarBotao, setDesabilitarBotao] = useState(false);
 
   // Função para exibir o alerta
   function ExibirAlerta(mensagem, tipo) {
@@ -23,6 +24,7 @@ function ModalAdicionarEspecialidade({ especialidades, setEspecialidades }) {
 
     setTimeout(() => {
       setMostrarAlerta(false);
+      setDesabilitarBotao(false);
     }, 5000); // Alerta desaparece após 5 segundos
   }
 
@@ -30,6 +32,7 @@ function ModalAdicionarEspecialidade({ especialidades, setEspecialidades }) {
     event.preventDefault();
 
     const usuarioId = localStorage.getItem("usuarioId");
+    setDesabilitarBotao(true);
 
     try {
       const especialidadeId = await EspecialidadeApi.criarEspecialidadeAsync(
@@ -82,11 +85,36 @@ function ModalAdicionarEspecialidade({ especialidades, setEspecialidades }) {
       <BotaoNovo AbrirModal={() => setAberto(true)} />
 
       {aberto && (
-        <ModalGlobal
-          aberto={aberto}
-          setAberto={setAberto}
-          titulo="Cadastro de Especialidade"
-        >
+        <>
+          <div
+            className={`${style.container_total_modal} ${
+              desabilitarBotao ? style.container_total_modal_desabilitado : ""
+            }`}
+          >
+            <ModalGlobal
+              aberto={aberto}
+              setAberto={setAberto}
+              titulo="Cadastro de Especialidade"
+            >
+              <div className={style.container_formulario}>
+                <form onSubmit={SalvarEspecialidade}>
+                  <label className={style.label}>Nome</label>
+                  <input
+                    type="text"
+                    className={style.input}
+                    placeholder="Nome da especialidade"
+                    name="nome"
+                    value={especialidade.nome}
+                    onChange={AtualizarEspecialidadeComValores}
+                  />
+
+                  <button type="submit" className={style.botao_salvar}>
+                    Salvar
+                  </button>
+                </form>
+              </div>
+            </ModalGlobal>
+          </div>
           {/* Exibição do Alerta */}
           <Alerta
             tipo={tipoAlerta}
@@ -94,25 +122,7 @@ function ModalAdicionarEspecialidade({ especialidades, setEspecialidades }) {
             visivel={mostrarAlerta}
             aoFechar={() => setMostrarAlerta(false)}
           />
-
-          <div className={styles.container_formulario}>
-            <form onSubmit={SalvarEspecialidade}>
-              <label className={styles.label}>Nome</label>
-              <input
-                type="text"
-                className={styles.input}
-                placeholder="Nome da especialidade"
-                name="nome" 
-                value={especialidade.nome}
-                onChange={AtualizarEspecialidadeComValores}
-              />
-
-              <button type="submit" className={styles.botao_salvar}>
-                Salvar
-              </button>
-            </form>
-          </div>
-        </ModalGlobal>
+        </>
       )}
     </div>
   );

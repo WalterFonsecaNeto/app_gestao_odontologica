@@ -1,13 +1,14 @@
 import { useState, useEffect } from "react";
-import ModalGlobal from "../../ModalGlobal/ModalGlobal"; 
-import BotaoNovo from "../../BotaoNovo/BotaoNovo"; 
+import ModalGlobal from "../../ModalGlobal/ModalGlobal";
+import BotaoNovo from "../../BotaoNovo/BotaoNovo";
 import ProcedimentoApi from "../../../Services/MinhaApi/Procedimento";
 import EspecialidadeApi from "../../../Services/MinhaApi/Especialidade";
-import styles from "./ModalAdicionarProcedimento.module.css"; 
+import style from "./ModalAdicionarProcedimento.module.css";
 import Alerta from "../../Alerta/Alerta";
 
 function ModalAdicionarProcedimento({ procedimentos, setProcedimentos }) {
   const [procedimento, setProcedimento] = useState({
+    id: "",
     nome: "",
     descricao: "",
     valor: "",
@@ -18,6 +19,7 @@ function ModalAdicionarProcedimento({ procedimentos, setProcedimentos }) {
   const [mostrarAlerta, setMostrarAlerta] = useState(false);
   const [mensagemAlerta, setMensagemAlerta] = useState("");
   const [tipoAlerta, setTipoAlerta] = useState("");
+  const [desabilitarBotao, setDesabilitarBotao] = useState(false);
 
   // Função para exibir o alerta
   function ExibirAlerta(mensagem, tipo) {
@@ -27,6 +29,8 @@ function ModalAdicionarProcedimento({ procedimentos, setProcedimentos }) {
 
     setTimeout(() => {
       setMostrarAlerta(false);
+      setDesabilitarBotao(false);
+      setAberto(false);
     }, 5000); // Alerta desaparece após 5 segundos
   }
 
@@ -34,36 +38,28 @@ function ModalAdicionarProcedimento({ procedimentos, setProcedimentos }) {
     event.preventDefault();
 
     const usuarioId = localStorage.getItem("usuarioId");
+    setDesabilitarBotao(true);
 
     try {
-      await ProcedimentoApi.criarProcedimentoAsync(
+      const procedimentoId = await ProcedimentoApi.criarProcedimentoAsync(
         usuarioId,
         procedimento.nome,
         procedimento.descricao,
         procedimento.valor,
         procedimento.especialidadeId
       );
+      procedimento.id = procedimentoId;
+
       ExibirAlerta("Procedimento cadastrado com sucesso!", "success");
 
       setProcedimentos([...procedimentos, procedimento]);
+
     } catch (error) {
       const mensagemErro =
         error.response?.data ||
         "Ocorreu um erro ao cadastrar o procedimento. Tente novamente.";
       ExibirAlerta(mensagemErro, "danger");
     }
-
-    setProcedimento({
-      nome: "",
-      descricao: "",
-      valor: "",
-      especialidadeId: "",
-    });
-
-    //fecha o modal apos 5 segundos para dar tempo de ver o alert
-    setTimeout(() => {
-      setAberto(false);
-    }, 5000);
   }
 
   async function ListarEspecialidades() {
@@ -76,7 +72,6 @@ function ModalAdicionarProcedimento({ procedimentos, setProcedimentos }) {
         );
 
       setEspecialidades(response);
-      
     } catch (error) {
       const mensagemErro =
         error.response?.data ||
@@ -125,70 +120,78 @@ function ModalAdicionarProcedimento({ procedimentos, setProcedimentos }) {
       <BotaoNovo AbrirModal={() => setAberto(true)} />
 
       {aberto && (
-        <ModalGlobal
-          aberto={aberto}
-          setAberto={setAberto}
-          titulo="Cadastro de Procedimento"
-        >
+        <>
+          <div
+            className={`${style.container_total_modal} ${
+              desabilitarBotao ? style.container_total_modal_desabilitado : ""
+            }`}
+          >
+            <ModalGlobal
+              aberto={aberto}
+              setAberto={setAberto}
+              titulo="Cadastro de Procedimento"
+            >
+              <div className={style.container_formulario}>
+                <form onSubmit={SalvarProcedimento}>
+                  <label className={style.label}>Nome</label>
+                  <input
+                    type="text"
+                    className={style.input}
+                    placeholder="Digite o nome do procedimento"
+                    name="nome"
+                    maxLength="100"
+                    value={procedimento.nome}
+                    onChange={AtualizarProcedimentoComValores}
+                  />
+
+                  <label className={style.label}>Descrição</label>
+                  <input
+                    type="text"
+                    className={style.input}
+                    placeholder="Digite a descrição do procedimento"
+                    name="descricao"
+                    maxLength="255"
+                    value={procedimento.descricao}
+                    onChange={AtualizarProcedimentoComValores}
+                  />
+
+                  <label className={style.label}>Valor</label>
+                  <input
+                    type="number"
+                    className={style.input}
+                    placeholder="Digite o valor do procedimento"
+                    name="valor"
+                    value={procedimento.valor}
+                    onChange={AtualizarProcedimentoComValores}
+                    required
+                  />
+
+                  <label className={style.label}>Especialidade</label>
+                  <select
+                    name="especialidadeId"
+                    className={style.input}
+                    value={procedimento.especialidadeId}
+                    onChange={AtualizarProcedimentoComValores}
+                    required
+                  >
+                    {MostrarOpcoesEspecialidades()}
+                  </select>
+
+                  <button type="submit" className={style.botao_salvar}>
+                    Salvar
+                  </button>
+                </form>
+              </div>
+            </ModalGlobal>
+          </div>
+
           <Alerta
             tipo={tipoAlerta}
             mensagem={mensagemAlerta}
             visivel={mostrarAlerta}
             aoFechar={() => setMostrarAlerta(false)}
           />
-
-          <div className={styles.container_formulario}>
-            <form onSubmit={SalvarProcedimento}>
-              <label className={styles.label}>Nome</label>
-              <input
-                type="text"
-                className={styles.input}
-                placeholder="Digite o nome do procedimento"
-                name="nome"
-                maxLength="100"
-                value={procedimento.nome}
-                onChange={AtualizarProcedimentoComValores}
-              />
-
-              <label className={styles.label}>Descrição</label>
-              <input
-                type="text"
-                className={styles.input}
-                placeholder="Digite a descrição do procedimento"
-                name="descricao"
-                maxLength="255"
-                value={procedimento.descricao}
-                onChange={AtualizarProcedimentoComValores}
-              />
-
-              <label className={styles.label}>Valor</label>
-              <input
-                type="number"
-                className={styles.input}
-                placeholder="Digite o valor do procedimento"
-                name="valor"
-                value={procedimento.valor}
-                onChange={AtualizarProcedimentoComValores}
-                required
-              />
-
-              <label className={styles.label}>Especialidade</label>
-              <select
-                name="especialidadeId"
-                className={styles.input}
-                value={procedimento.especialidadeId}
-                onChange={AtualizarProcedimentoComValores}
-                required
-              >
-                {MostrarOpcoesEspecialidades()}
-              </select>
-
-              <button type="submit" className={styles.botao_salvar}>
-                Salvar
-              </button>
-            </form>
-          </div>
-        </ModalGlobal>
+        </>
       )}
     </div>
   );

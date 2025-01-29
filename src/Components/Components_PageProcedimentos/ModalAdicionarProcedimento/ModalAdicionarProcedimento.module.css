@@ -34,3 +34,32 @@
 .container_formulario .botao_salvar:hover {
   background-color: #4da88d;
 }
+
+
+
+
+/* Bloqueia a interação com o botão ao excluir */
+.container_total_modal_desabilitado {
+  & input {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+  & textarea {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+  & select {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+  & button{
+    pointer-events: none;
+    opacity: 0.5;
+  }
+  & option{
+    pointer-events: none;
+    opacity: 0.5;
+  }
+  
+}
+

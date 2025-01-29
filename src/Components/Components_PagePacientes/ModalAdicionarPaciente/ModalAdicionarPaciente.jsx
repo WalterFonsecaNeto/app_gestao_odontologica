@@ -8,6 +8,7 @@ import style from "./ModalAdicionarPaciente.module.css"; // Importando o arquivo
 
 function ModalAdicionarPaciente({ setPacientes, pacientes }) {
   const [paciente, setPaciente] = useState({
+    id:"",
     nome: "",
     cpf: "",
     endereco: "",
@@ -33,6 +34,7 @@ function ModalAdicionarPaciente({ setPacientes, pacientes }) {
     setTimeout(() => {
       setMostrarAlerta(false);
       setDesabilitarBotao(false);
+      setAberto(false)
     }, 5000); // Alerta desaparece após 5 segundos
   }
 
@@ -43,7 +45,7 @@ function ModalAdicionarPaciente({ setPacientes, pacientes }) {
     setDesabilitarBotao(true);
 
     try {
-      await PacienteApi.criarPacienteAsync(
+      const pacienteId = await PacienteApi.criarPacienteAsync(
         usuarioId,
         paciente.nome,
         paciente.dataNascimento,
@@ -54,6 +56,7 @@ function ModalAdicionarPaciente({ setPacientes, pacientes }) {
         paciente.email,
         paciente.historicoMedico
       );
+      paciente.id = pacienteId;
 
       ExibirAlerta("Paciente cadastrado com sucesso!", "success");
 
@@ -66,21 +69,6 @@ function ModalAdicionarPaciente({ setPacientes, pacientes }) {
       ExibirAlerta(mensagemErro, "danger");
     }
 
-    setPaciente({
-      nome: "",
-      cpf: "",
-      endereco: "",
-      telefone: "",
-      dataNascimento: "",
-      genero: "",
-      email: "",
-      historicoMedico: "",
-    });
-
-    //fecha o modal apos 5 segundos para dar tempo de ver o alert
-    setTimeout(() => {
-      setAberto(false);
-    }, 5000);
   }
 
   //Função para atualizar a variavel do paciente com os valore digitados no inputs
@@ -123,11 +111,7 @@ function ModalAdicionarPaciente({ setPacientes, pacientes }) {
               titulo="Cadastro de Paciente"
             >
               <div
-                className={`${style.container_formulario} ${
-                  desabilitarBotao
-                    ? style.container_formulario_desabilitado
-                    : ""
-                }`}
+                className={style.container_formulario}
               >
                 <form onSubmit={SalvarPaciente}>
                   <div className={style.container_linha}>
@@ -247,16 +231,14 @@ function ModalAdicionarPaciente({ setPacientes, pacientes }) {
                     onChange={AtualizaPacientesComValores}
                   ></textarea>
 
-                  <button
-                    type="submit"
-                    className={style.botao_salvar}
-                  >
+                  <button type="submit" className={style.botao_salvar}>
                     Salvar
                   </button>
                 </form>
               </div>
             </ModalGlobal>
           </div>
+
           {/* Exibição do Alerta */}
           <Alerta
             tipo={tipoAlerta}
