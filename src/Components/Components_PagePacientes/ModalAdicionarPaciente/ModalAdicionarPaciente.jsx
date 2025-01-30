@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import InputMask from "react-input-mask";
-import ModalGlobal from "../../ModalGlobal/ModalGlobal"; // Importando o ModalGlobal
-import BotaoNovo from "../../BotaoNovo/BotaoNovo"; // Importando o BotaoNovo
+import ModalGlobal from "../../ModalGlobal/ModalGlobal"; 
+import BotaoNovo from "../../BotaoNovo/BotaoNovo"; 
 import PacienteApi from "../../../Services/MinhaApi/Paciente";
-import Alerta from "../../Alerta/Alerta"; // Importando o componente de alerta
-import style from "./ModalAdicionarPaciente.module.css"; // Importando o arquivo CSS
+import Alerta from "../../Alerta/Alerta"; 
+import style from "./ModalAdicionarPaciente.module.css"; 
+
 
 function ModalAdicionarPaciente({ setPacientes, pacientes }) {
   const [paciente, setPaciente] = useState({

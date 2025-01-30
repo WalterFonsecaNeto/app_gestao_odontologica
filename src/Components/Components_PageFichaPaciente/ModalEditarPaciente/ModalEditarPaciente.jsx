@@ -4,6 +4,7 @@ import ModalGlobal from "../../ModalGlobal/ModalGlobal";
 import PacienteApi from "../../../Services/MinhaApi/Paciente";
 import Alerta from "../../Alerta/Alerta";
 import style from "./ModalEditarPaciente.module.css";
+import { MdEdit } from "react-icons/md";
 
 function ModalEditarPaciente({ pacienteSelecionado , setPacienteSelecionado }) {
   const [paciente, setPaciente] = useState({
@@ -89,7 +90,7 @@ function ModalEditarPaciente({ pacienteSelecionado , setPacienteSelecionado }) {
   return (
 
     <div>
-      <button onClick={() => setAberto(true)}>Teste</button>
+      <button onClick={() => setAberto(true)}><MdEdit/></button>
       {aberto && (
         <div
           className={`${style.container_total_modal} ${

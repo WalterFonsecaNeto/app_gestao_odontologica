@@ -1,5 +1,4 @@
 import style from "./EspecialidadesTable.module.css";
-import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { MdEdit, MdDelete } from "react-icons/md";
 import EspecialidadeApi from "../../../Services/MinhaApi/Especialidade";
