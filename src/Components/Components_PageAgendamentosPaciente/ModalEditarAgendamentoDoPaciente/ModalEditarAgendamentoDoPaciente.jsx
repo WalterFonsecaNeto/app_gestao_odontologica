@@ -2,10 +2,10 @@ import { useState } from "react";
 import ModalGlobal from "../../ModalGlobal/ModalGlobal";
 import AgendamentoApi from "../../../Services/MinhaApi/Agendamento";
 import Alerta from "../../Alerta/Alerta";
-import styles from "./ModalEditarAgendamento.module.css";
+import styles from "./ModalEditarAgendamentoDoPaciente.module.css";
 import { MdEdit } from "react-icons/md";
 
-function ModalEditarAgendamento({ agendamentoSelecionado }) {
+function ModalEditarAgendamentoDoPaciente({ agendamentoSelecionado }) {
   const [agendamento, setAgendamento] = useState({
     ...agendamentoSelecionado,
     hora: agendamentoSelecionado.dataHora.slice(11, 16),
@@ -82,18 +82,6 @@ function ModalEditarAgendamento({ agendamentoSelecionado }) {
             >
               <form onSubmit={AtualizarAgendamento}>
                 <div className={styles.container_linha}>
-                  <div className={styles.container_info_nome}>
-                    <label className={styles.label}>Paciente:</label>
-                    <input
-                      type="text"
-                      className={styles.input}
-                      name="pacienteNome"
-                      value={agendamento.pacienteNome}
-                      onChange={AtualizaAgendamentoComValores}
-                      required
-                    />
-                  </div>
-
                   <div className={styles.container_info_data}>
                     <label className={styles.label}>Data:</label>
                     <input
@@ -168,4 +156,4 @@ function ModalEditarAgendamento({ agendamentoSelecionado }) {
   );
 }
 
-export default ModalEditarAgendamento;
+export default ModalEditarAgendamentoDoPaciente;

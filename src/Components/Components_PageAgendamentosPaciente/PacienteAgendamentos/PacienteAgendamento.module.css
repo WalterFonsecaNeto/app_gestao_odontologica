@@ -3,15 +3,14 @@
   height: 100vh;
 }
 .titulo_container_total {
-  text-align: center;
-
-  & h2 {
+  & .titulo {
     margin-bottom: 40px;
     font-weight: bold;
     color: white;
     background-color: #368371;
     border-radius: 10px;
     padding: 10px;
+    text-align: center;
   }
 }
 
@@ -81,7 +80,7 @@
   /* Adiciona espaço entre o ícone e o texto, se necessário */
 }
 
-.container_table td {
+.container_table {
   text-align: center;
 }
 
@@ -90,4 +89,5 @@
   justify-content: center;
   gap: 15px;
   flex-wrap: wrap;
+  text-align: start;
 }

@@ -2,8 +2,8 @@ import style from "./PacienteAgendamento.module.css";
 import { useParams } from "react-router-dom";
 import AgendamentoApi from "../../../Services/MinhaApi/Agendamento";
 import { useState, useEffect } from "react";
-import { MdCheck, MdDelete } from "react-icons/md";
-
+import { MdCheck } from "react-icons/md";
+import ModalEditarAgendamentoDoPaciente from "../ModalEditarAgendamentoDoPaciente/ModalEditarAgendamentoDoPaciente";
 function PacienteAgendamentos() {
   const [pacienteAgendamentos, setPacienteAgendamentos] = useState([]);
   const { id } = useParams();
@@ -32,7 +32,7 @@ function PacienteAgendamentos() {
   return (
     <div className={style.container_total}>
       <div className={style.titulo_container_total}>
-        <h2>Agendamentos do Paciente</h2>
+        <h2 className={style.titulo}>Agendamentos do Paciente</h2>
       </div>
 
       <div className={style.container_table}>
@@ -67,10 +67,7 @@ function PacienteAgendamentos() {
                   <td>{agendamento.status}</td>
                   <td>
                     <div className={style.botao_acao}>
-                      <button
-                      >
-                        <MdDelete />
-                      </button>
+                      <ModalEditarAgendamentoDoPaciente agendamentoSelecionado={agendamento}/>
 
                       <button
                       >
