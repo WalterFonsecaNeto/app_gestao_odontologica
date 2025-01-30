@@ -54,14 +54,9 @@ function ModalEditarAgendamento({ agendamentoSelecionado }) {
 
   // Função para verificar se houve alterações no agendamento
   useEffect(() => {
-    console.log("1",agendamento)
-    console.log("2",agendamentoSelecionado)
-    
-
     const dataParte = agendamento.dataHora.split("T")[0];
     const dataHoraFormatada = `${dataParte}T${agendamento.hora}:00`;
 
-    console.log("3",dataHoraFormatada)
     if (
       agendamento.pacienteId !== agendamentoSelecionado.pacienteId ||
       dataHoraFormatada !== agendamentoSelecionado.dataHora ||
