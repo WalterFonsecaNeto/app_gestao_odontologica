@@ -100,6 +100,7 @@ function ModalCriarAgendamento({ horarioSelecionado, data }) {
       setDescricao("");
       setPacienteSelecionado(null);
     }
+    
   }, [aberto]);
 
   // Função para abrir o modal
@@ -154,7 +155,7 @@ function ModalCriarAgendamento({ horarioSelecionado, data }) {
                               onClick={() => {
                                 setPacienteSelecionado(paciente);
                                 setPacienteId(paciente.id);
-                                setFiltroPaciente(""); // Limpar o filtro após selecionar
+                                setFiltroPaciente(paciente.nome)
                               }}
                             >
                               {paciente.nome}

@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ModalGlobal from "../../ModalGlobal/ModalGlobal";
 import AgendamentoApi from "../../../Services/MinhaApi/Agendamento";
+import PacienteApi from "../../../Services/MinhaApi/Paciente";
 import Alerta from "../../Alerta/Alerta";
-import styles from "./ModalEditarAgendamento.module.css";
+import style from "./ModalEditarAgendamento.module.css";
 import { MdEdit } from "react-icons/md";
 
 function ModalEditarAgendamento({ agendamentoSelecionado }) {
@@ -10,12 +11,15 @@ function ModalEditarAgendamento({ agendamentoSelecionado }) {
     ...agendamentoSelecionado,
     hora: agendamentoSelecionado.dataHora.slice(11, 16),
   });
-
+  const [pacientes, setPacientes] = useState([]);
+  const [filtroPaciente, setFiltroPaciente] = useState("");
+  const [pacienteSelecionado, setPacienteSelecionado] = useState(null);
   const [aberto, setAberto] = useState(false);
   const [mostrarAlerta, setMostrarAlerta] = useState(false);
   const [mensagemAlerta, setMensagemAlerta] = useState("");
   const [tipoAlerta, setTipoAlerta] = useState("");
-  const [desabilitarBotao, setDesabilitarBotao] = useState(false);
+  const [desabilitarBotoes, setDesabilitarBotoes] = useState(false);
+  const [desabilitarBotaoSalvar, setDesabilitarBotaoSalvar] = useState(true);
 
   function ExibirAlerta(mensagem, tipo) {
     setMensagemAlerta(mensagem);
@@ -25,23 +29,81 @@ function ModalEditarAgendamento({ agendamentoSelecionado }) {
     setTimeout(() => {
       setMostrarAlerta(false);
       setAberto(false);
-      setDesabilitarBotao(false);
+      setDesabilitarBotoes(false);
       window.location.reload();
     }, 5000);
   }
 
-  const AtualizaAgendamentoComValores = (event) => {
-    const { name, value } = event.target;
-    setAgendamento((prev) => ({ ...prev, [name]: value }));
-  };
+  useEffect(() => {
+    BuscarPacientesApi();
+  }, []);
+
+  // Recarregar pacientes da API
+  async function BuscarPacientesApi() {
+    const usuarioId = localStorage.getItem("usuarioId");
+    try {
+      const response = await PacienteApi.listarPacientesPorUsuarioAsync(
+        usuarioId,
+        true
+      );
+      setPacientes(response);
+    } catch (error) {
+      console.error("Erro ao buscar pacientes:", error);
+    }
+  }
+
+  // Função para verificar se houve alterações no agendamento
+  useEffect(() => {
+    console.log("1",agendamento)
+    console.log("2",agendamentoSelecionado)
+    
+
+    const dataParte = agendamento.dataHora.split("T")[0];
+    const dataHoraFormatada = `${dataParte}T${agendamento.hora}:00`;
+
+    console.log("3",dataHoraFormatada)
+    if (
+      agendamento.pacienteId !== agendamentoSelecionado.pacienteId ||
+      dataHoraFormatada !== agendamentoSelecionado.dataHora ||
+      agendamento.descricao !== agendamentoSelecionado.descricao ||
+      agendamento.status !== agendamentoSelecionado.status
+    ) {
+      setDesabilitarBotaoSalvar(false);
+    } else {
+      setDesabilitarBotaoSalvar(true);
+    }
+  }, [agendamento, agendamentoSelecionado]);
+
+  // Resetar estados quando o modal for fechado
+  useEffect(() => {
+    if (!aberto) {
+      setPacienteSelecionado(null);
+      setFiltroPaciente(""); // Limpa o filtro
+    } else {
+      setFiltroPaciente(agendamento.pacienteNome); // Preenche o filtro com o nome do paciente do agendamento
+    }
+  }, [aberto, agendamento.pacienteNome]);
+
+  function filtrarPacientes(event) {
+    setFiltroPaciente(event.target.value);
+  }
+
+  function selecionarPaciente(paciente) {
+    setPacienteSelecionado(paciente);
+    setAgendamento((prev) => ({
+      ...prev,
+      pacienteId: paciente.id,
+      pacienteNome: paciente.nome,
+    }));
+    setFiltroPaciente(""); // Limpa o filtro ao selecionar o paciente
+  }
 
   const AtualizarAgendamento = async (event) => {
     event.preventDefault();
-    setDesabilitarBotao(true);
+    setDesabilitarBotoes(true);
 
     const dataParte = agendamento.dataHora.split("T")[0];
     const dataHoraFormatada = `${dataParte}T${agendamento.hora}:00.000Z`;
-
     const usuarioId = localStorage.getItem("usuarioId");
 
     try {
@@ -64,93 +126,144 @@ function ModalEditarAgendamento({ agendamentoSelecionado }) {
 
   return (
     <div>
-      <button className={styles.botao_modal} onClick={() => setAberto(true)}>
+      <button className={style.botao_modal} onClick={() => setAberto(true)}>
         <MdEdit />
       </button>
 
       {aberto && (
         <div
-          className={`${styles.container_total_modal} ${
-            desabilitarBotao ? styles.container_total_modal_desabilitado : ""
+          className={`${style.container_total_modal} ${
+            desabilitarBotoes ? style.container_total_modal_desabilitado : ""
           }`}
         >
-          <ModalGlobal aberto={aberto} setAberto={setAberto} titulo="Editar Agendamento">
+          <ModalGlobal
+            aberto={aberto}
+            setAberto={setAberto}
+            titulo="Editar Agendamento"
+          >
             <div
-              className={`${styles.container_formulario} ${
-                desabilitarBotao ? styles.container_formulario_desabilitado : ""
+              className={`${style.container_formulario} ${
+                desabilitarBotoes ? style.container_formulario_desabilitado : ""
               }`}
             >
               <form onSubmit={AtualizarAgendamento}>
-                <div className={styles.container_linha}>
-                  <div className={styles.container_info_nome}>
-                    <label className={styles.label}>Paciente:</label>
-                    <input
-                      type="text"
-                      className={styles.input}
-                      name="pacienteNome"
-                      value={agendamento.pacienteNome}
-                      onChange={AtualizaAgendamentoComValores}
-                      required
-                    />
-                  </div>
+                <label>Paciente:</label>
+                <input
+                  type="text"
+                  placeholder="Digite o nome do paciente"
+                  value={
+                    pacienteSelecionado
+                      ? pacienteSelecionado.nome
+                      : filtroPaciente
+                  }
+                  onChange={filtrarPacientes}
+                  required
+                  readOnly={!!pacienteSelecionado} // Impede edição após selecionar paciente
+                />
+                {/* Lista de pacientes com filtro */}
+                {!pacienteSelecionado && (
+                  <ul className={style.listaPacientes}>
+                    {filtroPaciente &&
+                      pacientes
+                        .filter((p) =>
+                          p.nome
+                            .toLowerCase()
+                            .includes(filtroPaciente.toLowerCase())
+                        )
+                        .map((paciente) => (
+                          <li
+                            key={paciente.id}
+                            className={style.pacienteItem}
+                            onClick={() => selecionarPaciente(paciente)}
+                          >
+                            {paciente.nome}
+                          </li>
+                        ))}
+                  </ul>
+                )}
 
-                  <div className={styles.container_info_data}>
-                    <label className={styles.label}>Data:</label>
-                    <input
-                      type="date"
-                      className={styles.input}
-                      name="dataHora"
-                      value={agendamento.dataHora?.split("T")[0] || ""}
-                      onChange={AtualizaAgendamentoComValores}
-                      required
-                    />
-                  </div>
-                </div>
+                {/* Botão para trocar paciente */}
+                {pacienteSelecionado && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setPacienteSelecionado(null);
+                      setFiltroPaciente(""); // Limpa filtro e permite nova busca
+                    }}
+                    className={style.botao_troca_paciente}
+                  >
+                    Trocar Paciente
+                  </button>
+                )}
 
-                <div className={styles.container_linha}>
-                  <div className={styles.container_info_hora}>
-                    <label className={styles.label}>Hora:</label>
-                    <input
-                      type="time"
-                      className={styles.input}
-                      name="hora"
-                      value={agendamento.hora}
-                      onChange={AtualizaAgendamentoComValores}
-                      required
-                    />
-                  </div>
+                <label>Data:</label>
+                <input
+                  type="date"
+                  className={style.input}
+                  name="dataHora"
+                  value={agendamento.dataHora?.split("T")[0] || ""}
+                  onChange={(e) =>
+                    setAgendamento((prev) => ({
+                      ...prev,
+                      dataHora: e.target.value,
+                    }))
+                  }
+                  required
+                />
 
-                  <div className={styles.container_info_procedimento}>
-                    <label className={styles.label}>Descrição:</label>
-                    <input
-                      type="text"
-                      className={styles.input}
-                      name="descricao"
-                      value={agendamento.descricao}
-                      onChange={AtualizaAgendamentoComValores}
-                      required
-                    />
-                  </div>
-                </div>
+                <label>Hora:</label>
+                <input
+                  type="time"
+                  className={style.input}
+                  name="hora"
+                  value={agendamento.hora}
+                  onChange={(e) =>
+                    setAgendamento((prev) => ({
+                      ...prev,
+                      hora: e.target.value,
+                    }))
+                  }
+                  required
+                />
 
-                <div className={styles.container_linha}>
-                  <div className={styles.container_info_status}>
-                    <label className={styles.label}>Status:</label>
-                    <select
-                      className={styles.input}
-                      name="status"
-                      value={agendamento.status}
-                      onChange={AtualizaAgendamentoComValores}
-                      required
-                    >
-                      <option value="Pendente">Pendente</option>
-                      <option value="Cancelado">Cancelado</option>
-                      <option value="Confirmado">Confirmado</option>
-                    </select>
-                  </div>
-                </div>
+                <label>Descrição:</label>
+                <input
+                  type="text"
+                  className={style.input}
+                  name="descricao"
+                  value={agendamento.descricao}
+                  onChange={(e) =>
+                    setAgendamento((prev) => ({
+                      ...prev,
+                      descricao: e.target.value,
+                    }))
+                  }
+                  required
+                />
 
-                <button type="submit" className={styles.botao_salvar}>
+                <label>Status:</label>
+                <select
+                  className={style.input}
+                  name="status"
+                  value={agendamento.status}
+                  onChange={(e) =>
+                    setAgendamento((prev) => ({
+                      ...prev,
+                      status: e.target.value,
+                    }))
+                  }
+                  required
+                >
+                  <option value="Pendente">Pendente</option>
+                  <option value="Cancelado">Cancelado</option>
+                  <option value="Confirmado">Confirmado</option>
+                </select>
+
+                <button
+                  type="submit"
+                  className={style.botao_salvar}
+                  disabled={desabilitarBotaoSalvar}
+                >
                   Salvar
                 </button>
               </form>
@@ -158,6 +271,7 @@ function ModalEditarAgendamento({ agendamentoSelecionado }) {
           </ModalGlobal>
         </div>
       )}
+
       <Alerta
         tipo={tipoAlerta}
         mensagem={mensagemAlerta}
