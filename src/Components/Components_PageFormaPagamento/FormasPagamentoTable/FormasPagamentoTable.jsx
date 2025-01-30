@@ -4,6 +4,7 @@ import { MdEdit } from "react-icons/md";
 import FormaPagamentoApi from "../../../Services/MinhaApi/FormaPagemnto";
 import Alerta from "../../Alerta/Alerta";
 import ModalExcluirFormaPagamento from "../ModalExcluirFormaPagamento/ModalExcluirFormaPagamento";
+import ModalEditarFormaPagamento from "../ModalEditarFormaPagamento/ModalEditarFormaPagamento";
 
 function FormasPagamentoTable({ filtro, formasPagamento, setFormasPagamento }) {
 
@@ -55,9 +56,7 @@ function FormasPagamentoTable({ filtro, formasPagamento, setFormasPagamento }) {
           <td>{formaPagamento.nome}</td>
           <td>
             <div className={style.botao_acao}>
-              <button >
-                <MdEdit />
-              </button>
+              <ModalEditarFormaPagamento formaPagamentoSelecionada={formaPagamento}/>
               <ModalExcluirFormaPagamento
                 formaPagamentoSelecionada={formaPagamento}
                 formasPagamento={formasPagamento}
