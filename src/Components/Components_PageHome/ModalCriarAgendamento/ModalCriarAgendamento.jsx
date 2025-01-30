@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { format } from "date-fns";
-import styles from "./ModalCriarAgendamento.module.css";
+import style from "./ModalCriarAgendamento.module.css";
 import AgendamentoApi from "../../../Services/MinhaApi/Agendamento";
 import PacienteApi from "../../../Services/MinhaApi/Paciente";
 import ModalGlobal from "../../ModalGlobal/ModalGlobal";
+import Alerta from "../../Alerta/Alerta";
 
 function ModalCriarAgendamento({ horarioSelecionado, data }) {
   const [pacienteId, setPacienteId] = useState("");
@@ -11,7 +12,28 @@ function ModalCriarAgendamento({ horarioSelecionado, data }) {
   const [pacientes, setPacientes] = useState([]);
   const [filtroPaciente, setFiltroPaciente] = useState(""); // Estado para filtro de nome
   const [pacienteSelecionado, setPacienteSelecionado] = useState(null); // Estado para paciente selecionado
+
   const [aberto, setAberto] = useState(false);
+  const [mostrarAlerta, setMostrarAlerta] = useState(false);
+  const [mensagemAlerta, setMensagemAlerta] = useState("");
+  const [tipoAlerta, setTipoAlerta] = useState("");
+
+  const [desabilitarBotao, setDesabilitarBotao] = useState(false);
+
+  // Função para exibir o alerta
+  function ExibirAlerta(mensagem, tipo) {
+    setMensagemAlerta(mensagem);
+    setTipoAlerta(tipo);
+    setMostrarAlerta(true);
+
+    setTimeout(() => {
+      setMostrarAlerta(false);
+      setDesabilitarBotao(false);
+      setAberto(false);
+      window.location.reload();
+    }, 5000);
+  }
+
   useEffect(() => {
     // Carregar pacientes ao abrir o modal
     BuscarPacientesApi();
@@ -40,6 +62,7 @@ function ModalCriarAgendamento({ horarioSelecionado, data }) {
   // Função para salvar o agendamento
   async function SalvarAgendamento(event) {
     event.preventDefault();
+    setDesabilitarBotao(true);
 
     const usuarioId = localStorage.getItem("usuarioId");
     const dataHora = `${format(
@@ -55,11 +78,13 @@ function ModalCriarAgendamento({ horarioSelecionado, data }) {
         "Pendente",
         descricao
       );
-      alert("Agendamento criado com sucesso!");
-      window.location.reload(); // Força o recarregamento da página
+      ExibirAlerta("Agendamento cadastrado com sucesso!", "success");
     } catch (error) {
       console.error(error);
-      alert("Ocorreu um erro ao criar o agendamento. Tente novamente.");
+      const mensagemErro =
+        error.response?.data ||
+        "Ocorreu um erro ao cadastrar o agendamento. Tente novamente.";
+      ExibirAlerta(mensagemErro, "danger");
     }
   }
 
@@ -76,7 +101,7 @@ function ModalCriarAgendamento({ horarioSelecionado, data }) {
       setPacienteSelecionado(null);
     }
   }, [aberto]);
-  
+
   // Função para abrir o modal
   function AbrirModal() {
     setAberto(true);
@@ -84,78 +109,93 @@ function ModalCriarAgendamento({ horarioSelecionado, data }) {
 
   return (
     <div>
-      <button onClick={AbrirModal} className={styles.botao_modal}>
+      <button onClick={AbrirModal} className={style.botao_modal}>
         Agendar
       </button>
       {aberto && (
-        <ModalGlobal
-          aberto={aberto}
-          setAberto={setAberto}
-          titulo="Agendar Paciente"
-        >
-          <div className={styles.container_formulario}>
-            <form onSubmit={SalvarAgendamento}>
-              <label>Paciente:</label>
-              {pacienteSelecionado ? (
-                <input
-                  type="text"
-                  value={pacienteSelecionado.nome}
-                  disabled
-                  className={styles.inputPacienteSelecionado}
-                />
-              ) : (
-                <>
-                  <input
-                    type="text"
-                    placeholder="Digite o nome do paciente"
-                    value={filtroPaciente}
-                    onChange={filtrarPacientes}
+        <>
+          <div
+            className={`${style.container_total_modal} ${
+              desabilitarBotao ? style.container_total_modal_desabilitado : ""
+            }`}
+          >
+            <ModalGlobal
+              aberto={aberto}
+              setAberto={setAberto}
+              titulo="Agendar Paciente"
+            >
+              <div className={style.container_formulario}>
+                <form onSubmit={SalvarAgendamento}>
+                  <label>Paciente:</label>
+                  {pacienteSelecionado ? (
+                    <input
+                      type="text"
+                      value={pacienteSelecionado.nome}
+                      disabled
+                      className={style.inputPacienteSelecionado}
+                    />
+                  ) : (
+                    <>
+                      <input
+                        type="text"
+                        placeholder="Digite o nome do paciente"
+                        value={filtroPaciente}
+                        onChange={filtrarPacientes}
+                        required
+                      />
+
+                      {/* Lista de Pacientes com filtro */}
+                      <ul className={style.listaPacientes}>
+                        {filtroPaciente && pacientesFiltrados.length > 0 ? (
+                          pacientesFiltrados.map((paciente) => (
+                            <li
+                              key={paciente.id}
+                              className={style.pacienteItem}
+                              onClick={() => {
+                                setPacienteSelecionado(paciente);
+                                setPacienteId(paciente.id);
+                                setFiltroPaciente(""); // Limpar o filtro após selecionar
+                              }}
+                            >
+                              {paciente.nome}
+                            </li>
+                          ))
+                        ) : (
+                          <li className={style.pacienteItem}>
+                            Nenhum paciente encontrado
+                          </li>
+                        )}
+                      </ul>
+                    </>
+                  )}
+                  <label>Descrição:</label>
+                  <textarea
+                    placeholder="Digite uma descrição para o agendamento"
+                    name="descricao"
+                    value={descricao}
+                    onChange={(e) => setDescricao(e.target.value)}
                     required
-                  />
+                  ></textarea>
 
-                  {/* Lista de Pacientes com filtro */}
-                  <ul className={styles.listaPacientes}>
-                    {filtroPaciente && pacientesFiltrados.length > 0 ? (
-                      pacientesFiltrados.map((paciente) => (
-                        <li
-                          key={paciente.id}
-                          className={styles.pacienteItem}
-                          onClick={() => {
-                            setPacienteSelecionado(paciente);
-                            setPacienteId(paciente.id);
-                            setFiltroPaciente(""); // Limpar o filtro após selecionar
-                          }}
-                        >
-                          {paciente.nome}
-                        </li>
-                      ))
-                    ) : (
-                      <li className={styles.pacienteItem}>
-                        Nenhum paciente encontrado
-                      </li>
-                    )}
-                  </ul>
-                </>
-              )}
-              <label>Descrição:</label>
-              <textarea
-                placeholder="Digite uma descrição para o agendamento"
-                name="descricao"
-                value={descricao}
-                onChange={(e) => setDescricao(e.target.value)}
-                required
-              ></textarea>
-
-              <button
-                className={styles.botao_salvar}
-                type="submit"
-                disabled={!pacienteSelecionado}
-              >
-                Salvar
-              </button>
-            </form>
+                  <button
+                    className={style.botao_salvar}
+                    type="submit"
+                    disabled={!pacienteSelecionado}
+                  >
+                    Salvar
+                  </button>
+                </form>
+              </div>
+            </ModalGlobal>
           </div>
-        </ModalGlobal>
+          {/* Exibição do Alerta */}
+          <Alerta
+            tipo={tipoAlerta}
+            mensagem={mensagemAlerta}
+            visivel={mostrarAlerta}
+            aoFechar={() => setMostrarAlerta(false)}
+          />
+        </>
       )}
     </div>
   );
