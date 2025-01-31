@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import "../../../Pages/PageAutenticacao/PageAutenticacao.css";
+import { Eye, EyeOff } from "lucide-react"; // Ícones para visibilidade
+import styles from "./CadastroForm.module.css";
 import UsuarioApi from "../../../Services/MinhaApi/Usuario";
-import Alerta from "../../Alerta/Alerta"; // Importando o componente de alerta
+import Alerta from "../../Alerta/Alerta";
 
 function CadastroForm({ onSwitch }) {
   useEffect(() => {
@@ -16,15 +17,15 @@ function CadastroForm({ onSwitch }) {
 
   const [mostrarAlerta, setMostrarAlerta] = useState(false);
   const [mensagemAlerta, setMensagemAlerta] = useState("");
-  const [tipoAlerta, setTipoAlerta] = useState(""); // "success" ou "danger"
+  const [tipoAlerta, setTipoAlerta] = useState("");
   const [desabilitarBotao, setDesabilitarBotao] = useState(false);
+  const [mostrarSenha, setMostrarSenha] = useState(false);
 
   function AtualizarUsuarioCadastro(event) {
     const { id, value } = event.target;
     setUsuarioCadastro((prev) => ({ ...prev, [id]: value }));
   }
 
-  // Função para exibir alertas
   const exibirAlerta = (mensagem, tipo) => {
     setMensagemAlerta(mensagem);
     setTipoAlerta(tipo);
@@ -38,7 +39,7 @@ function CadastroForm({ onSwitch }) {
 
   async function CadastrarUsuario(event) {
     event.preventDefault();
-    setDesabilitarBotao(true); // Bloqueia o botão após o clique
+    setDesabilitarBotao(true);
 
     try {
       await UsuarioApi.criarUsuarioAsync(
@@ -56,8 +57,6 @@ function CadastroForm({ onSwitch }) {
     } catch (error) {
       exibirAlerta(`${error.response.data}`, "danger");
     }
-
-
   }
 
   return (
@@ -75,7 +74,6 @@ function CadastroForm({ onSwitch }) {
       <div className="second-column">
         <h2 className="title title-second">Criar Conta</h2>
 
-        {/* Exibição do alerta */}
         <Alerta
           tipo={tipoAlerta}
           mensagem={mensagemAlerta}
@@ -104,15 +102,23 @@ function CadastroForm({ onSwitch }) {
               required
             />
           </label>
-          <label className="label-input">
+          <label className={`label-input ${styles.senhaWrapper}`}>
             <input
-              type="password"
+              type={mostrarSenha ? "text" : "password"}
               placeholder="Senha"
               id="senhaCadastro"
               value={usuarioCadastro.senhaCadastro}
               onChange={AtualizarUsuarioCadastro}
               required
             />
+            <button
+              type="button"
+              className={styles.iconeSenha}
+              onClick={() => setMostrarSenha((prev) => !prev)}
+              aria-label="Mostrar ou ocultar senha"
+            >
+              {mostrarSenha ? <EyeOff size={20} /> : <Eye size={20} />}
+            </button>
           </label>
           <button type="submit" className="btn btn-second" disabled={desabilitarBotao}>
             {desabilitarBotao ? "Cadastrando..." : "Cadastrar"}

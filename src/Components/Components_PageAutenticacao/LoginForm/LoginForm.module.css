@@ -1,0 +1,24 @@
+.senhaWrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  
+  .senhaWrapper input {
+    width: 100%;
+    padding-right: 40px;
+  }
+  
+  .btnOlho {
+    position: absolute;
+    right: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #777;
+  }
+  
+  .btnOlho:hover {
+    color: #333;
+  }
+  
