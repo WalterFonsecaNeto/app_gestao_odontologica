@@ -4,6 +4,7 @@ import style from "./Cabecalho.module.css";
 import { IoIosArrowDown } from "react-icons/io";
 
 import MenuHamburguer from "../MenuHamburguer/MenuHamburguer";
+import BotaoSair from "./BotaoSair";
 
 function Cabecalho() {
   const [isAnimating, setIsAnimating] = useState(false);
@@ -64,51 +65,9 @@ function Cabecalho() {
               </div>
             </div>
           </div>
+          <BotaoSair/>
         </div>
-        <div className={style.menu}>
-          <div className={style.item}>
-            <a className={style.link} href="#">
-              <p>Atendimento</p>
-              <IoIosArrowDown />
-            </a>
-            <div className={style.submenu}>
-              <div className={style.submenu_item}>
-                <Link className={style.submenu_link} to=""></Link>
-              </div>
-              <div className={style.submenu_item}>
-                <Link className={style.submenu_link} to=""></Link>
-              </div>
-              <div className={style.submenu_item}>
-                <Link className={style.submenu_link} to=""></Link>
-              </div>
-              <div className={style.submenu_item}>
-                <Link className={style.submenu_link} to=""></Link>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className={style.menu}>
-          <div className={style.item}>
-            <a className={style.link} href="#">
-              <p>Financeiro</p>
-              <IoIosArrowDown />
-            </a>
-            <div className={style.submenu}>
-              <div className={style.submenu_item}>
-                <Link className={style.submenu_link} to=""></Link>
-              </div>
-              <div className={style.submenu_item}>
-                <Link className={style.submenu_link} to=""></Link>
-              </div>
-              <div className={style.submenu_item}>
-                <Link className={style.submenu_link} to=""></Link>
-              </div>
-              <div className={style.submenu_item}>
-                <Link className={style.submenu_link} to=""></Link>
-              </div>
-            </div>
-          </div>
-        </div>
+        
       </div>
     </header>
   );

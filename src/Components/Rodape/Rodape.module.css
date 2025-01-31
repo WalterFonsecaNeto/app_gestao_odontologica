@@ -8,3 +8,110 @@
   box-shadow: 0 -2px -4px rgba(0, 0, 0, 0.4);
   margin-top: 50px;
 }
+/* From Uiverse.io by wilsondesouza */ 
+ul {
+  list-style: none;
+}
+
+.example_2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.example_2 .icon_content {
+  margin: 0 10px;
+  position: relative;
+}
+
+.example_2 .icon_content .tooltip {
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 5px;
+  opacity: 0;
+  visibility: hidden;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.example_2 .icon_content:hover .tooltip {
+  opacity: 1;
+  visibility: visible;
+  top: -50px;
+}
+
+.example_2 .icon_content a {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  color: #4d4d4d;
+  background-color: #fff;
+  transition: all 0.3s ease-in-out;
+}
+
+.example_2 .icon_content a:hover {
+  box-shadow: 3px 2px 45px 0px rgb(0 0 0 / 12%);
+}
+
+.example_2 .icon_content a svg {
+  position: relative;
+  z-index: 1;
+  width: 30px;
+  height: 30px;
+}
+
+.example_2 .icon_content a:hover {
+  color: white;
+}
+
+.example_2 .icon_content a .filled {
+  position: absolute;
+  top: auto;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 0;
+  background-color: #000;
+  transition: all 0.3s ease-in-out;
+}
+
+.example_2 .icon_content a:hover .filled {
+  height: 100%;
+}
+
+.example_2 .icon_content a[data_social="linkedin"] .filled,
+.example_2 .icon_content a[data_social="linkedin"] ~ .tooltip {
+  background-color: #0274b3;
+}
+
+.example_2 .icon_content a[data_social="github"] .filled,
+.example_2 .icon_content a[data_social="github"] ~ .tooltip {
+  background-color: #24262a;
+}
+
+.example_2 .icon_content a[data_social="instagram"] .filled,
+.example_2 .icon_content a[data_social="instagram"] ~ .tooltip {
+  background: linear-gradient(
+    45deg,
+    #405de6,
+    #5b51db,
+    #b33ab4,
+    #c135b4,
+    #e1306c,
+    #fd1f1f
+  );
+}
+
+.example_2 .icon_content a[data_social="youtube"] .filled,
+.example_2 .icon_content a[data_social="youtube"] ~ .tooltip {
+  background-color: #ff0000;
+}
