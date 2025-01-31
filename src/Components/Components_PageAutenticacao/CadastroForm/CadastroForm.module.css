@@ -1,0 +1,19 @@
+.senhaWrapper {
+  position: relative;
+}
+
+.senhaWrapper input {
+  width: 100%;
+  padding-right: 40px;
+}
+
+.iconeSenha {
+  background: none;
+  border: none;
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #555;
+}

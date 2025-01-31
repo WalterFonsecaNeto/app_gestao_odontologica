@@ -1,64 +1,113 @@
-.container_total{
+.container_total {
     padding: 30px 80px;
     height: 100vh;
 
 }
-.titulo_container_total{
-    margin-bottom: 5%;
-    text-align: center;
 
-    & h1{
-        margin-bottom: 80px;
-        font-weight: bold;
-        color: white;
-        background-color: #368371;
-        border-radius: 10px; 
-        padding: 10px;
-    }
-}
-.container_info_total{
+.titulo_container_total {
+    margin-bottom: 5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    background-color: #368371;
+    border-radius: 10px;
+    padding: 10px;
+    color: white;
+  }
+  
+  .titulo {
+    text-align: center;
+    flex: 1;
+    font-weight: bold;
+  }
+
+.container_info_total {
     display: flex;
     flex-direction: column;
     gap: 50px;
     flex-wrap: wrap;
 }
-.container_info{
+
+.container_info {
     display: flex;
     justify-content: space-between;
-    
+
 }
 
-.container_info_linha_coluna{
+.container_info_linha_coluna {
     display: flex;
     justify-content: space-between;
 }
 
-.container_info_linha{
+.container_info_linha {
     display: flex;
     align-items: center;
-    align-items:flex-start;
+    align-items: flex-start;
     gap: 10px;
-    
-    & p{
+
+    & p {
         font-size: 18px;
     }
 }
-.container_info_coluna{
+
+.container_info_coluna {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    
-    & p{
+
+    & p {
         font-size: 18px;
     }
 }
-.container_info_coluna_principal{
+
+.container_info_coluna_principal {
     display: flex;
     flex-direction: column;
     gap: 30px;
-    
-    & p{
+
+    & p {
         font-size: 18px;
     }
 }
 
+
+
+/* Estilização do dropdow de ações */
+.menu_container {
+    position: relative;
+    display: inline-block;
+}
+
+.menu_btn {
+    background: none;
+    border: none;
+    font-size: 22px;
+    cursor: pointer;
+    color: #ffffff;
+    display: flex;
+
+}
+
+.dropdown_menu {
+    position: absolute;
+    top: 30px;
+    right: 0;
+    background-color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    list-style: none;
+    padding: 8px 0;
+    width: 120px;
+    z-index: 10;
+}
+
+.dropdown_menu li {
+    padding: 8px 16px;
+    cursor: pointer;
+    color: #368371;
+}
+
+.dropdown_menu li:hover {
+    background-color: #f1f1f1;
+}

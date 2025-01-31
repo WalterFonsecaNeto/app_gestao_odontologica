@@ -4,3 +4,31 @@
   box-sizing: border-box;
   background-color: #ecf0f1;
 }
+/* Personalizar a barra de rolagem globalmente */
+::-webkit-scrollbar {
+  width: 8px; /* Largura da barra de rolagem */
+  height: 8px; /* Altura da barra de rolagem para scroll horizontal */
+}
+
+/* Estilo do fundo da barra de rolagem */
+::-webkit-scrollbar-track {
+  background-color: #f1f1f1; /* Cor de fundo */
+  border-radius: 10px; /* Borda arredondada */
+}
+
+/* Estilo do "thumb" (parte rolável) da barra */
+::-webkit-scrollbar-thumb {
+  background-color: #58af9b; /* Cor do "thumb" */
+  border-radius: 10px; /* Borda arredondada */
+  border: 2px solid #fff; /* Borda branca ao redor do thumb */
+}
+
+/* Efeito ao passar o mouse sobre o "thumb" */
+::-webkit-scrollbar-thumb:hover {
+  background-color: #4da88d; /* Cor mais escura quando o mouse passa por cima */
+}
+
+/* Rolagem suave global */
+html {
+  scroll-behavior: smooth; /* Rolagem suave em todo o conteúdo */
+}

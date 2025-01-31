@@ -1,0 +1,110 @@
+/* MenuHamburguer.module.css */
+.menuButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: white;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    right: -300px; /* Começa fora da tela */
+    width: 300px;
+    height: 100vh;
+    background-color: #368371b4;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.4);
+    transition: right 0.3s ease-in-out;
+    z-index: 1000;
+    padding-top: 60px;
+}
+
+.sidebar.open {
+    right: 0; /* Quando aberto, desliza para dentro */
+}
+
+.menuList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.menuItem {
+    padding: 15px 20px;
+    position: relative; /* Adiciona posicionamento relativo para controlar o submenu */
+    border: 2px solid white;
+}
+
+.link {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.submenu {
+    display: none; /* Inicialmente escondido */
+    list-style: none;
+    margin-top: 10px; /* Adiciona margem para empurrar os itens abaixo */
+    transition: all 0.3s ease-in-out;
+    border: 2px solid white;
+}
+
+.menuItem.open .submenu {
+    display: block; /* Exibe o submenu quando o item estiver aberto */
+    opacity: 1;
+    visibility: visible;
+}
+
+.menuItem.open {
+    z-index: 10; /* Garante que o item aberto fique acima dos outros */
+}
+
+.menuItem:hover .submenu {
+    display: block;
+}
+
+.submenu .submenu_item {
+    width: 100%;
+}
+
+.submenu .submenu_link {
+    display: block;
+    padding: 12px 24px;
+    width: 100%;
+    text-align: center;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.submenu .submenu_item:last-child .submenu_link {
+    border-bottom: none;
+}
+
+.submenu_link {
+    color: white;
+    text-decoration: none;
+    width: 100%;
+}
+
+.submenu_link:hover {
+    background-color: #58af9b;
+}
+
+.link {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    border-radius: 16px;
+}
+
+.link svg {
+    font-size: 20px;
+    fill: #ffffff;
+}

@@ -1,0 +1,83 @@
+/* Container do formulário */
+.container_formulario {
+  width: 400px; /* Largura específica para o modal pequeno */
+}
+
+.container_total {
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+  width: 100%;
+}
+
+.container_info {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 70%;
+  margin: auto;
+  font-size: 18px;
+
+
+}
+
+.container_botoes {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.botao_cancelar {
+  background-color: #58af9b;
+  color: white;
+  padding: 0.8rem 2rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+.botao_excluir {
+  background-color: rgb(195, 123, 123);
+  color: white;
+  padding: 0.8rem 2rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+.botao_deletar {
+  background-color: #58af9b;
+  color: white;
+  padding: 0.8rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+
+  & svg {
+    font-size: 1.25rem; /* Ajuste o tamanho do ícone aqui */
+  }
+}
+
+.botao_deletar .botao_deletar:hover {
+  background-color: #368371;
+}
+.botao_cancelar:hover {
+  background-color: #368371;
+}
+.botao_excluir:hover {
+  background-color: #bf1313;
+}
+
+
+
+
+/* Bloqueia a interação com o botão ao excluir */
+.container_total_modal_desabilitado button{
+  pointer-events: none; 
+  opacity: 0.5; 
+}

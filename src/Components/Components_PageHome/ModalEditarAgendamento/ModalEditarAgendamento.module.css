@@ -1,0 +1,141 @@
+/* Botão abrir modal */
+.botao_modal {
+  background-color: #58af9b;
+  color: white;
+  padding: 0.6rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+.botao_modal:hover {
+  background-color: #4da88d;
+}
+
+
+.botao_troca_paciente{
+  margin-top: 10px;
+  background-color: #58af9b;
+  color: white;
+  padding: 6px 10px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+}
+.botao_troca_paciente:hover {
+  background-color: #4da88d;
+}
+
+/* Container do formulário */
+.container_formulario {
+  width: 600px;
+  /* Largura específica para o modal pequeno */
+}
+
+.container_formulario label {
+  font-weight: bold;
+  color: #333;
+  display: block;
+  margin-top: 15px;
+}
+
+.container_formulario input {
+  outline: none;
+  width: 100%;
+  padding: 10px;
+  margin-top: 4px;
+  border: 1px solid #58af9b;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.botao_salvar {
+  margin-top: 40px;
+  background-color: #58af9b;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.container_formulario .botao_salvar:hover {
+  background-color: #4da88d;
+}
+
+
+
+.listaPacientes {
+  list-style-type: none;
+  padding: 0;
+  max-height: 200px;
+  overflow-y: auto;
+  margin-top: 10px;
+}
+
+.pacienteItem {
+  padding: 8px;
+  cursor: pointer;
+  width: 100%;
+  /* Faz o li ocupar toda a largura */
+  box-sizing: border-box;
+}
+
+.pacienteItem:hover {
+  background-color: #f0f0f0;
+}
+
+.inputPacienteSelecionado {
+  margin-top: 10px;
+  margin-bottom: 0px;
+  padding: 8px;
+  width: 100%;
+  font-size: 16px;
+  background-color: #e0e0e0;
+  border: 1px solid #ccc;
+  cursor: not-allowed;
+}
+
+input[disabled] {
+  background-color: #f0f0f0;
+  cursor: not-allowed;
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+
+
+
+
+
+
+
+/* Bloqueia a interação com o botão ao excluir */
+.container_total_modal_desabilitado {
+  & input {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  & textarea {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  & select {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  & button {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+}

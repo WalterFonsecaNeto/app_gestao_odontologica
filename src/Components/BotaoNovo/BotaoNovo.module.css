@@ -1,0 +1,68 @@
+.container_total {
+  background-color: white;
+  padding: 8px 15px;
+  border-radius: 10px;
+  box-shadow: 4px 8px 10px rgba(0, 0, 0, 0.4);
+  width: 100%;
+  height: 90px;
+  display: flex; /* Adicionado para usar Flexbox */
+  align-items: center; /* Centraliza verticalmente */
+  justify-content: center; /* Centraliza horizontalmente */
+  margin: auto;
+}
+
+.container_info {
+  background-color: #58af9b;
+  border-radius: 10px;
+  width: 160px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+}
+
+/* Estilo para o botão */
+.botao_criar {
+  width: 100px;
+  padding: 15px;
+  cursor: pointer;
+  border-radius: 16px;
+  transition: all 0.2s;
+  border: none;
+  background-color: white;
+  color: #2e7f7e;
+  font-weight: bold;
+  text-decoration: none;
+  font-size: 1rem;
+  margin: 10px;
+
+  /* Usar flex para alinhar o texto */
+  display: flex;
+  align-items: center; /* Alinha os itens verticalmente */
+  justify-content: center; /* Centraliza os itens horizontalmente */
+  gap: 8px; /* Espaço entre o "+" e o texto */
+}
+
+.botao_criar:hover {
+  transform: translateY(0px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.botao_criar::after {
+  content: "";
+  display: inline-block;
+  height: 100%;
+  width: 100%;
+  border-radius: 100px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  transition: all 0.4s;
+  background-color: #fff;
+}
+
+.botao_criar:hover::after {
+  transform: scaleX(1.4) scaleY(1.6);
+  opacity: 0;
+  transition: all 0.6s;
+}

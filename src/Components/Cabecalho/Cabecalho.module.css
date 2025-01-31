@@ -1,5 +1,4 @@
 .cabecalho {
-  width: 100%;
   height: 80px;
   background-color: #368371;
   display: flex;
@@ -7,17 +6,26 @@
   justify-content: space-between;
   align-items: center;
   padding: 0 20px;
-  box-shadow: 0 2px 4px  rgba(0, 0, 0, 0.400);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.400);
   margin-bottom: 50px;
 
 
 }
 
+.container_menu_logo {
+  display: flex;
+  align-items: center;
+  gap: 20px;
 
+}
 
-.menu_total{
-    display: flex;
-    flex-direction: row;
+.menuHamburguerContainer {
+  display: block;
+}
+
+.menu_total {
+  display: flex;
+  flex-direction: row;
 }
 
 
@@ -27,6 +35,7 @@
   border: none;
   cursor: pointer;
 }
+
 .button {
   --border-right: 4px;
   --text-stroke-color: rgb(255, 255, 255);
@@ -39,6 +48,7 @@
   color: transparent;
   -webkit-text-stroke: 1px var(--text-stroke-color);
 }
+
 .hover_text {
   position: absolute;
   box-sizing: border-box;
@@ -51,6 +61,33 @@
   transition: 0.5s;
   -webkit-text-stroke: 1px var(--animation-color);
 }
+
+.button:hover .hover_text {
+  width: 100%;
+  filter: drop-shadow(0 0 23px var(--animation-color));
+}
+
+/* Adicionando a animação para o texto */
+.hover_text {
+  position: absolute;
+  box-sizing: border-box;
+  content: attr(data-text);
+  color: var(--animation-color);
+  width: 0%;
+  inset: 0;
+  border-right: var(--border-right) solid var(--animation-color);
+  overflow: hidden;
+  transition: width 0.5s, filter 0.5s;
+  -webkit-text-stroke: 1px var(--animation-color);
+}
+
+/* Aplicando a animação quando a classe 'animate' for ativa */
+.animate {
+  width: 100%;
+  filter: drop-shadow(0 0 23px var(--animation-color));
+}
+
+
 .button:hover .hover_text {
   width: 100%;
   filter: drop-shadow(0 0 23px var(--animation-color));
@@ -62,11 +99,12 @@
 .menu {
   font-size: 16px;
   line-height: 1.6;
-  color:black;
+  color: black;
   width: fit-content;
   display: flex;
   list-style: none;
 }
+
 .menu a {
   text-decoration: none;
   color: inherit;
@@ -75,6 +113,7 @@
   line-height: inherit;
   color: #ffffff;
 }
+
 .menu .link {
   position: relative;
   display: flex;
@@ -86,6 +125,7 @@
   overflow: hidden;
   transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
 }
+
 .menu .link::after {
   content: "";
   position: absolute;
@@ -99,15 +139,20 @@
   transform-origin: left;
   transition: transform 0.48s cubic-bezier(0.23, 1, 0.32, 1);
 }
+
 .menu .link svg {
-  width: 18px; /* Aumente para o tamanho desejado */
-  height: 18px; /* Aumente para o tamanho desejado */
+  width: 18px;
+  /* Aumente para o tamanho desejado */
+  height: 18px;
+  /* Aumente para o tamanho desejado */
   fill: white;
   transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
 }
+
 .menu .item {
   position: relative;
 }
+
 .menu .item .submenu {
   display: flex;
   flex-direction: column;
@@ -127,6 +172,7 @@
   pointer-events: none;
   list-style: none;
 }
+
 .menu .item:hover .submenu {
   opacity: 1;
   visibility: visible;
@@ -135,23 +181,28 @@
   border-top: transparent;
   border-color: #4a8073;
 }
+
 .menu .item:hover .link {
   color: #ffffff;
   border-radius: 16px 16px 0 0;
 }
+
 .menu .item:hover .link::after {
   transform: scaleX(1);
   transform-origin: right;
 }
+
 .menu .item:hover .link svg {
   fill: #ffffff;
   transform: rotate(-180deg);
 }
+
 .submenu .submenu_item {
   width: 100%;
   transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
   background-color: #3683718f;
 }
+
 .submenu .submenu_link {
   display: block;
   padding: 12px 24px;
@@ -160,9 +211,11 @@
   text-align: center;
   transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
 }
+
 .submenu .submenu_item:last-child .submenu_link {
   border-bottom: none;
 }
+
 .submenu .submenu_link::before {
   content: "";
   position: absolute;
@@ -176,10 +229,12 @@
   transform-origin: left;
   transition: transform 0.48s cubic-bezier(0.23, 1, 0.32, 1);
 }
+
 .submenu .submenu_link:hover:before {
   transform: scaleX(1);
   transform-origin: right;
 }
+
 .submenu .submenu_link:hover {
   color: white;
 }

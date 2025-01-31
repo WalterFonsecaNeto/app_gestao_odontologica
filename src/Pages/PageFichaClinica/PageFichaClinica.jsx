@@ -9,10 +9,6 @@ function PageFichaClinica() {
   const decodedId = atob(id); //? Decodifica o ID
   const [paciente, setPaciente] = useState({});
 
-  useEffect(() => {
-    
-    BuscarPaciente(); //? Chama a função para buscar as informações do paciente
-  }, []);
   async function BuscarPaciente() {
     const usuarioId = localStorage.getItem('usuarioId');
     try {
@@ -24,10 +20,15 @@ function PageFichaClinica() {
     }
   }
 
+
+  useEffect(() => {
+    BuscarPaciente(); //? Chama a função para buscar as informações do paciente
+  }, []);
+
   return (
     <div>
       <Sidebar paciente={paciente}>
-        <FichaPaciente paciente={paciente} />
+        <FichaPaciente paciente={paciente} setPaciente={setPaciente} />
       </Sidebar>
     </div>
   );
