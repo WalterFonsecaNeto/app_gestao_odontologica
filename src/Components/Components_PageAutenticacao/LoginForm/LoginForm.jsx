@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "../../../Pages/PageAutenticacao/PageAutenticacao.css";
 import { useNavigate } from "react-router-dom";
 import UsuarioApi from "../../../Services/MinhaApi/Usuario";
-import Alerta from "../../Alerta/Alerta"; // Importe o novo componente
+import Alerta from "../../Alerta/Alerta"; // Importando o componente de alerta
 
 function LoginForm({ onSwitch }) {
     useEffect(() => {
@@ -13,31 +13,35 @@ function LoginForm({ onSwitch }) {
         emailLogin: "",
         senhaLogin: "",
     });
+
     const [mostrarAlerta, setMostrarAlerta] = useState(false);
     const [mensagemAlerta, setMensagemAlerta] = useState("");
-    const [tipoAlerta, setTipoAlerta] = useState("");
+    const [tipoAlerta, setTipoAlerta] = useState(""); // "success" ou "danger"
+    const [desabilitarBotao, setDesabilitarBotao] = useState(false);
+
     const navigate = useNavigate();
 
-    // Função que atualiza os dados do usuário ao digitar no campo de login
     function AtualizarUsuarioLogin(event) {
-        const id = event.target.id;
-        const value = event.target.value;
-        setUsuarioLogin({ ...usuarioLogin, [id]: value });
+        const { id, value } = event.target;
+        setUsuarioLogin((prev) => ({ ...prev, [id]: value }));
     }
 
+    // Função para exibir alertas
     const exibirAlerta = (mensagem, tipo) => {
-        console.log("Exibindo alerta", mensagem, tipo);  // Verifique se está chegando as informações
         setMensagemAlerta(mensagem);
         setTipoAlerta(tipo);
         setMostrarAlerta(true);
 
         setTimeout(() => {
             setMostrarAlerta(false);
+            setDesabilitarBotao(false);
         }, 5000);
     };
 
     async function VerificarUsuario(event) {
         event.preventDefault();
+        setDesabilitarBotao(true); // Bloqueia o botão enquanto a requisição está em andamento
+
         try {
             const response = await UsuarioApi.validarUsuarioAsync(
                 usuarioLogin.emailLogin,
@@ -51,13 +55,15 @@ function LoginForm({ onSwitch }) {
                 navigate("/home");
             }, 3000);
         } catch (error) {
-            exibirAlerta(`${error.response.data}`, "danger");
+            exibirAlerta(`${error.response?.data || "Erro ao fazer login"}`, "danger");
         }
 
         setUsuarioLogin({
             emailLogin: "",
             senhaLogin: "",
         });
+
+
     }
 
     return (
@@ -65,7 +71,7 @@ function LoginForm({ onSwitch }) {
             <div className="first-column">
                 <h2 className="title title-primary">Olá, seja bem-vindo!</h2>
                 <p className="description description-primary">
-                    Insira seus dados pessoais e comece a jornada conosco
+                    Insira seus dados pessoais e comece a jornada conosco.
                 </p>
                 <button id="signup" className="btn btn-primary" onClick={onSwitch}>
                     Cadastre-se
@@ -91,6 +97,7 @@ function LoginForm({ onSwitch }) {
                             id="emailLogin"
                             value={usuarioLogin.emailLogin}
                             onChange={AtualizarUsuarioLogin}
+                            required
                         />
                     </label>
                     <label className="label-input">
@@ -100,13 +107,14 @@ function LoginForm({ onSwitch }) {
                             id="senhaLogin"
                             value={usuarioLogin.senhaLogin}
                             onChange={AtualizarUsuarioLogin}
+                            required
                         />
                     </label>
                     <a className="password" href="#">
-                        esqueceu sua senha?
+                        Esqueceu sua senha?
                     </a>
-                    <button type="submit" className="btn btn-second">
-                        Login
+                    <button type="submit" className="btn btn-second" disabled={desabilitarBotao}>
+                        {desabilitarBotao ? "Entrando..." : "Login"}
                     </button>
                 </form>
             </div>
