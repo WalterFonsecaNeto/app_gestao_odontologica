@@ -7,24 +7,14 @@ import style from "./ModalEditarPaciente.module.css";
 import { MdEdit } from "react-icons/md";
 
 function ModalEditarPaciente({ pacienteSelecionado, setPacienteSelecionado }) {
-  const [paciente, setPaciente] = useState({
-    nome: "",
-    cpf: "",
-    endereco: "",
-    telefone: "",
-    dataNascimento: "",
-    genero: "",
-    email: "",
-    historicoMedico: "",
-  });
-
+  const [paciente, setPaciente] = useState({ ...pacienteSelecionado });
   const [aberto, setAberto] = useState(false);
   const [mostrarAlerta, setMostrarAlerta] = useState(false);
   const [mensagemAlerta, setMensagemAlerta] = useState("");
   const [tipoAlerta, setTipoAlerta] = useState("");
-  const [desabilitarBotao, setDesabilitarBotao] = useState(false);
+  const [desabilitarBotoes, setDesabilitarBotoes] = useState(false);
+  const [desabilitarBotaoSalvar, setDesabilitarBotaoSalvar] = useState(true);
 
-  // Função para exibir o alerta
   function ExibirAlerta(mensagem, tipo) {
     setMensagemAlerta(mensagem);
     setTipoAlerta(tipo);
@@ -32,27 +22,31 @@ function ModalEditarPaciente({ pacienteSelecionado, setPacienteSelecionado }) {
 
     setTimeout(() => {
       setMostrarAlerta(false);
-      setDesabilitarBotao(false);
-    }, 5000); // Alerta desaparece após 5 segundos
+      setAberto(false);
+      setDesabilitarBotoes(false);
+    }, 5000);
   }
 
-  // Função para carregar os dados do paciente no modal
   useEffect(() => {
-    if (pacienteSelecionado) {
-      setPaciente(pacienteSelecionado);
+    if (!aberto) {
+      setPaciente({ ...pacienteSelecionado });
     }
-  }, [pacienteSelecionado]);
+  }, [aberto, pacienteSelecionado]);
 
-  async function AtualizarPaciente(event) {
+  useEffect(() => {
+    setDesabilitarBotaoSalvar(
+      JSON.stringify(paciente) === JSON.stringify(pacienteSelecionado)
+    );
+  }, [paciente, pacienteSelecionado]);
+
+  const AtualizarPaciente = async (event) => {
     event.preventDefault();
-
+    setDesabilitarBotoes(true);
     const usuarioId = localStorage.getItem("usuarioId");
-    setDesabilitarBotao(true);
 
     try {
-      console.log(paciente.dataNascimento)
       await PacienteApi.atualizarPacienteAsync(
-        paciente.id,
+        pacienteSelecionado.id,
         usuarioId,
         paciente.nome,
         paciente.dataNascimento,
@@ -63,44 +57,40 @@ function ModalEditarPaciente({ pacienteSelecionado, setPacienteSelecionado }) {
         paciente.email,
         paciente.historicoMedico
       );
-      setPacienteSelecionado(paciente)
 
+      setPacienteSelecionado(paciente);
       ExibirAlerta("Paciente atualizado com sucesso!", "success");
-
-
-
     } catch (error) {
       const mensagemErro =
         error.response?.data ||
         "Ocorreu um erro ao atualizar o paciente. Tente novamente.";
       ExibirAlerta(mensagemErro, "danger");
     }
+  };
 
-    setTimeout(() => {
-      setAberto(false);
-    }, 5000);
-  }
-
-  // Função para atualizar o estado do paciente com os valores dos inputs
   function AtualizaPacientesComValores(event) {
     const { name, value } = event.target;
     setPaciente({ ...paciente, [name]: value });
   }
 
   return (
-
     <div>
-      <button className={style.botao_editar} onClick={() => setAberto(true)}> <MdEdit />Editar</button>
+      <button className={style.botao_editar} onClick={() => setAberto(true)}>
+        <MdEdit />
+        Editar
+      </button>
 
       {aberto && (
         <div
-          className={`${style.container_total_modal} ${desabilitarBotao ? style.container_total_modal_desabilitado : ""
-            }`}
+          className={`${style.container_total_modal} ${
+            desabilitarBotoes ? style.container_total_modal_desabilitado : ""
+          }`}
         >
           <ModalGlobal aberto={aberto} setAberto={setAberto} titulo="Editar Paciente">
             <div
-              className={`${style.container_formulario} ${desabilitarBotao ? style.container_formulario_desabilitado : ""
-                }`}
+              className={`${style.container_formulario} ${
+                desabilitarBotoes ? style.container_formulario_desabilitado : ""
+              }`}
             >
               <form onSubmit={AtualizarPaciente}>
                 <div className={style.container_linha}>
@@ -124,11 +114,10 @@ function ModalEditarPaciente({ pacienteSelecionado, setPacienteSelecionado }) {
                       type="date"
                       className={style.input}
                       name="dataNascimento"
-                      value={paciente.dataNascimento ? paciente.dataNascimento.split("T")[0] : ""}
+                      value={paciente.dataNascimento?.split("T")[0] || ""}
                       onChange={AtualizaPacientesComValores}
                       required
                     />
-
                   </div>
                 </div>
 
@@ -143,9 +132,7 @@ function ModalEditarPaciente({ pacienteSelecionado, setPacienteSelecionado }) {
                       onChange={AtualizaPacientesComValores}
                       required
                     >
-                      {(inputProps) => (
-                        <input {...inputProps} type="text" className={style.input} />
-                      )}
+                      {(inputProps) => <input {...inputProps} className={style.input} />}
                     </InputMask>
                   </div>
 
@@ -158,9 +145,7 @@ function ModalEditarPaciente({ pacienteSelecionado, setPacienteSelecionado }) {
                       value={paciente.telefone}
                       onChange={AtualizaPacientesComValores}
                     >
-                      {(inputProps) => (
-                        <input {...inputProps} type="text" className={style.input} />
-                      )}
+                      {(inputProps) => <input {...inputProps} className={style.input} />}
                     </InputMask>
                   </div>
 
@@ -187,7 +172,6 @@ function ModalEditarPaciente({ pacienteSelecionado, setPacienteSelecionado }) {
                   className={style.input}
                   placeholder="E-mail do paciente"
                   name="email"
-                  maxLength="255"
                   value={paciente.email}
                   onChange={AtualizaPacientesComValores}
                 />
@@ -198,7 +182,6 @@ function ModalEditarPaciente({ pacienteSelecionado, setPacienteSelecionado }) {
                   className={style.input}
                   placeholder="Digite o endereço do paciente"
                   name="endereco"
-                  maxLength="255"
                   value={paciente.endereco}
                   onChange={AtualizaPacientesComValores}
                   required
@@ -211,9 +194,14 @@ function ModalEditarPaciente({ pacienteSelecionado, setPacienteSelecionado }) {
                   name="historicoMedico"
                   value={paciente.historicoMedico}
                   onChange={AtualizaPacientesComValores}
+                  rows={5}
                 ></textarea>
 
-                <button type="submit" className={style.botao_salvar}>
+                <button
+                  type="submit"
+                  className={style.botao_salvar}
+                  disabled={desabilitarBotaoSalvar}
+                >
                   Salvar
                 </button>
               </form>
@@ -221,6 +209,7 @@ function ModalEditarPaciente({ pacienteSelecionado, setPacienteSelecionado }) {
           </ModalGlobal>
         </div>
       )}
+
       <Alerta
         tipo={tipoAlerta}
         mensagem={mensagemAlerta}

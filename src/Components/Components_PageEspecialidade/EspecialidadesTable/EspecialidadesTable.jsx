@@ -4,6 +4,7 @@ import { MdEdit, MdDelete } from "react-icons/md";
 import EspecialidadeApi from "../../../Services/MinhaApi/Especialidade";
 import Alerta from "../../Alerta/Alerta";
 import ModalExcluirEspecialidade from "../ModalExcluirEspecialidade/ModalExcluirEspecialidade";
+import ModalEditarEspecialidade from "../ModalEditarEspecialidade/ModalEditarEspecialidade";
 
 function EspecialidadesTable({ filtro, especialidades, setEspecialidades }) {
 
@@ -55,9 +56,7 @@ function EspecialidadesTable({ filtro, especialidades, setEspecialidades }) {
           <td>{especialidade.nome}</td>
           <td>
             <div className={style.botao_acao}>
-              <button>
-                <MdEdit />
-              </button>
+              <ModalEditarEspecialidade especialidadeSelecionada={especialidade} setEspecialidades={setEspecialidades} especialidades={especialidades}/>
                 <ModalExcluirEspecialidade
                   especialidadeSelecionada={especialidade}
                   especialidades={especialidades}

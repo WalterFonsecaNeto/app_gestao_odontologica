@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import ModalGlobal from "../../ModalGlobal/ModalGlobal";
-import FormaPagamentoApi from "../../../Services/MinhaApi/FormaPagemnto"; // Assumindo que existe essa API
+import EspecialidadeApi from "../../../Services/MinhaApi/Especialidade";
 import Alerta from "../../Alerta/Alerta";
-import style from "./ModalEditarFormaPagamento.module.css";
+import style from "./ModalEditarEspecialidade.module.css";
 import { MdEdit } from "react-icons/md";
 
-function ModalEditarFormaPagamento({ formaPagamentoSelecionada, setFormasPagamento, formasPagamento }) {
-  const [formaPagamento, setFormaPagamento] = useState({
-    ...formaPagamentoSelecionada
+function ModalEditarEspecialidade({ especialidadeSelecionada, setEspecialidades, especialidades }) {
+  const [especialidade, setEspecialidade] = useState({
+    ...especialidadeSelecionada
   });
   const [aberto, setAberto] = useState(false);
   const [mostrarAlerta, setMostrarAlerta] = useState(false);
@@ -30,45 +30,49 @@ function ModalEditarFormaPagamento({ formaPagamentoSelecionada, setFormasPagamen
 
   useEffect(() => {
     if (!aberto) {
-      setFormaPagamento(formaPagamentoSelecionada);
+      setEspecialidade(especialidadeSelecionada);
     }
-  }, [aberto, formaPagamentoSelecionada]);
+  }, [aberto, especialidadeSelecionada]);
 
   useEffect(() => {
-    if (formaPagamento.nome !== formaPagamentoSelecionada.nome) {
+    if (especialidade.nome !== especialidadeSelecionada.nome) {
       setDesabilitarBotaoSalvar(false);
     } else {
       setDesabilitarBotaoSalvar(true);
     }
-  }, [formaPagamento, formaPagamentoSelecionada]);
+  }, [especialidade, especialidadeSelecionada]);
 
-  const AtualizarFormaPagamento = async (event) => {
+  const AtualizarEspecialidade = async (event) => {
     event.preventDefault();
     setDesabilitarBotoes(true);
 
     const usuarioId = localStorage.getItem("usuarioId");
 
     try {
-      await FormaPagamentoApi.atualizarFormaPagamentoAsync(
-        formaPagamentoSelecionada.id,
+      await EspecialidadeApi.atualizarEspecialidadeAsync(
+        especialidadeSelecionada.id,
         usuarioId,
-        formaPagamento.nome
+        especialidade.nome
       );
-      
-      const formasPagamentoAtualizadas = formasPagamento.map(fp => 
-        fp.id === formaPagamentoSelecionada.id 
-          ? { ...fp, nome: formaPagamento.nome } 
-          : fp
+
+      const especialidadesAtualizadas = especialidades.map(e =>
+        e.id === especialidadeSelecionada.id
+          ? { ...e, nome: especialidade.nome }
+          : e
       );
-      setFormasPagamento(formasPagamentoAtualizadas);
-      
-      ExibirAlerta("Forma de pagamento atualizada com sucesso!", "success");
-    } catch (error) {
-      ExibirAlerta(
-        error.response?.data || "Erro ao atualizar forma de pagamento.",
-        "danger"
-      );
+      setEspecialidades(especialidadesAtualizadas);
+
+      ExibirAlerta("Especialidade atualizada com sucesso!", "success");
     }
+    catch (error) {
+      const mensagemErro = error.response?.data?.errors
+        ? Object.values(error.response.data.errors).flat().join(" ")
+        : error.response?.data?.title || "Erro ao atualizar especialidade.";
+
+      ExibirAlerta(mensagemErro, "danger");
+    }
+
+
   };
 
   return (
@@ -79,29 +83,27 @@ function ModalEditarFormaPagamento({ formaPagamentoSelecionada, setFormasPagamen
 
       {aberto && (
         <div
-          className={`${style.container_total_modal} ${
-            desabilitarBotoes ? style.container_total_modal_desabilitado : ""
-          }`}
+          className={`${style.container_total_modal} ${desabilitarBotoes ? style.container_total_modal_desabilitado : ""
+            }`}
         >
           <ModalGlobal
             aberto={aberto}
             setAberto={setAberto}
-            titulo="Editar Forma de Pagamento"
+            titulo="Editar Especialidade"
           >
             <div
-              className={`${style.container_formulario} ${
-                desabilitarBotoes ? style.container_formulario_desabilitado : ""
-              }`}
+              className={`${style.container_formulario} ${desabilitarBotoes ? style.container_formulario_desabilitado : ""
+                }`}
             >
-              <form onSubmit={AtualizarFormaPagamento}>
+              <form onSubmit={AtualizarEspecialidade}>
                 <label>Nome</label>
                 <input
                   type="text"
                   className={style.input}
                   name="nome"
-                  value={formaPagamento.nome}
+                  value={especialidade.nome}
                   onChange={(e) =>
-                    setFormaPagamento((prev) => ({
+                    setEspecialidade((prev) => ({
                       ...prev,
                       nome: e.target.value,
                     }))
@@ -132,4 +134,4 @@ function ModalEditarFormaPagamento({ formaPagamentoSelecionada, setFormasPagamen
   );
 }
 
-export default ModalEditarFormaPagamento;
+export default ModalEditarEspecialidade;

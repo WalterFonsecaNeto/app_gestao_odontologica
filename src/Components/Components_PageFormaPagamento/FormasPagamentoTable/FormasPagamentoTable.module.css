@@ -40,6 +40,7 @@
   position: sticky;
   top: 0;
 }
+
 .container_table table {
   width: 100%;
   border-collapse: collapse;
@@ -50,10 +51,8 @@
   padding: 1.5rem;
   border-bottom: 1px solid #58af9b;
   width: 80%;
-  word-wrap: break-word; /* Permite quebra de linha para texto longo */
-}
-.teste {
-  margin-right: 10px;
+  word-wrap: break-word;
+  /* Permite quebra de linha para texto longo */
 }
 
 .container_table th {
@@ -67,4 +66,12 @@
 
 .container_table td {
   text-align: center;
+}
+
+
+.botao_acao {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  align-items: center;
 }

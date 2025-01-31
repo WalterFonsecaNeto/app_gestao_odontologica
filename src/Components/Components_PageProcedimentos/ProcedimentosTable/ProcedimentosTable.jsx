@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import { MdEdit, MdDelete } from "react-icons/md";
 import ProcedimentoApi from "../../../Services/MinhaApi/Procedimento";
 import style from "./ProcedimentosTable.module.css";
 import Alerta from "../../Alerta/Alerta";
 import ModalExcluirProcedimento from "../ModalExcluirProcedimento/ModalExcluirProcedimento";
+import ModalEditarProcedimento from "../ModalEditarProcedimento/ModalEditarProcedimento";
 
 function ProcedimentosTable({ filtro, setProcedimentos, procedimentos }) {
   const [mostrarAlerta, setMostrarAlerta] = useState(false);
@@ -42,40 +42,51 @@ function ProcedimentosTable({ filtro, setProcedimentos, procedimentos }) {
   }, []);
 
   function MostrarProcedimentos() {
-    const procedimentosFiltrados = procedimentos?.filter((procedimento) =>
-      procedimento.nome.toLowerCase().startsWith(filtro.toLowerCase())
-    );
+    // Verifica se 'procedimentos' é um array e filtra corretamente
+    const procedimentosFiltrados = Array.isArray(procedimentos)
+      ? procedimentos.filter((procedimento) =>
+        procedimento.nome.toLowerCase().startsWith(filtro.toLowerCase())
+      )
+      : []; // Caso 'procedimentos' não seja um array, retorna um array vazio
 
-    return procedimentosFiltrados?.map((procedimento) => (
+    // Se não houver procedimentos, exibe o alerta
+    if (procedimentosFiltrados.length === 0 && filtro) {
+      ExibirAlerta("Nenhum procedimento encontrado para o filtro.", "warning");
+    }
+
+    return (
       <>
-        <tr key={procedimento.id}>
-          <td>{procedimento.nome}</td>
-          <td>R$ {Number(procedimento.valor || 0).toFixed(2)}</td>
-          <td>
-            <div className={style.botao_acao}>
-              <button>
-                <MdEdit />
-              </button>
-
-              <ModalExcluirProcedimento
-                procedimentoSelecionado={procedimento}
-                procedimentos={procedimentos}
-                setProcedimentos={setProcedimentos}
-              />
-            </div>
-          </td>
-        </tr>
-
-        {/* Exibição do Alerta */}
-        <Alerta
-          tipo={tipoAlerta}
-          mensagem={mensagemAlerta}
-          visivel={mostrarAlerta}
-          aoFechar={() => setMostrarAlerta(false)}
-        />
+        {mostrarAlerta && (
+          <Alerta
+            tipo={tipoAlerta}
+            mensagem={mensagemAlerta}
+            visivel={mostrarAlerta}
+            aoFechar={() => setMostrarAlerta(false)}
+          />
+        )}
+        {procedimentosFiltrados.map((procedimento) => (
+          <tr key={procedimento.id}>
+            <td>{procedimento.nome}</td>
+            <td>R$ {Number(procedimento.valor || 0).toFixed(2)}</td>
+            <td>
+              <div className={style.botao_acao}>
+                <ModalEditarProcedimento
+                  procedimentoSelecionado={procedimento}
+                  setProcedimentos={setProcedimentos}
+                />
+                <ModalExcluirProcedimento
+                  procedimentoSelecionado={procedimento}
+                  procedimentos={procedimentos}
+                  setProcedimentos={setProcedimentos}
+                />
+              </div>
+            </td>
+          </tr>
+        ))}
       </>
-    ));
+    );
   }
+
 
   return (
     <div className={style.container_total}>

@@ -118,7 +118,15 @@ function ModalEditarAgendamento({ agendamentoSelecionado }) {
       );
     }
   };
-
+  
+  useEffect(() => {
+    if (agendamentoSelecionado) {
+      setAgendamento({
+        ...agendamentoSelecionado,
+        hora: agendamentoSelecionado.dataHora.slice(11, 16),
+      });
+    }
+  }, [agendamentoSelecionado, aberto]);
   return (
     <div>
       <button className={style.botao_modal} onClick={() => setAberto(true)}>
@@ -127,9 +135,8 @@ function ModalEditarAgendamento({ agendamentoSelecionado }) {
 
       {aberto && (
         <div
-          className={`${style.container_total_modal} ${
-            desabilitarBotoes ? style.container_total_modal_desabilitado : ""
-          }`}
+          className={`${style.container_total_modal} ${desabilitarBotoes ? style.container_total_modal_desabilitado : ""
+            }`}
         >
           <ModalGlobal
             aberto={aberto}
@@ -137,9 +144,8 @@ function ModalEditarAgendamento({ agendamentoSelecionado }) {
             titulo="Editar Agendamento"
           >
             <div
-              className={`${style.container_formulario} ${
-                desabilitarBotoes ? style.container_formulario_desabilitado : ""
-              }`}
+              className={`${style.container_formulario} ${desabilitarBotoes ? style.container_formulario_desabilitado : ""
+                }`}
             >
               <form onSubmit={AtualizarAgendamento}>
                 <label>Paciente:</label>

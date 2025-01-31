@@ -26,6 +26,7 @@
   border: none;
   font-size: 26px;
   cursor: pointer;
+  background-color: transparent !important;
 
   padding: 0;
   margin-left: 10px;

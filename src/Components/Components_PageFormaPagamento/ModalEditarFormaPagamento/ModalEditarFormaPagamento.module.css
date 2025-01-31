@@ -1,12 +1,16 @@
 .botao_modal {
   background-color: #58af9b;
   color: white;
-  padding: 0.6rem;
+  padding: 0.8rem;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   font-size: 1rem;
   transition: background-color 0.3s;
+
+  & svg{
+    font-size: 20px;
+  }
 }
 
 .botao_modal:hover {
@@ -38,6 +42,11 @@
   color: #333;
   display: block;
   margin-top: 15px;
+  text-align: start ;
+}
+.container_formulario button {
+  display: flex;
+  align-items: flex-start;
 }
 
 .container_formulario input {

@@ -1,21 +1,23 @@
-/* Botão abrir modal */
 .botao_modal {
   background-color: #58af9b;
   color: white;
-  padding: 0.6rem;
+  padding: 0.8rem;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   font-size: 1rem;
   transition: background-color 0.3s;
+
+  & svg {
+    font-size: 20px;
+  }
 }
 
 .botao_modal:hover {
   background-color: #4da88d;
 }
 
-
-.botao_troca_paciente{
+.botao_troca_paciente {
   margin-top: 10px;
   background-color: #58af9b;
   color: white;
@@ -25,6 +27,7 @@
   cursor: pointer;
   font-size: 16px;
 }
+
 .botao_troca_paciente:hover {
   background-color: #4da88d;
 }
@@ -40,6 +43,12 @@
   color: #333;
   display: block;
   margin-top: 15px;
+  text-align: start;
+}
+
+.container_formulario button {
+  display: flex;
+  align-items: flex-start;
 }
 
 .container_formulario input {
@@ -66,56 +75,6 @@
 .container_formulario .botao_salvar:hover {
   background-color: #4da88d;
 }
-
-
-
-.listaPacientes {
-  list-style-type: none;
-  padding: 0;
-  max-height: 200px;
-  overflow-y: auto;
-  margin-top: 10px;
-}
-
-.pacienteItem {
-  padding: 8px;
-  cursor: pointer;
-  width: 100%;
-  /* Faz o li ocupar toda a largura */
-  box-sizing: border-box;
-}
-
-.pacienteItem:hover {
-  background-color: #f0f0f0;
-}
-
-.inputPacienteSelecionado {
-  margin-top: 10px;
-  margin-bottom: 0px;
-  padding: 8px;
-  width: 100%;
-  font-size: 16px;
-  background-color: #e0e0e0;
-  border: 1px solid #ccc;
-  cursor: not-allowed;
-}
-
-input[disabled] {
-  background-color: #f0f0f0;
-  cursor: not-allowed;
-}
-
-button:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
-}
-
-
-
-
-
-
-
 
 /* Bloqueia a interação com o botão ao excluir */
 .container_total_modal_desabilitado {

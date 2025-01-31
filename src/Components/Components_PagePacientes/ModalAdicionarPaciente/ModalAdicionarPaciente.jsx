@@ -230,6 +230,7 @@ function ModalAdicionarPaciente({ setPacientes, pacientes }) {
                     name="historicoMedico"
                     value={paciente.historicoMedico}
                     onChange={AtualizaPacientesComValores}
+                    rows={5}
                   ></textarea>
 
                   <button type="submit" className={style.botao_salvar}>

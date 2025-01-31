@@ -37,12 +37,21 @@ const ProcedimentoApi = {
   },
 
   async atualizarProcedimentoAsync(
+    usuarioId,
     procedimentoId,
     nome,
     descricao,
     valor,
     especialidadeId
   ) {
+    console.log(
+      usuarioId,
+      procedimentoId,
+      nome,
+      descricao,
+      valor,
+      especialidadeId
+    )
     const procedimentoAtualizar = {
       nome,
       descricao,
@@ -50,7 +59,7 @@ const ProcedimentoApi = {
       especialidadeId,
     };
     const response = await HTTPClient.put(
-      `/Procedimento/Atualizar/${procedimentoId}`,
+      `/Procedimento/Atualizar/${procedimentoId}/Usuario/${usuarioId}`,
       procedimentoAtualizar
     );
     return response.data;

@@ -56,7 +56,7 @@ function FormasPagamentoTable({ filtro, formasPagamento, setFormasPagamento }) {
           <td>{formaPagamento.nome}</td>
           <td>
             <div className={style.botao_acao}>
-              <ModalEditarFormaPagamento formaPagamentoSelecionada={formaPagamento}/>
+              <ModalEditarFormaPagamento formaPagamentoSelecionada={formaPagamento} setFormasPagamento={setFormasPagamento} formasPagamento={formasPagamento} />
               <ModalExcluirFormaPagamento
                 formaPagamentoSelecionada={formaPagamento}
                 formasPagamento={formasPagamento}
@@ -91,7 +91,7 @@ function FormasPagamentoTable({ filtro, formasPagamento, setFormasPagamento }) {
         </table>
       </div>
 
-     
+
     </div>
   );
 }

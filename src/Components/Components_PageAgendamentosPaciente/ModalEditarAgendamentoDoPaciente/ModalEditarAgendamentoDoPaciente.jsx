@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ModalGlobal from "../../ModalGlobal/ModalGlobal";
 import AgendamentoApi from "../../../Services/MinhaApi/Agendamento";
 import Alerta from "../../Alerta/Alerta";
 import styles from "./ModalEditarAgendamentoDoPaciente.module.css";
 import { MdEdit } from "react-icons/md";
 
-function ModalEditarAgendamentoDoPaciente({ agendamentoSelecionado }) {
+function ModalEditarAgendamentoDoPaciente({ agendamentoSelecionado, setAgendamentos, agendamentos}) {
   const [agendamento, setAgendamento] = useState({
     ...agendamentoSelecionado,
     hora: agendamentoSelecionado.dataHora.slice(11, 16),
@@ -15,7 +15,19 @@ function ModalEditarAgendamentoDoPaciente({ agendamentoSelecionado }) {
   const [mostrarAlerta, setMostrarAlerta] = useState(false);
   const [mensagemAlerta, setMensagemAlerta] = useState("");
   const [tipoAlerta, setTipoAlerta] = useState("");
-  const [desabilitarBotao, setDesabilitarBotao] = useState(false);
+
+  const [desabilitarBotoes, setDesabilitarBotoes] = useState(false); // Desabilita botões gerais ao salvar
+  const [desabilitarBotaoSalvar, setDesabilitarBotaoSalvar] = useState(true); // Desabilita apenas o botão "Salvar" até que algo seja editado
+
+  useEffect(() => {
+    if (aberto) {
+      setAgendamento({
+        ...agendamentoSelecionado,
+        hora: agendamentoSelecionado.dataHora.slice(11, 16),
+      });
+      setDesabilitarBotaoSalvar(true);
+    }
+  }, [aberto, agendamentoSelecionado]);
 
   function ExibirAlerta(mensagem, tipo) {
     setMensagemAlerta(mensagem);
@@ -25,7 +37,8 @@ function ModalEditarAgendamentoDoPaciente({ agendamentoSelecionado }) {
     setTimeout(() => {
       setMostrarAlerta(false);
       setAberto(false);
-      setDesabilitarBotao(false);
+      setDesabilitarBotoes(false);
+      setDesabilitarBotaoSalvar(true);
       window.location.reload();
     }, 5000);
   }
@@ -35,9 +48,22 @@ function ModalEditarAgendamentoDoPaciente({ agendamentoSelecionado }) {
     setAgendamento((prev) => ({ ...prev, [name]: value }));
   };
 
+  useEffect(() => {
+    const dataParte = agendamento.dataHora.split("T")[0];
+    const dataHoraFormatada = `${dataParte}T${agendamento.hora}:00`;
+
+    const houveAlteracao =
+      agendamento.pacienteId !== agendamentoSelecionado.pacienteId ||
+      dataHoraFormatada !== agendamentoSelecionado.dataHora ||
+      agendamento.descricao !== agendamentoSelecionado.descricao ||
+      agendamento.status !== agendamentoSelecionado.status;
+
+    setDesabilitarBotaoSalvar(!houveAlteracao);
+  }, [agendamento, agendamentoSelecionado]);
+
   const AtualizarAgendamento = async (event) => {
     event.preventDefault();
-    setDesabilitarBotao(true);
+    setDesabilitarBotoes(true); // Desabilita todos os botões enquanto salva
 
     const dataParte = agendamento.dataHora.split("T")[0];
     const dataHoraFormatada = `${dataParte}T${agendamento.hora}:00.000Z`;
@@ -59,25 +85,30 @@ function ModalEditarAgendamentoDoPaciente({ agendamentoSelecionado }) {
         error.response?.data || "Erro ao atualizar agendamento.",
         "danger"
       );
+      setDesabilitarBotoes(false); // Reabilita os botões caso dê erro
     }
   };
 
   return (
     <div>
-      <button className={styles.botao_modal} onClick={() => setAberto(true)}>
+      <button
+        className={styles.botao_modal}
+        onClick={() => setAberto(true)}
+        disabled={desabilitarBotoes}
+      >
         <MdEdit />
       </button>
 
       {aberto && (
         <div
           className={`${styles.container_total_modal} ${
-            desabilitarBotao ? styles.container_total_modal_desabilitado : ""
+            desabilitarBotoes ? styles.container_total_modal_desabilitado : ""
           }`}
         >
           <ModalGlobal aberto={aberto} setAberto={setAberto} titulo="Editar Agendamento">
             <div
               className={`${styles.container_formulario} ${
-                desabilitarBotao ? styles.container_formulario_desabilitado : ""
+                desabilitarBotoes ? styles.container_formulario_desabilitado : ""
               }`}
             >
               <form onSubmit={AtualizarAgendamento}>
@@ -91,6 +122,7 @@ function ModalEditarAgendamentoDoPaciente({ agendamentoSelecionado }) {
                       value={agendamento.dataHora?.split("T")[0] || ""}
                       onChange={AtualizaAgendamentoComValores}
                       required
+                      disabled={desabilitarBotoes}
                     />
                   </div>
                 </div>
@@ -105,6 +137,7 @@ function ModalEditarAgendamentoDoPaciente({ agendamentoSelecionado }) {
                       value={agendamento.hora}
                       onChange={AtualizaAgendamentoComValores}
                       required
+                      disabled={desabilitarBotoes}
                     />
                   </div>
 
@@ -117,6 +150,7 @@ function ModalEditarAgendamentoDoPaciente({ agendamentoSelecionado }) {
                       value={agendamento.descricao}
                       onChange={AtualizaAgendamentoComValores}
                       required
+                      disabled={desabilitarBotoes}
                     />
                   </div>
                 </div>
@@ -130,6 +164,7 @@ function ModalEditarAgendamentoDoPaciente({ agendamentoSelecionado }) {
                       value={agendamento.status}
                       onChange={AtualizaAgendamentoComValores}
                       required
+                      disabled={desabilitarBotoes}
                     >
                       <option value="Pendente">Pendente</option>
                       <option value="Cancelado">Cancelado</option>
@@ -138,7 +173,11 @@ function ModalEditarAgendamentoDoPaciente({ agendamentoSelecionado }) {
                   </div>
                 </div>
 
-                <button type="submit" className={styles.botao_salvar}>
+                <button
+                  type="submit"
+                  className={styles.botao_salvar}
+                  disabled={desabilitarBotaoSalvar || desabilitarBotoes} // Desabilita quando não há mudanças ou durante o envio
+                >
                   Salvar
                 </button>
               </form>

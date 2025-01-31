@@ -4,21 +4,20 @@ import AgendamentoApi from "../../../Services/MinhaApi/Agendamento";
 import { useState, useEffect } from "react";
 import { MdCheck } from "react-icons/md";
 import ModalEditarAgendamentoDoPaciente from "../ModalEditarAgendamentoDoPaciente/ModalEditarAgendamentoDoPaciente";
+
 function PacienteAgendamentos() {
   const [pacienteAgendamentos, setPacienteAgendamentos] = useState([]);
   const { id } = useParams();
-  const decodedId = atob(id); //? Decodifica o ID
+  const decodedId = atob(id); // Decodifica o ID
 
   async function MostrarAgendamentosDoPaciente() {
     try {
-      const usuarioId = localStorage.getItem("usuarioId"); // Aqui você deveria pegar o ID do usuário logado
-      console.log(decodedId);
+      const usuarioId = localStorage.getItem("usuarioId"); 
       const response = await AgendamentoApi.listarAgendamentoPorPacienteIdAsync(
         decodedId,
         usuarioId,
         true
       );
-      console.log(response);
       setPacienteAgendamentos(response);
     } catch (error) {
       console.error("Erro ao buscar agendamentos do paciente:", error);
@@ -28,6 +27,31 @@ function PacienteAgendamentos() {
   useEffect(() => {
     MostrarAgendamentosDoPaciente();
   }, []);
+
+  const ConcluirAgendamento = async (agendamento) => {
+    try {
+      const usuarioId = localStorage.getItem("usuarioId");
+
+      // Mantendo todas as informações do agendamento e alterando apenas o status
+      await AgendamentoApi.atualizarAgendamentoAsync(
+        agendamento.id,
+        usuarioId,
+        agendamento.pacienteId,
+        agendamento.dataHora,
+        "Concluído", // Novo status
+        agendamento.descricao
+      );
+
+      // Atualiza o estado local sem recarregar a página
+      setPacienteAgendamentos((prevAgendamentos) =>
+        prevAgendamentos.map((item) =>
+          item.id === agendamento.id ? { ...item, status: "Concluído" } : item
+        )
+      );
+    } catch (error) {
+      console.error("Erro ao concluir agendamento:", error);
+    }
+  };
 
   return (
     <div className={style.container_total}>
@@ -55,22 +79,21 @@ function PacienteAgendamentos() {
                     {new Date(agendamento.dataHora).toLocaleDateString("pt-BR")}
                   </td>
                   <td>
-                    {new Date(agendamento.dataHora).toLocaleTimeString(
-                      "pt-BR",
-                      {
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      }
-                    )}
+                    {new Date(agendamento.dataHora).toLocaleTimeString("pt-BR", {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
                   </td>
-
                   <td>{agendamento.status}</td>
                   <td>
                     <div className={style.botao_acao}>
-                      <ModalEditarAgendamentoDoPaciente agendamentoSelecionado={agendamento}/>
+                      <ModalEditarAgendamentoDoPaciente
+                        agendamentoSelecionado={agendamento}
+                        setAgendamentos={setPacienteAgendamentos}
+                        agendamentos={pacienteAgendamentos}
+                      />
 
-                      <button
-                      >
+                      <button onClick={() => ConcluirAgendamento(agendamento)}>
                         <MdCheck />
                       </button>
                     </div>
@@ -97,9 +120,6 @@ function PacienteAgendamentos() {
                     ).length
                   }
                 </td>
-              </tr>
-              <tr>
-
               </tr>
             </tfoot>
           </table>

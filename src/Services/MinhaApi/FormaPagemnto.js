@@ -28,6 +28,7 @@ const FormaPagamentoApi = {
   },
 
   async atualizarFormaPagamentoAsync(formaPagamentoId, usuarioId, nome) {
+    
     const formaPagamentoAtualizar = {
       Nome: nome,
     };
