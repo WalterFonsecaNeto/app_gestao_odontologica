@@ -8,7 +8,7 @@ import PageProcedimento from "../Pages/PageProcedimento/PageProcedimento";
 import PageHome from "../Pages/PageHome/PageHome";
 import PageFormaPagamento from "../Pages/PageFormaPagamento/PageFormaPagamento";
 import PageAgendamentosPaciente from "../Pages/PageAgendamentosPaciente/PageAgendamentosPaciente";
-import Calendario from "../CalendarioTeste/CalendarioTeste";
+
 
 function Rotas() {
 
@@ -20,14 +20,7 @@ function Rotas() {
             path="/"
             element={<PageAutenticacao/>}
           />
-          <Route
-            path="/testeCalendario"
-            element={
-              <ProtectedRoute>
-                <Calendario />
-              </ProtectedRoute>
-            }
-          />
+          
           <Route
             path="/home"
             element={
