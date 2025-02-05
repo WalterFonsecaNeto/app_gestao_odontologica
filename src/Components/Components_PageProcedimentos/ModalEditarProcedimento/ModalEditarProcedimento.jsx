@@ -30,7 +30,7 @@ function ModalEditarProcedimento({ procedimentoSelecionado, setProcedimentos }) 
             setMostrarAlerta(false);
             setAberto(false);
             setDesabilitarBotoes(false); // Reabilitar botões após 5 segundos
-        }, 5000);
+        }, 500);
     }
 
     useEffect(() => {

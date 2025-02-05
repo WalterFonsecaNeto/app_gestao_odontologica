@@ -25,7 +25,7 @@ function ModalEditarFormaPagamento({ formaPagamentoSelecionada, setFormasPagamen
       setMostrarAlerta(false);
       setAberto(false);
       setDesabilitarBotoes(false);
-    }, 5000);
+    }, 500);
   }
 
   useEffect(() => {

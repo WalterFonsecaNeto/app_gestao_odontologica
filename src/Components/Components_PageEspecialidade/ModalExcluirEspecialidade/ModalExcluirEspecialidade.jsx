@@ -24,7 +24,7 @@ function ModalExcluirEspecialidade({
 
     setTimeout(() => {
       setMostrarAlerta(false);
-    }, 5000); // Alerta desaparece após 5 segundos
+    }, 500); // Alerta desaparece após 5 segundos
   }
 
   async function ExcluirEspecialidade() {
@@ -36,7 +36,13 @@ function ModalExcluirEspecialidade({
         especialidadeSelecionada.id,
         usuarioId
       );
-      
+      setTimeout(() => {
+        setEspecialidades(
+          especialidades?.filter((e) => e.id !== especialidadeSelecionada.id)
+        );
+        setAberto(false);
+        setDesabilitarBotao(false);
+      }, 500);
 
       ExibirAlerta("Especialidade excluída com sucesso!", "success");
     } catch (error) {
@@ -45,14 +51,10 @@ function ModalExcluirEspecialidade({
         "Ocorreu um erro ao excluir a especialidade. Tente novamente.";
       ExibirAlerta(mensagemErro, "danger");
     }
-
     setTimeout(() => {
-      setEspecialidades(
-        especialidades?.filter((e) => e.id !== especialidadeSelecionada.id)
-      );
       setAberto(false);
       setDesabilitarBotao(false)
-    }, 5000);
+    }, 500);
   }
 
   return (

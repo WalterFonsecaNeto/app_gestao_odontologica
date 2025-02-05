@@ -34,7 +34,7 @@ function CadastroForm({ onSwitch }) {
     setTimeout(() => {
       setMostrarAlerta(false);
       setDesabilitarBotao(false);
-    }, 5000);
+    }, 1000);
   };
 
   async function CadastrarUsuario(event) {

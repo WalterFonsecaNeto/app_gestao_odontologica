@@ -42,56 +42,45 @@ function ProcedimentosTable({ filtro, setProcedimentos, procedimentos }) {
   }, []);
 
   function MostrarProcedimentos() {
-    // Verifica se 'procedimentos' é um array e filtra corretamente
-    const procedimentosFiltrados = Array.isArray(procedimentos)
-      ? procedimentos.filter((procedimento) =>
-        procedimento.nome.toLowerCase().startsWith(filtro.toLowerCase())
-      )
-      : []; // Caso 'procedimentos' não seja um array, retorna um array vazio
-
-    // Se não houver procedimentos, exibe o alerta
-    if (procedimentosFiltrados.length === 0 && filtro) {
-      ExibirAlerta("Nenhum procedimento encontrado para o filtro.", "warning");
-    }
-
-    return (
-      <>
-        {mostrarAlerta && (
-          <Alerta
-            tipo={tipoAlerta}
-            mensagem={mensagemAlerta}
-            visivel={mostrarAlerta}
-            aoFechar={() => setMostrarAlerta(false)}
-          />
-        )}
-        {procedimentosFiltrados.map((procedimento) => (
-          <tr key={procedimento.id}>
-            <td>{procedimento.nome}</td>
-            <td>R$ {Number(procedimento.valor || 0).toFixed(2)}</td>
-            <td>
-              <div className={style.botao_acao}>
-                <ModalEditarProcedimento
-                  procedimentoSelecionado={procedimento}
-                  setProcedimentos={setProcedimentos}
-                />
-                <ModalExcluirProcedimento
-                  procedimentoSelecionado={procedimento}
-                  procedimentos={procedimentos}
-                  setProcedimentos={setProcedimentos}
-                />
-              </div>
-            </td>
-          </tr>
-        ))}
-      </>
+    const procedimentosFiltrados = procedimentos.filter((procedimento) =>
+      procedimento.nome.toLowerCase().startsWith(filtro.toLowerCase())
     );
+  
+  
+    return procedimentosFiltrados.map((procedimento) => (
+      <tr key={procedimento.id}>
+        <td>{procedimento.nome}</td>
+        <td>R$ {Number(procedimento.valor || 0).toFixed(2)}</td>
+        <td>
+          <div className={style.botao_acao}>
+            <ModalEditarProcedimento
+              procedimentoSelecionado={procedimento}
+              setProcedimentos={setProcedimentos}
+            />
+            <ModalExcluirProcedimento
+              procedimentoSelecionado={procedimento}
+              procedimentos={procedimentos}
+              setProcedimentos={setProcedimentos}
+            />
+          </div>
+        </td>
+      </tr>
+    ));
   }
-
-
+  
   return (
     <div className={style.container_total}>
+      {mostrarAlerta && (
+        <Alerta
+          tipo={tipoAlerta}
+          mensagem={mensagemAlerta}
+          visivel={mostrarAlerta}
+          aoFechar={() => setMostrarAlerta(false)}
+        />
+      )}
+  
       <h2 className={style.titulo}>Lista de Procedimentos</h2>
-
+  
       <div className={style.container_table}>
         <table>
           <thead>
@@ -106,6 +95,7 @@ function ProcedimentosTable({ filtro, setProcedimentos, procedimentos }) {
       </div>
     </div>
   );
+  
 }
 
 export default ProcedimentosTable;

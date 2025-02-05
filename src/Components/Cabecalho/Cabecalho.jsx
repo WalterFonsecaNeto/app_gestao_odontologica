@@ -28,7 +28,9 @@ function Cabecalho() {
             <span className={style.actual_text}>&nbsp;OdontoSync&nbsp;</span>
             <span
               aria-hidden="true"
-              className={`${style.hover_text} ${isAnimating ? style.animate : ""}`}
+              className={`${style.hover_text} ${
+                isAnimating ? style.animate : ""
+              }`}
             >
               &nbsp;OdontoSync&nbsp;
             </span>
@@ -65,9 +67,22 @@ function Cabecalho() {
               </div>
             </div>
           </div>
-          <BotaoSair/>
+
+          <div className={style.item}>
+            <a className={style.link} href="#">
+              <p>Atendimento</p>
+              <IoIosArrowDown />
+            </a>
+            <div className={style.submenu}>
+              <div className={style.submenu_item}>
+                <Link className={style.submenu_link} to="/agendamentos">
+                  Agendamento
+                </Link>
+              </div>
+            </div>
+          </div>
+          <BotaoSair />
         </div>
-        
       </div>
     </header>
   );

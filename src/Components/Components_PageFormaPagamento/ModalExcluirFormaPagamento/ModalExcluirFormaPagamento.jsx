@@ -24,7 +24,7 @@ function ModalExcluirFormaPagamento({
 
     setTimeout(() => {
       setMostrarAlerta(false);
-    }, 5000); // Alerta desaparece após 5 segundos
+    }, 500); 
   }
 
   async function ExcluirFormaPagamento() {
@@ -50,7 +50,7 @@ function ModalExcluirFormaPagamento({
         formasPagamento.filter((e) => e.id !== formaPagamentoSelecionada.id)
       );
       setAberto(false);
-    }, 5000);
+    }, 500);
   }
 
   return (

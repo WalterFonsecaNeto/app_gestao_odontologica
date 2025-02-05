@@ -36,7 +36,7 @@ function LoginForm({ onSwitch }) {
     setTimeout(() => {
       setMostrarAlerta(false);
       setDesabilitarBotao(false);
-    }, 5000);
+    }, 1000);
   };
 
   async function VerificarUsuario(event) {
@@ -54,7 +54,7 @@ function LoginForm({ onSwitch }) {
       exibirAlerta("Login realizado com sucesso!", "success");
       setTimeout(() => {
         navigate("/home");
-      }, 3000);
+      }, 1000);
     } catch (error) {
       exibirAlerta(`${error.response?.data || "Erro ao fazer login"}`, "danger");
     }

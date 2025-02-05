@@ -23,7 +23,7 @@ function ModalExcluirProcedimento({
 
     setTimeout(() => {
       setMostrarAlerta(false); // Fecha o alerta após 5 segundos
-    }, 5000);
+    }, 500);
   }
 
   async function ExcluirProcedimento() {
@@ -48,7 +48,7 @@ function ModalExcluirProcedimento({
         procedimentos.filter((p) => p.id !== procedimentoSelecionado.id)
       );
       setAberto(false);
-    }, 5000);
+    }, 500);
   }
 
   return (

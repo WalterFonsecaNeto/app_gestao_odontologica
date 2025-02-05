@@ -25,7 +25,7 @@ function ModalEditarEspecialidade({ especialidadeSelecionada, setEspecialidades,
       setMostrarAlerta(false);
       setAberto(false);
       setDesabilitarBotoes(false);
-    }, 5000);
+    }, 500);
   }
 
   useEffect(() => {

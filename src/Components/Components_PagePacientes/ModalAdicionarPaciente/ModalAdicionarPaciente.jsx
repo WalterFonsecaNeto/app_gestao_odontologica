@@ -36,7 +36,7 @@ function ModalAdicionarPaciente({ setPacientes, pacientes }) {
       setMostrarAlerta(false);
       setDesabilitarBotao(false);
       setAberto(false)
-    }, 5000); // Alerta desaparece após 5 segundos
+    }, 500); // Alerta desaparece após 5 segundos
   }
 
   async function SalvarPaciente(event) {

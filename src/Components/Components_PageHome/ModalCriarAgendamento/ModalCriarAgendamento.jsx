@@ -31,7 +31,7 @@ function ModalCriarAgendamento({ horarioSelecionado, data }) {
       setDesabilitarBotao(false);
       setAberto(false);
       window.location.reload();
-    }, 5000);
+    }, 500);
   }
 
   useEffect(() => {
