@@ -37,7 +37,6 @@ const Calendario = () => {
       const usuarioId = localStorage.getItem('usuarioId');
 
       const response = await AgendamentoApi.listarAgendamentoPorUsuarioIdAsync(usuarioId, true);
-      console.log("Agendamentos da API:", response);
 
       // Converte os agendamentos para o formato do calendário
       const eventosFormatados = response.map((agendamento) => ({
@@ -60,7 +59,7 @@ const Calendario = () => {
     buscarAgendamentos();
   }, []);
 
-  const handleSelectSlot = (slotInfo) => {
+  const selecionarSlot = (slotInfo) => {
     const dataSelecionada = moment(slotInfo.start).format('YYYY-MM-DD');
     setSelectedDate(slotInfo.start);
 
@@ -87,10 +86,10 @@ const Calendario = () => {
           endAccessor="end"
           defaultView="month"
           selectable
-          onSelectSlot={handleSelectSlot}
+          onSelectSlot={selecionarSlot}
           onSelectEvent={(event) => alert(`Agendamento: ${event.title}\nPaciente: ${event.pacienteNome}\nStatus: ${event.status}`)}
           messages={messages}
-          style={{ height: 600 }}
+          style={{ height: 500 }}
         />
       </div>
 
@@ -102,10 +101,10 @@ const Calendario = () => {
           <ul>
             {agendamentosDoDia.map((agendamento, index) => (
               <li key={index}>
-                <strong>Horário:</strong> {moment(agendamento.start).format('HH:mm')}<br />
-                <strong>Paciente:</strong> {agendamento.pacienteNome || 'Não informado'}<br />
-                <strong>Status:</strong> {agendamento.status || 'Não informado'}<br />
-                <strong>Descrição:</strong> {agendamento.title}
+                <p><strong>Horário:</strong> {moment(agendamento.start).format('HH:mm')}</p>
+                <p><strong>Paciente:</strong> {agendamento.pacienteNome || 'Não informado'}</p>
+                <p><strong>Status:</strong> {agendamento.status || 'Não informado'}</p>
+                <p><strong>Descrição:</strong> {agendamento.title}</p>
               </li>
             ))}
           </ul>

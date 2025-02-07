@@ -10,8 +10,8 @@ function ModalCriarAgendamento({ horarioSelecionado, data }) {
   const [pacienteId, setPacienteId] = useState("");
   const [descricao, setDescricao] = useState("");
   const [pacientes, setPacientes] = useState([]);
-  const [filtroPaciente, setFiltroPaciente] = useState(""); // Estado para filtro de nome
-  const [pacienteSelecionado, setPacienteSelecionado] = useState(null); // Estado para paciente selecionado
+  const [filtroPaciente, setFiltroPaciente] = useState("");
+  const [pacienteSelecionado, setPacienteSelecionado] = useState(null);
 
   const [aberto, setAberto] = useState(false);
   const [mostrarAlerta, setMostrarAlerta] = useState(false);
@@ -20,7 +20,6 @@ function ModalCriarAgendamento({ horarioSelecionado, data }) {
 
   const [desabilitarBotao, setDesabilitarBotao] = useState(false);
 
-  // Função para exibir o alerta
   function ExibirAlerta(mensagem, tipo) {
     setMensagemAlerta(mensagem);
     setTipoAlerta(tipo);
@@ -35,11 +34,9 @@ function ModalCriarAgendamento({ horarioSelecionado, data }) {
   }
 
   useEffect(() => {
-    // Carregar pacientes ao abrir o modal
     BuscarPacientesApi();
   }, []);
 
-  // Função para buscar pacientes
   async function BuscarPacientesApi() {
     const usuarioId = localStorage.getItem("usuarioId");
 
@@ -54,21 +51,16 @@ function ModalCriarAgendamento({ horarioSelecionado, data }) {
     }
   }
 
-  // Função para filtrar pacientes com base no nome
   function filtrarPacientes(event) {
     setFiltroPaciente(event.target.value);
   }
 
-  // Função para salvar o agendamento
   async function SalvarAgendamento(event) {
     event.preventDefault();
     setDesabilitarBotao(true);
 
     const usuarioId = localStorage.getItem("usuarioId");
-    const dataHora = `${format(
-      data,
-      "yyyy-MM-dd"
-    )}T${horarioSelecionado}:00.000Z`;
+    const dataHora = `${format(data, "yyyy-MM-dd")}T${horarioSelecionado}:00.000Z`;
 
     try {
       await AgendamentoApi.criarAgendamentoAsync(
@@ -88,24 +80,26 @@ function ModalCriarAgendamento({ horarioSelecionado, data }) {
     }
   }
 
-  // Filtrar pacientes com base no nome
   const pacientesFiltrados = pacientes.filter((paciente) =>
     paciente.nome.toLowerCase().startsWith(filtroPaciente.toLowerCase())
   );
 
-  //Verificar se o aberto é falso ou seja esta fechado para excluir valore dos imputs
   useEffect(() => {
     if (!aberto) {
       setPacienteId("");
       setDescricao("");
       setPacienteSelecionado(null);
     }
-    
   }, [aberto]);
 
-  // Função para abrir o modal
   function AbrirModal() {
     setAberto(true);
+  }
+
+  function TrocarPaciente() {
+    setPacienteSelecionado(null);
+    setPacienteId("");
+    setFiltroPaciente("");
   }
 
   return (
@@ -129,12 +123,21 @@ function ModalCriarAgendamento({ horarioSelecionado, data }) {
                 <form onSubmit={SalvarAgendamento}>
                   <label>Paciente:</label>
                   {pacienteSelecionado ? (
-                    <input
-                      type="text"
-                      value={pacienteSelecionado.nome}
-                      disabled
-                      className={style.inputPacienteSelecionado}
-                    />
+                    <div className={style.pacienteSelecionadoContainer}>
+                      <input
+                        type="text"
+                        value={pacienteSelecionado.nome}
+                        disabled
+                        className={style.inputPacienteSelecionado}
+                      />
+                      <button
+                        type="button"
+                        onClick={TrocarPaciente}
+                        className={style.botao_troca_paciente}
+                      >
+                        Trocar Paciente
+                      </button>
+                    </div>
                   ) : (
                     <>
                       <input
@@ -144,8 +147,6 @@ function ModalCriarAgendamento({ horarioSelecionado, data }) {
                         onChange={filtrarPacientes}
                         required
                       />
-
-                      {/* Lista de Pacientes com filtro */}
                       <ul className={style.listaPacientes}>
                         {filtroPaciente && pacientesFiltrados.length > 0 ? (
                           pacientesFiltrados.map((paciente) => (
@@ -155,7 +156,7 @@ function ModalCriarAgendamento({ horarioSelecionado, data }) {
                               onClick={() => {
                                 setPacienteSelecionado(paciente);
                                 setPacienteId(paciente.id);
-                                setFiltroPaciente(paciente.nome)
+                                setFiltroPaciente(paciente.nome);
                               }}
                             >
                               {paciente.nome}
@@ -189,7 +190,6 @@ function ModalCriarAgendamento({ horarioSelecionado, data }) {
               </div>
             </ModalGlobal>
           </div>
-          {/* Exibição do Alerta */}
           <Alerta
             tipo={tipoAlerta}
             mensagem={mensagemAlerta}
