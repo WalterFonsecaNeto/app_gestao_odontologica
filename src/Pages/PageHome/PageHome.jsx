@@ -1,4 +1,3 @@
-import Calendar from "../../Components/Components_PageHome/Calendario/Calendario";
 import DailyMovements from "../../Components/Components_PageHome/MovimentacaoDiaria/MovimentacaoDiaria";
 import Footer from "../../Components/Rodape/Rodape";
 import Header from "../../Components/Cabecalho/Cabecalho";
@@ -6,6 +5,7 @@ import PatientSearch from "../../Components/Components_PageHome/PesquisarPacient
 import PieChart from "../../Components/Components_PageHome/GraficoPizza/GraficoPizza";
 import Receivables from "../../Components/Components_PageHome/ContasReceber/ContasReceber";
 import styles from "./PageHome.module.css"
+import Agendamento from "../../Components/Components_PageHome/Agendamento/Agendamento";
 const PageHome = () => {
   return (
     <div className={styles.container}>
@@ -15,7 +15,7 @@ const PageHome = () => {
         <div className={styles.grid}>
           {/* Coluna Esquerda */}
           <div className={styles.column}>
-            <Calendar />
+            <Agendamento />
             <div className={styles.smallGrid}>
               <DailyMovements />
               <Receivables />

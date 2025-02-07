@@ -62,7 +62,7 @@ function MenuHamburguer() {
             {activeSubmenu === "submenu2" && (
               <ul className={style.submenu}>
                 <li className={style.submenu_item}>
-                  <a href="#" className={style.submenu_link}>Agendamento</a>
+                  <a href="http://localhost:3000/calendarioAgendamentos" className={style.submenu_link}>Agendamento</a>
                 </li>
               </ul>
             )}

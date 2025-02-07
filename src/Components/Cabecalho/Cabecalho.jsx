@@ -75,7 +75,7 @@ function Cabecalho() {
             </a>
             <div className={style.submenu}>
               <div className={style.submenu_item}>
-                <Link className={style.submenu_link} to="/agendamentos">
+                <Link className={style.submenu_link} to="/calendarioAgendamentos">
                   Agendamento
                 </Link>
               </div>
