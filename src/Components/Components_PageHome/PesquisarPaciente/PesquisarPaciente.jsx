@@ -2,14 +2,13 @@ import { useState, useEffect } from "react";
 import { Search, Users } from "lucide-react";
 import styles from "./PesquisarPaciente.module.css";
 import PacienteApi from "../../../Services/MinhaApi/Paciente";
-import { useNavigate } from "react-router-dom";  // Importe useNavigate
+import { useNavigate } from "react-router-dom";
 
 const PatientSearch = () => {
   const [search, setSearch] = useState("");
   const [pacientes, setPacientes] = useState([]);
-  const navigate = useNavigate();  // Inicialize o hook useNavigate
+  const navigate = useNavigate();
 
-  // Função para buscar a lista de pacientes na API
   async function BuscarPacientesApi() {
     const usuarioId = localStorage.getItem("usuarioId");
 
@@ -21,19 +20,17 @@ const PatientSearch = () => {
     }
   }
 
-  // Carregar lista de pacientes ao iniciar a página
   useEffect(() => {
     BuscarPacientesApi();
   }, []);
 
-  const pacientesFiltrados = pacientes.filter((paciente) =>
+  const pacientesFiltrados = pacientes?.filter((paciente) =>
     paciente.nome.toLowerCase().startsWith(search.toLowerCase())
   );
 
-  // Função para navegar até a página do paciente
   const navegarParaPaciente = (idPaciente) => {
-    const idCodificado = btoa(idPaciente); //? Codifica o ID em Base64
-    navigate(`/paciente/ficha-clinica/${idCodificado}`);  // Redireciona para a URL específica do paciente
+    const idCodificado = btoa(idPaciente);
+    navigate(`/paciente/ficha-clinica/${idCodificado}`);
   };
 
   return (
@@ -55,11 +52,18 @@ const PatientSearch = () => {
           />
         </div>
         <div className={styles.patientList}>
-          {pacientesFiltrados.map((paciente) => (
+          {/* Adicionei esta condição para mostrar a mensagem */}
+          {pacientesFiltrados?.length === 0 && (
+            <div className={styles.message}>
+              {pacientes?.length === 0 ? "Nenhum paciente cadastrado" : "Nenhum paciente encontrado"}
+            </div>
+          )}
+          
+          {pacientesFiltrados?.map((paciente) => (
             <div
               key={paciente.id}
               className={styles.patientItem}
-              onClick={() => navegarParaPaciente(paciente.id)}  // Adiciona a função de clique
+              onClick={() => navegarParaPaciente(paciente.id)}
             >
               <span>{paciente.nome}</span>
             </div>

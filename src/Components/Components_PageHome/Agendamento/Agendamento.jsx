@@ -32,7 +32,7 @@ const Agendamento = () => {
   }, [data]);
 
   const ObterAgendamentoParaHorario = (horario) => {
-    return agendamentos.find((agendamento) => {
+    return agendamentos?.find((agendamento) => {
       const dataAgendamento = format(new Date(agendamento.dataHora), "yyyy-MM-dd");
       const horaAgendamento = format(new Date(agendamento.dataHora), "HH:mm");
       const dataAtual = format(data, "yyyy-MM-dd");
@@ -92,7 +92,7 @@ const Agendamento = () => {
       </h3>
 
       <div className={styles.timeSlotContainer}>
-        {HorariosDisponiveis.map((horario) => {
+        {HorariosDisponiveis?.map((horario) => {
           const agendamento = ObterAgendamentoParaHorario(horario);
           return (
             <div key={horario} className={styles.timeSlot}>
