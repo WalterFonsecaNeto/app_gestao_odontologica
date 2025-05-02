@@ -8,7 +8,7 @@ import PageProcedimento from "../Pages/PageProcedimento/PageProcedimento";
 import PageHome from "../Pages/PageHome/PageHome";
 import PageFormaPagamento from "../Pages/PageFormaPagamento/PageFormaPagamento";
 import PageAgendamentosPaciente from "../Pages/PageAgendamentosPaciente/PageAgendamentosPaciente";
-
+import PageCalendarioAgendamento from "../Pages/PageCalendarioAgendamentos/PageCalendarioAgendamentos";
 
 function Rotas() {
 
@@ -20,6 +20,7 @@ function Rotas() {
             path="/"
             element={<PageAutenticacao/>}
           />
+          
           
           <Route
             path="/home"
@@ -75,6 +76,14 @@ function Rotas() {
             element={
               <ProtectedRoute>
                 <PageFormaPagamento/>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/calendarioAgendamentos"
+            element={
+              <ProtectedRoute>
+                <PageCalendarioAgendamento/>
               </ProtectedRoute>
             }
           />

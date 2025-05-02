@@ -40,7 +40,7 @@ function ModalEditarAgendamentoDoPaciente({ agendamentoSelecionado, setAgendamen
       setDesabilitarBotoes(false);
       setDesabilitarBotaoSalvar(true);
       window.location.reload();
-    }, 5000);
+    }, 500);
   }
 
   const AtualizaAgendamentoComValores = (event) => {

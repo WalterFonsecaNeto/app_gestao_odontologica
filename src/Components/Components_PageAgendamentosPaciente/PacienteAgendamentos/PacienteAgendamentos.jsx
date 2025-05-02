@@ -2,7 +2,8 @@ import style from "./PacienteAgendamento.module.css";
 import { useParams } from "react-router-dom";
 import AgendamentoApi from "../../../Services/MinhaApi/Agendamento";
 import { useState, useEffect } from "react";
-import { MdCheck } from "react-icons/md";
+import {  MdCheck } from "react-icons/md";
+import { FaTelegramPlane } from "react-icons/fa";
 import ModalEditarAgendamentoDoPaciente from "../ModalEditarAgendamentoDoPaciente/ModalEditarAgendamentoDoPaciente";
 
 function PacienteAgendamentos() {
@@ -92,10 +93,14 @@ function PacienteAgendamentos() {
                         setAgendamentos={setPacienteAgendamentos}
                         agendamentos={pacienteAgendamentos}
                       />
-
                       <button onClick={() => ConcluirAgendamento(agendamento)}>
                         <MdCheck />
                       </button>
+                      {/* Mandar mensagem para o paciente confirmar ou cancelar Agendamento */}
+                      <button>
+                        <FaTelegramPlane/>
+                      </button>
+
                     </div>
                   </td>
                 </tr>

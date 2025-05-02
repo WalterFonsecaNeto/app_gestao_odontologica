@@ -6,7 +6,7 @@ const BotaoSair = () => {
   const navigate = useNavigate();
 
   const handleLogoutClick = () => {
-    navigate("/home");
+    navigate("/");
   };
 
   return (

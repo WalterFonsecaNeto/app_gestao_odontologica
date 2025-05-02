@@ -25,7 +25,7 @@ function ModalAdicionarEspecialidade({ especialidades, setEspecialidades }) {
     setTimeout(() => {
       setMostrarAlerta(false);
       setDesabilitarBotao(false);
-    }, 5000); // Alerta desaparece após 5 segundos
+    }, 500); // Alerta desaparece após 5 segundos
   }
 
   async function SalvarEspecialidade(event) {
@@ -61,7 +61,7 @@ function ModalAdicionarEspecialidade({ especialidades, setEspecialidades }) {
     //fecha o modal apos 5 segundos para dar tempo de ver o alert
     setTimeout(() => {
       setAberto(false);
-    }, 5000);
+    }, 500);
   }
 
   //Função para atualizar a variavel do paciente com os valore digitados no inputs

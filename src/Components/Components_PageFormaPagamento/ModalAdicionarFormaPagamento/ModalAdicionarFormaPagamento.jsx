@@ -28,7 +28,7 @@ function ModalAdicionarFormaPagamento({ formasPagamento, setFormasPagamento }) {
       setMostrarAlerta(false);
       setDesabilitarBotao(false);
       setAberto(false);
-    }, 5000);
+    }, 500);
   }
 
   async function SalvarFormaPagamento(event) {

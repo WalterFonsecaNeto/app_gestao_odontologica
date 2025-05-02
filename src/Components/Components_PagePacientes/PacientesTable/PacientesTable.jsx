@@ -48,60 +48,62 @@ function PacientesTable({ filtro, pacientes, setPacientes }) {
     BuscarPacientesApi();
   }, []);
 
-  function MostarPacientes() {
-    // Filtra a lista de pacientes com base no filtro, considerando apenas nomes que começam com o filtro
-    const pacientesFiltrados = pacientes?.filter((paciente) =>
-      paciente.nome.toLowerCase().startsWith(filtro.toLowerCase())
-    );
-
-    return pacientesFiltrados?.map((paciente) => (
-      <>
-        <tr key={paciente.id}>
-          <td style={{ textAlign: "start" }}>{paciente.nome}</td>
-          <td>{paciente.cpf}</td>
-          <td>
-            {new Date(paciente.dataNascimento).toLocaleDateString("pt-BR")}
-          </td>
-          <td>{paciente.telefone}</td>
-          <td>{paciente.genero}</td>
-          <td>
-            <button className={style.botao_info} onClick={() => InformacoesPaciente(paciente.id)}>
-              <MdPersonOutline />
-            </button>
-          </td>
-        </tr>
-        {/* Exibição do Alerta */}
-        <Alerta
-          tipo={tipoAlerta}
-          mensagem={mensagemAlerta}
-          visivel={mostrarAlerta}
-          aoFechar={() => setMostrarAlerta(false)}
-        />
-      </>
-    ));
-  }
-
-  return (
-    <div className={style.container_total}>
-      <h2>Lista de Pacientes</h2>
-
-      <div className={style.container_table}>
-        <table>
-          <thead>
-            <tr>
-              <th>Nome</th>
-              <th>CPF</th>
-              <th>Data de Nacimento</th>
-              <th>Telefone</th>
-              <th>Genero</th>
-              <th>Ficha</th>
-            </tr>
-          </thead>
-          <tbody>{MostarPacientes()}</tbody>
-        </table>
-      </div>
-    </div>
+ function MostarPacientes() {
+  const pacientesFiltrados = pacientes?.filter((paciente) =>
+    paciente.nome.toLowerCase().startsWith(filtro.toLowerCase())
   );
+
+  return pacientesFiltrados.map((paciente) => (
+    <tr key={paciente.id}>
+      <td style={{ textAlign: "start" }}>{paciente.nome}</td>
+      <td>{paciente.cpf}</td>
+      <td>
+        {new Date(paciente.dataNascimento).toLocaleDateString("pt-BR")}
+      </td>
+      <td>{paciente.telefone}</td>
+      <td>{paciente.genero}</td>
+      <td>
+        <button
+          className={style.botao_info}
+          onClick={() => InformacoesPaciente(paciente.id)}
+        >
+          <MdPersonOutline />
+        </button>
+      </td>
+    </tr>
+  ));
+}
+
+return (
+  <div className={style.container_total}>
+    {mostrarAlerta && (
+      <Alerta
+        tipo={tipoAlerta}
+        mensagem={mensagemAlerta}
+        visivel={mostrarAlerta}
+        aoFechar={() => setMostrarAlerta(false)}
+      />
+    )}
+    <h2>Lista de Pacientes</h2>
+
+    <div className={style.container_table}>
+      <table>
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>CPF</th>
+            <th>Data de Nacimento</th>
+            <th>Telefone</th>
+            <th>Genero</th>
+            <th>Ficha</th>
+          </tr>
+        </thead>
+        <tbody>{MostarPacientes()}</tbody>
+      </table>
+    </div>
+  </div>
+);
+
 }
 
 export default PacientesTable;

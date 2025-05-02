@@ -1,13 +1,11 @@
 import style from "./EspecialidadesTable.module.css";
 import { useState, useEffect } from "react";
-import { MdEdit, MdDelete } from "react-icons/md";
 import EspecialidadeApi from "../../../Services/MinhaApi/Especialidade";
 import Alerta from "../../Alerta/Alerta";
 import ModalExcluirEspecialidade from "../ModalExcluirEspecialidade/ModalExcluirEspecialidade";
 import ModalEditarEspecialidade from "../ModalEditarEspecialidade/ModalEditarEspecialidade";
 
 function EspecialidadesTable({ filtro, especialidades, setEspecialidades }) {
-
   const [mostrarAlerta, setMostrarAlerta] = useState(false);
   const [mensagemAlerta, setMensagemAlerta] = useState("");
   const [tipoAlerta, setTipoAlerta] = useState("");
@@ -45,38 +43,42 @@ function EspecialidadesTable({ filtro, especialidades, setEspecialidades }) {
     BuscarEspecialidadesApi();
   }, []);
 
-  function MostarEspecialidades() {
+  function MostrarEspecialidades() {
     const especialidadesFiltradas = especialidades?.filter((especialidade) =>
       especialidade.nome.toLowerCase().startsWith(filtro.toLowerCase())
     );
 
-    return especialidadesFiltradas?.map((especialidade) => (
-      <>
-        <tr key={especialidade.id}>
-          <td>{especialidade.nome}</td>
-          <td>
-            <div className={style.botao_acao}>
-              <ModalEditarEspecialidade especialidadeSelecionada={especialidade} setEspecialidades={setEspecialidades} especialidades={especialidades}/>
-                <ModalExcluirEspecialidade
-                  especialidadeSelecionada={especialidade}
-                  especialidades={especialidades}
-                  setEspecialidades={setEspecialidades}
-                />
-            </div>
-          </td>
-        </tr>
+    return especialidadesFiltradas.map((especialidade) => (
+      <tr key={especialidade.id}>
+        <td>{especialidade.nome}</td>
+        <td>
+          <div className={style.botao_acao}>
+            <ModalEditarEspecialidade
+              especialidadeSelecionada={especialidade}
+              setEspecialidades={setEspecialidades}
+              especialidades={especialidades}
+            />
+            <ModalExcluirEspecialidade
+              especialidadeSelecionada={especialidade}
+              especialidades={especialidades}
+              setEspecialidades={setEspecialidades}
+            />
+          </div>
+        </td>
+      </tr>
+    ));
+  }
+
+  return (
+    <div className={style.container_total}>
+      {mostrarAlerta && (
         <Alerta
           tipo={tipoAlerta}
           mensagem={mensagemAlerta}
           visivel={mostrarAlerta}
           aoFechar={() => setMostrarAlerta(false)}
         />
-      </>
-    ));
-  }
-
-  return (
-    <div className={style.container_total}>
+      )}
       <h2 className={style.titulo}>Lista de Especialidades</h2>
 
       <div className={style.container_table}>
@@ -87,7 +89,7 @@ function EspecialidadesTable({ filtro, especialidades, setEspecialidades }) {
               <th>Ações</th>
             </tr>
           </thead>
-          <tbody>{MostarEspecialidades()}</tbody>
+          <tbody>{MostrarEspecialidades()}</tbody>
         </table>
       </div>
     </div>
